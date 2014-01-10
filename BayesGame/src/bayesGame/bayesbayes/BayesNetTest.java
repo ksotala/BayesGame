@@ -21,7 +21,7 @@ public class BayesNetTest {
 		String text2 = "How are you";
 		String text3 = "Hello";
 		
-		testNet.addNode(text1);
+		testNet.addChanceNode(text1);
 		assertTrue("The net should contain a node for 'Hello'", testNet.containsNode(text1));
 		assertFalse("The net should not contain a node for 'How are you'", testNet.containsNode(text2));
 		assertTrue("The net should contain a node for 'Hello' in a different object", testNet.containsNode(text3));
@@ -34,10 +34,10 @@ public class BayesNetTest {
 		
 		
 		assertFalse("Implementation requires nodes to exist before they are added", testNet.connectNodes(text, number));
-		assertTrue("Node should be added successfully", testNet.addNode(text));
-		assertTrue("Node should be added successfully", testNet.addNode(number));
+		assertTrue("Node should be added successfully", testNet.addChanceNode(text));
+		assertTrue("Node should be added successfully", testNet.addChanceNode(number));
 		assertFalse("Should refuse to connect incompatible scopes", testNet.connectNodes(text, number));
-		assertTrue("Node should be added successfully", testNet.addNode("Boo", new Object[]{"Hello"}));
+		assertTrue("Node should be added successfully", testNet.addChanceNode("Boo", new Object[]{"Hello"}));
 		assertTrue("Should connect nodes", testNet.connectNodes(text, "Boo"));
 		assertFalse("Nodes should already be connected", testNet.connectNodes(text, "Boo"));
 	}
@@ -45,12 +45,12 @@ public class BayesNetTest {
 	@Test
 	public final void testNetworkMessagePassing(){
 		// set up rain node
-		testNet.addNode("Rain");
+		testNet.addChanceNode("Rain");
 		testNet.setProbabilityOfUntrue("Rain", new Fraction(7, 10));
 		testNet.setProbabilityOfUntrue("Rain", new Fraction(3, 10), "Rain");
 
 		// set up mushroom node
-		testNet.addNode("Mushroom", new Object[]{"Mushroom", "Rain"});
+		testNet.addChanceNode("Mushroom", new Object[]{"Mushroom", "Rain"});
 		
 		testNet.setProbabilityOfUntrue("Mushroom", Fraction.FOUR_FIFTHS);
 		testNet.setProbabilityOfUntrue("Mushroom", Fraction.ONE_FIFTH, "Mushroom");
@@ -58,7 +58,7 @@ public class BayesNetTest {
 		testNet.setProbabilityOfUntrue("Mushroom", Fraction.THREE_FIFTHS, "Rain", "Mushroom");
 		
 		// set up snake node
-		testNet.addNode("Snake", new Object[]{"Snake", "Mushroom"});
+		testNet.addChanceNode("Snake", new Object[]{"Snake", "Mushroom"});
 
 		testNet.setProbabilityOfUntrue("Snake", new Fraction(3, 10));
 		testNet.setProbabilityOfUntrue("Snake", new Fraction(4, 5), "Mushroom");

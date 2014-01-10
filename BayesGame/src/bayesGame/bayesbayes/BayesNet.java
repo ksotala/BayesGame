@@ -32,12 +32,12 @@ public class BayesNet {
 		return added;
 	}
 	
-	public boolean addNode(Object object){
+	public boolean addChanceNode(Object object){
 		BayesNode node = getNode(object);
 		return addNode(node);
 	}
 	
-	public boolean addNode(Object object, Object[] scope){
+	public boolean addChanceNode(Object object, Object[] scope){
 		BayesNode node = getNode(object, scope);
 		return addNode(node);
 	}
