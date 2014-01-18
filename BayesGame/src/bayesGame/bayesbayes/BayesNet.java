@@ -14,13 +14,13 @@ public class BayesNet {
 
 	private int edgeCounter = 0;
 	private ArrayList<BayesNode> nodes;
-	private DirectedSparseGraph<BayesNode, Integer> graph;
+	private DirectedSparseGraph<BayesNode, Pair<Integer,Integer>> graph;
 	
 	private HashSet<BayesNode> visitedDownstreamNodes;
 	private Stack<Pair<BayesNode, BayesNode>> downstreamMessagePaths;
 	
 	public BayesNet() {
-		graph = new DirectedSparseGraph<BayesNode, Integer>();
+		graph = new DirectedSparseGraph<BayesNode, Pair<Integer,Integer>>();
 		nodes = new ArrayList<BayesNode>();
 	}
 	
@@ -82,7 +82,7 @@ public class BayesNet {
 	}
 	
 	private boolean connectBayesNodes(BayesNode node1, BayesNode node2){
-		boolean result = graph.addEdge(edgeCounter, node1, node2);
+		boolean result = graph.addEdge(new Pair<Integer,Integer>(edgeCounter,0), node1, node2);
 		if (result){
 			edgeCounter++;
 		}
