@@ -36,7 +36,8 @@ public class BayesNode {
 	private HashSet<Message> upstreamMessages = new HashSet<Message>();
 	private HashSet<Message> downstreamMessages = new HashSet<Message>();
 	
-	private Boolean observation = null;
+	private boolean observed = false;
+	private Boolean trueValue = null;
 	
 	protected BayesNode(Object type){
 		this.type = type;
@@ -127,7 +128,7 @@ public class BayesNode {
 	 */
 	public void resetNode(){
 		
-		observation = null;
+		observed = false;
 		potential = cpt.clone();
 		probability = null;
 	}
@@ -140,20 +141,15 @@ public class BayesNode {
 	public void resetPotential(){
 	
 		potential = cpt.clone();
-		if (observation != null){
-			observe(observation);
+		if (observed){
+			observe();
 		}
 		probability = null;
 	}
 	
 	public boolean isObserved(){
 
-		if (observation != null){
-			return true;
-		} else {
-			return false;
-		}
-		
+		return observed;
 	}
 	
 	public boolean setProbabilityOfUntrueVariables(Fraction probability, Object... variables){
@@ -191,14 +187,30 @@ public class BayesNode {
 	    return true;
 	}
 	
-	public void observe(boolean observation){
+	/**
+	 * Observes the node, setting its probabilities according to its true value.
+	 * If the true value has not been set, randomly generates it based on the
+	 * current probabilities. Note that network is responsible for updating the
+	 * probabilities of any adjacent nodes afterwards.
+	 */
+	public void observe(){
 		
-		this.observation = observation;
+		observed = true;
 		
 		indexChooser selfChooser = new indexChooser();
 		ArrayList<Integer> locationsToZero;
 		
-		if (observation){
+		if (trueValue == null){
+			System.out.println("doing random generation");
+			double diceRoll = Math.random();
+			if (diceRoll <= this.getProbability().doubleValue()){
+				trueValue = Boolean.TRUE;
+			} else {
+				trueValue = Boolean.FALSE;
+			}
+		}
+		
+		if (trueValue){
 			
 			locationsToZero = selfChooser.getAllIndexes(type, false);
 			
@@ -210,6 +222,11 @@ public class BayesNode {
 		for (Integer i : locationsToZero){
 			potential[i] = Fraction.ZERO;
 		}	
+	}
+	
+	public void observe(boolean observation){
+		trueValue = observation;
+		observe();
 	}
 	
 	public Fraction[] getPotential(){

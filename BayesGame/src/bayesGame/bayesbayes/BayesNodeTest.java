@@ -64,6 +64,28 @@ public class BayesNodeTest {
 		assertEquals("If we've observed badger, we should get P = 0 for unnormalized !badger", Fraction.ZERO, testNode.getMarginalPotential(type)[1]);
 	}
 	
+	@Test
+	public final void testObserveReset(){
+		String type = "Badger Badger Badger Mushroom Mushroom";
+		BayesNode testNode = new BayesNode(type);
+		testNode.observe(true);
+		testNode.resetNode();
+		
+		assertEquals("After resetting the node, we should get P = .5 for unnormalized badger", Fraction.ONE_HALF, testNode.getMarginalPotential(type)[0]);
+		assertEquals("After resetting the node, we should get P = .5 for unnormalized !badger", Fraction.ONE_HALF, testNode.getMarginalPotential(type)[1]);
+	}
+	
+	@Test
+	public final void testObserveResetPotential(){
+		String type = "Badger Badger Badger Mushroom Mushroom";
+		BayesNode testNode = new BayesNode(type);
+		testNode.observe(true);
+		testNode.resetPotential();
+		
+		assertEquals("After resetting the node, we should get P = .5 for unnormalized badger", Fraction.ONE_HALF, testNode.getMarginalPotential(type)[0]);
+		assertEquals("After resetting the node, we should get P = 0 for unnormalized !badger", Fraction.ZERO, testNode.getMarginalPotential(type)[1]);
+	}
+	
 	
 	
 	@Test

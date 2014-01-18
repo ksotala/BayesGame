@@ -2,6 +2,7 @@ package bayesGame.bayesbayes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
 
@@ -25,19 +26,19 @@ public class BayesNet {
 	}
 	
 	private boolean addNode(BayesNode node){
-		boolean added = graph.addVertex(node); 
-		if (added && !nodes.contains(node)){
+		boolean added = graph.addVertex(node);
+		if (added){
 			nodes.add(node);
 		}
 		return added;
 	}
 	
-	public boolean addChanceNode(Object object){
+	public boolean addNode(Object object){
 		BayesNode node = getNode(object);
 		return addNode(node);
 	}
 	
-	public boolean addChanceNode(Object object, Object[] scope){
+	public boolean addNode(Object object, Object[] scope){
 		BayesNode node = getNode(object, scope);
 		return addNode(node);
 	}
@@ -59,29 +60,29 @@ public class BayesNet {
 	}
 		
 	public boolean isPresent(Object o){
-		if (getNodeIffPresent(o) == null){
-			return false;
-		} else {
-			return true;
+		for (BayesNode existingNode : nodes){
+			if (existingNode.type.equals(o)){
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	private BayesNode getNodeIffPresent(Object o){
 		for (BayesNode existingNode : nodes){
-			if (existingNode.type.equals(o)){
-				return existingNode;
+			if (existingNode.type.equals(o) && existingNode instanceof BayesNode){
+				return (BayesNode)existingNode;
 			}
 		}
 		return null;
 	}
 		
-	public boolean removeNode(Object object){
+	public boolean removeBayesNode(Object object){
 		BayesNode node = new BayesNode(object);
-		nodes.remove(node);
 		return graph.removeVertex(node);
 	}
 	
-	private boolean connectBayesNodes(BayesNode node1, BayesNode node2){
+	private boolean connectNodes(BayesNode node1, BayesNode node2){
 		boolean result = graph.addEdge(new Pair<Integer,Integer>(edgeCounter,0), node1, node2);
 		if (result){
 			edgeCounter++;
@@ -95,7 +96,7 @@ public class BayesNet {
 		if (!scopesCompatible(node1, node2)){
 			return false;
 		}
-		return this.connectBayesNodes(node1, node2);
+		return this.connectNodes(node1, node2);
 	}
 	
 	private boolean scopesCompatible(BayesNode node1, BayesNode node2){
