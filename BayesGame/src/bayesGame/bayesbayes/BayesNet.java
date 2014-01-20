@@ -103,6 +103,16 @@ public class BayesNet {
 		return this.connectNodes(node1, node2);
 	}
 	
+	/**
+	 * Adds a node to the network which evaluates to true (with P = 1) iff at least one
+	 * of its parents is true (with P = 1). The parents of the node must already exist
+	 * in the network, whereas the node itself must not exist: if these criteria are not
+	 * met, or if no parents are provided, the function will return false and do nothing.
+	 * 
+	 * @param orNode The identifier of the deterministic OR node to be added
+	 * @param parents The parents of the OR node
+	 * @return true if the node was added, false otherwise
+	 */
 	public boolean addDeterministicOr(Object orNode, Object... parents){
 		BayesNode orBayesNode = new BayesNode(orNode, parents);
 		

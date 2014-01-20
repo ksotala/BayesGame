@@ -1,35 +1,30 @@
 package bayesGame.ui;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EtchedBorder;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import org.apache.commons.collections15.Transformer;
-import org.apache.commons.collections15.functors.ConstantTransformer;
 import org.apache.commons.math3.util.Pair;
 
+import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
-import bayesGame.separationGame.BooleanNode;
-import bayesGame.separationGame.TravelEdge;
 import edu.uci.ics.jung.algorithms.layout.DAGLayout;
-import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.AbstractGraph;
 import edu.uci.ics.jung.visualization.Layer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
-import edu.uci.ics.jung.visualization.renderers.BasicRenderer;
-import edu.uci.ics.jung.visualization.renderers.Renderer;
 
 /**
  * @author Kaj Sotala
@@ -42,7 +37,7 @@ public class DefaultInterfaceView {
 	private JFrame frame;
 	private JPanel graphPanel;
 	private JPanel infoPanel;
-	private JLabel textField;
+	private JTextPane textPane;
 	
 	private AbstractGraph graph;
 	
@@ -62,7 +57,6 @@ public class DefaultInterfaceView {
 	
 	private void addComponentsToPane(Container pane) throws IOException {
 		
-		JButton button;
 		GridBagConstraints c;
 		
 		pane.setLayout(new GridBagLayout());
@@ -96,25 +90,17 @@ public class DefaultInterfaceView {
 	    pane.add(infoPanel, c);
 	    
 	    c = new GridBagConstraints();
-	    button = new JButton("Button 3");
+	    textPane = new JTextPane();
+	    textPane.setEditable(false);
+	    
 	    c.gridx = 0;
 	    c.gridy = 1;
 	    c.gridwidth = 2;
+	    c.ipady = 0;
 	    c.weightx = 1;
 	    c.weighty = 1;
 	    c.fill = GridBagConstraints.BOTH;
-	    pane.add(button, c);
-		
-	    c = new GridBagConstraints();
-	    JLabel textLabel = new JLabel("Text label");
-	    c.gridx = 0;
-	    c.gridy = 2;
-	    c.gridwidth = 2;
-	    c.ipady = 300;
-	    c.weightx = 1;
-	    c.weighty = 1;
-	    c.fill = GridBagConstraints.BOTH;
-	    pane.add(textLabel, c);
+	    pane.add(textPane, c);
 		
 	}
 	
@@ -124,14 +110,33 @@ public class DefaultInterfaceView {
 		
 	}
 	
-	public void setText(String text){
-		
-		textField.setText(text);
-
+	public void addText(String text){
+		SimpleAttributeSet style = new SimpleAttributeSet();
+		StyleConstants.setFontSize(style, 16);
+		addText(text, style); 
 	}
 	
-	public void setGraph(AbstractGraph graph){
-		this.graph = graph;
+	public void addTutorialText(String text){
+		SimpleAttributeSet style = new SimpleAttributeSet();
+		StyleConstants.setFontSize(style, 18);
+		StyleConstants.setBold(style, true);
+		addText(text, style);
+	}
+	
+	private void addText(String text, SimpleAttributeSet style){
+		text = text + System.getProperty("line.separator");
+		
+		StyledDocument doc = textPane.getStyledDocument();
+		
+		try { doc.insertString(doc.getLength(), text, style); }
+        catch (BadLocationException e){}
+		
+		frame.pack();
+		
+	}
+	
+	public void setGraph(BayesNet net){
+		this.graph = net.getGraph();
 	}
 	
 	public void displayGraph(int graphType){
