@@ -2,6 +2,8 @@ package bayesGame;
 
 import java.io.IOException;
 
+import bayesGame.ui.DefaultInterfaceView;
+
 /**
  * 
  * @author Kaj Sotala

@@ -1,4 +1,4 @@
-package bayesGame;
+package bayesGame.ui;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -6,10 +6,13 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 
 /**
  * @author Kaj Sotala
@@ -20,7 +23,8 @@ import javax.swing.JLabel;
 public class DefaultInterfaceView {
 
 	private JFrame frame;
-	private JLabel environmentImage;
+	private JPanel graphPanel;
+	private JPanel infoPanel;
 	private JLabel textField;
 	
 	
@@ -44,26 +48,32 @@ public class DefaultInterfaceView {
 		pane.setLayout(new GridBagLayout());
 	    
 		c = new GridBagConstraints();
-	    
-	    BufferedImage myPicture = ImageIO.read(new File("Images/Castle.png"));
-	    JLabel pictureLabel = new JLabel(new ImageIcon(myPicture));
+		
+	    graphPanel = new JPanel();
+	    graphPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
 	    c.gridx = 0;
-	    c.gridy = 0;
-	    c.weightx = 1;
-	    c.weighty = 1;
-	    c.fill = GridBagConstraints.NONE;
-	    pane.add(pictureLabel, c);
-	    
-	    c = new GridBagConstraints();
-	    button = new JButton("Button 2");
-	    c.gridx = 1;
 	    c.gridy = 0;
 	    c.weightx = 1;
 	    c.weighty = 1;
 	    c.ipady = 300;
 	    c.ipadx = 300;
 	    c.fill = GridBagConstraints.BOTH;
-	    pane.add(button, c);
+	    pane.add(graphPanel, c);
+	    
+	    c = new GridBagConstraints();
+	    
+	    infoPanel = new JPanel();
+	    infoPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+	    
+	    c.gridx = 1;
+	    c.gridy = 0;
+	    c.weightx = 1;
+	    c.weighty = 1;
+	    c.ipady = 100;
+	    c.ipadx = 100;
+	    c.fill = GridBagConstraints.BOTH;
+	    pane.add(infoPanel, c);
 	    
 	    c = new GridBagConstraints();
 	    button = new JButton("Button 3");
