@@ -173,6 +173,26 @@ public class BayesNetTest {
 		assertEquals("Child should have P = 0 when both parents have P = 0", 0.00d, probabilityOfChild.doubleValue(), 0.01);
 	}
 	
+	@Test
+	public final void deterministicOrMessagePassing(){
+		testNet.addNode("Mother");
+		testNet.setTrueValue("Mother", false);
+		testNet.observe("Mother");
+		testNet.addNode("Father");
+		testNet.addDeterministicOr("Child", new Object[]{"Mother", "Father"});
+		testNet.observe("Child", true);
+		testNet.updateBeliefs();
+		
+		Fraction probabilityOfChild = testNet.getProbability("Child");
+		Fraction probabilityOfMother = testNet.getProbability("Mother");
+		Fraction probabilityOfFather = testNet.getProbability("Father");
+		
+		assertEquals("Child should have P = 1 when manually set to 1", 1.00d, probabilityOfChild.doubleValue(), 0.01);
+		assertEquals("Mother should have P = 0 when manually set to 0", 0.00d, probabilityOfMother.doubleValue(), 0.01);
+		assertEquals("Father should have P = 1 when P(Child) = 1 & P(Mother) = 0", 1.00d, probabilityOfFather.doubleValue(), 0.01);
+	}
+	
+	
 	
 	
 	

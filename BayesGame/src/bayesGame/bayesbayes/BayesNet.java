@@ -205,6 +205,11 @@ public class BayesNet {
 		return node.getProbability();
 	}
 	
+	public void observe(Object object){
+		BayesNode node = getNode(object);
+		node.observe();
+	}
+	
 	public void observe(Object object, boolean value){
 		BayesNode node = getNode(object);
 		node.observe(value);
@@ -213,6 +218,15 @@ public class BayesNet {
 	public boolean setProbabilityOfUntrue(Object object, Fraction probability, Object... variables){
 		BayesNode node = getNode(object);
 		return node.setProbabilityOfUntrueVariables(probability, variables);
+	}
+	
+	public boolean setTrueValue(Object object, boolean value){
+		BayesNode node = getNodeIffPresent(object);
+		if (node == null){
+			return false;
+		}
+		node.setTrueValue(value);
+		return true;
 	}
 	
 	public void resetNetworkBeliefs(){

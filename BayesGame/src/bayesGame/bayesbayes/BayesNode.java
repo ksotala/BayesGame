@@ -121,6 +121,10 @@ public class BayesNode {
 		return stride;
 	}
 	
+	public void setTrueValue(boolean value){
+		trueValue = value;
+	}
+	
 	/**
 	 * Resets the node's potential to the initial CPT, clearing any changes from messages
 	 * and setting the node as unobserved. To reset the node's potential while maintaining
