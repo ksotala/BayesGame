@@ -578,7 +578,9 @@ public class BayesNode {
 		return type.hashCode();
 	}
 	
-	
+	public String toString(){
+		return type.toString();
+	}
 
 	
 	

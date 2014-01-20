@@ -2,6 +2,7 @@ package bayesGame;
 
 import java.io.IOException;
 
+import bayesGame.bayesbayes.BayesNet;
 import bayesGame.ui.DefaultInterfaceView;
 
 /**
@@ -26,8 +27,15 @@ public class BayesGame {
 		
 		DefaultInterfaceView defaultInterface = new DefaultInterfaceView();
 		
+		BayesNet net = new BayesNet();
+		net.addNode("Mother");
+		net.addNode("Father");
+		net.addNode("Brother", new Object[]{"Brother", "Mother", "Father"});
+		System.out.println(net.connectNodes("Mother", "Brother"));
+		System.out.println(net.connectNodes("Father", "Brother"));
 		
-		
+		defaultInterface.setGraph(net.getGraph());
+		defaultInterface.displayGraph(DefaultInterfaceView.graphTypeBayesGraph);
 	}
 	
 

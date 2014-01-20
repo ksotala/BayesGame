@@ -59,6 +59,10 @@ public class BayesNet {
 		return newNode;
 	}
 		
+	public DirectedSparseGraph<BayesNode, Pair<Integer,Integer>> getGraph(){
+		return graph;
+	}
+	
 	public boolean isPresent(Object o){
 		for (BayesNode existingNode : nodes){
 			if (existingNode.type.equals(o)){
