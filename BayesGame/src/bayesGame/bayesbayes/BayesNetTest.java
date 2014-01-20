@@ -96,5 +96,85 @@ public class BayesNetTest {
 		
 	}
 	
+	@Test
+	public final void addDeterministicOrIsParentPresentNegativeTest(){
+		assertFalse("Should return false when asked to create OR-node with non-existent parents", testNet.addDeterministicOr("Boo", "Goo"));
+	}
+	
+	@Test
+	public final void addDeterministicOrIsParentPresentPositiveTest(){
+		testNet.addNode("Goo");
+		assertTrue("Should return true when asked to create OR-node with a existing parent", testNet.addDeterministicOr("Boo", "Goo"));
+	}
+	
+	@Test
+	public final void addDeterministicOrZeroParents(){
+		assertFalse("Should return false when asked to create OR-node with no parents specified", testNet.addDeterministicOr("Boo"));
+	}
+	
+	@Test
+	public final void addDeterministicOrIsPresentNegativeTest(){
+		testNet.addNode("Boo");
+		testNet.addNode("Goo");
+		assertFalse("Should return false when asked to create OR-node when a node of same name already exists", testNet.addDeterministicOr("Boo", "Goo"));
+	}
+	
+	@Test
+	public final void addDeterministicOrOneParentTrue(){
+		testNet.addNode("Mother");
+		testNet.setProbabilityOfUntrue("Mother", Fraction.ONE);
+		testNet.setProbabilityOfUntrue("Mother", Fraction.ZERO, "Mother");
+		
+		testNet.addNode("Father");
+		testNet.setProbabilityOfUntrue("Father", Fraction.ZERO);
+		testNet.setProbabilityOfUntrue("Father", Fraction.ONE, "Father");
+		
+		testNet.addDeterministicOr("Child", new Object[]{"Mother", "Father"});
+		testNet.updateBeliefs();
+		
+		Fraction probabilityOfChild = testNet.getProbability("Child");
+		
+		assertEquals("Child should have P = 1 when a parent has P = 1", 1.00d, probabilityOfChild.doubleValue(), 0.01);
+	}
+	
+	@Test
+	public final void addDeterministicOrTwoParentsTrue(){
+		testNet.addNode("Mother");
+		testNet.setProbabilityOfUntrue("Mother", Fraction.ONE);
+		testNet.setProbabilityOfUntrue("Mother", Fraction.ZERO, "Mother");
+		
+		testNet.addNode("Father");
+		testNet.setProbabilityOfUntrue("Father", Fraction.ONE);
+		testNet.setProbabilityOfUntrue("Father", Fraction.ZERO, "Father");
+		
+		testNet.addDeterministicOr("Child", new Object[]{"Mother", "Father"});
+		testNet.updateBeliefs();
+		
+		Fraction probabilityOfChild = testNet.getProbability("Child");
+		
+		assertEquals("Child should have P = 1 when both parents have P = 1", 1.00d, probabilityOfChild.doubleValue(), 0.01);
+	}
+	
+	@Test
+	public final void addDeterministicOrTwoParentsFalse(){
+		testNet.addNode("Mother");
+		testNet.setProbabilityOfUntrue("Mother", Fraction.ZERO);
+		testNet.setProbabilityOfUntrue("Mother", Fraction.ONE, "Mother");
+		
+		testNet.addNode("Father");
+		testNet.setProbabilityOfUntrue("Father", Fraction.ZERO);
+		testNet.setProbabilityOfUntrue("Father", Fraction.ONE, "Father");
+		
+		testNet.addDeterministicOr("Child", new Object[]{"Mother", "Father"});
+		testNet.updateBeliefs();
+		
+		Fraction probabilityOfChild = testNet.getProbability("Child");
+		
+		assertEquals("Child should have P = 0 when both parents have P = 0", 0.00d, probabilityOfChild.doubleValue(), 0.01);
+	}
+	
+	
+	
+	
 
 }

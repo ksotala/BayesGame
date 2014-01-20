@@ -153,6 +153,8 @@ public class BayesNode {
 	}
 	
 	public boolean setProbabilityOfUntrueVariables(Fraction probability, Object... variables){
+		probability = new Fraction(probability.getNumerator(), probability.getDenominator());
+		
 		if (!checkCPTInputForValidity(variables)){
 			return false;
 		}
