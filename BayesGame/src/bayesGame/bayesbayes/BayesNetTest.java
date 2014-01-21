@@ -2,6 +2,12 @@ package bayesGame.bayesbayes;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.math3.fraction.Fraction;
 import org.junit.Before;
 import org.junit.Test;
@@ -190,6 +196,45 @@ public class BayesNetTest {
 		assertEquals("Child should have P = 1 when manually set to 1", 1.00d, probabilityOfChild.doubleValue(), 0.01);
 		assertEquals("Mother should have P = 0 when manually set to 0", 0.00d, probabilityOfMother.doubleValue(), 0.01);
 		assertEquals("Father should have P = 1 when P(Child) = 1 & P(Mother) = 0", 1.00d, probabilityOfFather.doubleValue(), 0.01);
+	}
+	
+	@Test
+	public void getNonZeroProbabilitiesUsingDeterministicOr(){
+		testNet.addNode("Mother");
+		testNet.addNode("Father");
+		testNet.addDeterministicOr("Brother", "Mother", "Father");
+		
+		ArrayList<Map> mappingsList = testNet.getNonZeroProbabilities("Brother");
+		Set<Map> mappingsSet = new HashSet<Map>(mappingsList);
+		
+		Set<Map> comparisonSet = new HashSet<Map>();
+		
+		Map<Object,Boolean> fromMom = new HashMap<Object, Boolean>();
+		fromMom.put("Mother", true);
+		fromMom.put("Father", false);
+		fromMom.put("Brother", true);
+		
+		Map<Object,Boolean> fromDad = new HashMap<Object, Boolean>();
+		fromDad.put("Mother", false);
+		fromDad.put("Father", true);
+		fromDad.put("Brother", true);
+		
+		Map<Object,Boolean> fromBoth = new HashMap<Object, Boolean>();
+		fromBoth.put("Mother", true);
+		fromBoth.put("Father", true);
+		fromBoth.put("Brother", true);
+		
+		Map<Object,Boolean> fromNeither = new HashMap<Object, Boolean>();
+		fromNeither.put("Mother", false);
+		fromNeither.put("Father", false);
+		fromNeither.put("Brother", false);
+		
+		comparisonSet.add(fromMom);
+		comparisonSet.add(fromDad);
+		comparisonSet.add(fromBoth);
+		comparisonSet.add(fromNeither);
+		
+		assertEquals("These two sets be equal", comparisonSet, mappingsSet);
 	}
 	
 	

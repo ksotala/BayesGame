@@ -82,12 +82,12 @@ public class BayesNode {
 		}
 		
 		if (cpt != null){
-			this.cpt = cpt;
+			this.cpt = copyFraction(cpt);
 		} else {
 			this.cpt = createRawFractionArray(scope);
 		}
 		
-		this.potential = this.cpt.clone();
+		this.potential = copyFraction(this.cpt);
 	}
 	
 	protected void updateProbability(){
@@ -99,7 +99,30 @@ public class BayesNode {
 		if (probability == null){
 			updateProbability();
 		}
-		return probability;
+		return copyFraction(probability);
+	}
+	
+	protected ArrayList<Map> getNonZeroProbabilities(){
+		indexChooser chooser = new indexChooser();
+		ArrayList<Map> truthValues = new ArrayList<Map>();
+		
+		// map<object,boolean> items = the truth values of single items in a p > 0 row
+		// list of maps = the whole thing
+		
+		for (int i = 0; i < potential.length; i++){
+			Fraction f = potential[i];
+			if (f.doubleValue() > 0.00d){
+				ArrayList<Boolean> valuesAtIndex = chooser.getTruthValues(i);
+				Map<Object,Boolean> row = new HashMap<Object,Boolean>(valuesAtIndex.size());
+				for (int j = 0; j < valuesAtIndex.size(); j++){
+					Object o = scope[j];
+					row.put(o, valuesAtIndex.get(j));
+				}
+				truthValues.add(row);
+			}
+		}
+		
+		return truthValues;
 	}
 	
 	private Fraction[] createRawFractionArray(Object[] scope){
@@ -157,7 +180,7 @@ public class BayesNode {
 	}
 	
 	public boolean setProbabilityOfUntrueVariables(Fraction probability, Object... variables){
-		probability = new Fraction(probability.getNumerator(), probability.getDenominator());
+		probability = copyFraction(probability);
 		
 		if (!checkCPTInputForValidity(variables)){
 			return false;
@@ -171,9 +194,9 @@ public class BayesNode {
 		selfChecker.requestUntrue(variables);
 		int index = selfChecker.getIndex();
 		cpt[index] = probability;
-		potential[index] = probability;
+		potential[index] = copyFraction(probability);
 		
-		probability = null;
+		this.probability = null;
 		
 		return true;
 	}
@@ -237,7 +260,7 @@ public class BayesNode {
 	
 	public Fraction[] getPotential(){
 		
-		return potential;	
+		return copyFraction(potential);	
 	}
 	
 	private Fraction copyFraction(Fraction f){
@@ -436,7 +459,28 @@ public class BayesNode {
 		return newPotential;
 	}
 	
+	
 
+	public boolean equals(Object other){
+		
+		boolean result = false;
+		
+		if (other instanceof BayesNode){
+			BayesNode theOther = (BayesNode)other;
+			result = (this.type.equals(theOther.type));
+		}
+		
+		return result;
+	}
+	
+	public int hashCode(){
+		
+		return type.hashCode();
+	}
+	
+	public String toString(){
+		return type.toString();
+	}
 	
 	
 	
@@ -551,7 +595,7 @@ public class BayesNode {
 			return indexes;
 		}
 			
-		private ArrayList<Boolean> getTruthValues(int location){
+		public ArrayList<Boolean> getTruthValues(int location){
 			
 			ArrayList<Boolean> values = new ArrayList<Boolean>();
 			
@@ -571,36 +615,7 @@ public class BayesNode {
 			} else {
 				return false;
 			}	
-		}
-		
+		}	
 	}
-	
-	
-
-	
-
-	
-	public boolean equals(Object other){
-		
-		boolean result = false;
-		
-		if (other instanceof BayesNode){
-			BayesNode theOther = (BayesNode)other;
-			result = (this.type.equals(theOther.type));
-		}
-		
-		return result;
-	}
-	
-	public int hashCode(){
-		
-		return type.hashCode();
-	}
-	
-	public String toString(){
-		return type.toString();
-	}
-
-	
 	
 }

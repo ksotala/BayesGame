@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Stack;
 
 import org.apache.commons.math3.fraction.Fraction;
@@ -203,6 +204,14 @@ public class BayesNet {
 			throw new IllegalArgumentException("Requested object not found in the graph");
 		}
 		return node.getProbability();
+	}
+	
+	public ArrayList<Map> getNonZeroProbabilities(Object object){
+		BayesNode node = getNodeIffPresent(object);
+		if (node == null){
+			throw new IllegalArgumentException("Requested object not found in the graph");
+		}
+		return node.getNonZeroProbabilities();
 	}
 	
 	public void observe(Object object){
