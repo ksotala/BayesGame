@@ -240,6 +240,19 @@ public class BayesNode {
 		return potential;	
 	}
 	
+	private Fraction copyFraction(Fraction f){
+		Fraction newFraction = new Fraction(f.getNumerator(), f.getDenominator());
+		return newFraction;
+	}
+	
+	private Fraction[] copyFraction(Fraction[] f){
+		Fraction[] newFraction = new Fraction[f.length];
+		for (int i = 0; i < newFraction.length ; i++){
+			newFraction[i] = copyFraction(f[i]);
+		}
+		return newFraction;
+	}
+	
 	public Fraction[] getMarginalPotential(Object o){
 		Object[] targetScope = {o};
 		HashMap<Object,Integer> targetStride = this.createStridesFromScope(targetScope);
