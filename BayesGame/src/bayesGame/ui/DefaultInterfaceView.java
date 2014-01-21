@@ -2,12 +2,20 @@ package bayesGame.ui;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
@@ -38,6 +46,9 @@ public class DefaultInterfaceView {
 	private JPanel graphPanel;
 	private JPanel infoPanel;
 	private JTextPane textPane;
+	private JScrollPane scroll;
+	
+	private Map<Map<Object, Boolean>,JLabel> visualizations;
 	
 	private AbstractGraph graph;
 	
@@ -90,8 +101,13 @@ public class DefaultInterfaceView {
 	    pane.add(infoPanel, c);
 	    
 	    c = new GridBagConstraints();
+	    
 	    textPane = new JTextPane();
 	    textPane.setEditable(false);
+	    textPane.setPreferredSize(new Dimension(400,200));
+	    
+	    scroll = new JScrollPane (textPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	    frame.add(scroll);
 	    
 	    c.gridx = 0;
 	    c.gridy = 1;
@@ -108,6 +124,66 @@ public class DefaultInterfaceView {
 		
 		frame.setVisible(visible);
 		
+	}
+	
+	public void addVisualization(Map<Object,Boolean> item){
+		if (visualizations == null){
+			visualizations = new HashMap<Map<Object,Boolean>,JLabel>();
+			setupVisualizationPane();
+		}
+		addVisualizationToPane(item, true);
+	}
+	
+	public boolean setVisualizationTruth(Map<Object,Boolean> item, boolean truth){
+		if (!visualizations.containsKey(item)){
+			return false;
+		}
+		addVisualizationToPane(item, truth);
+		return true;
+	}
+	
+	private void addVisualizationToPane(Map<Object,Boolean> item, boolean itemTruth){
+		JLabel visualization;
+		boolean editingOldVisualization = visualizations.containsKey(item);
+		
+		if (editingOldVisualization){
+			visualization = visualizations.get(item);
+		} else {
+			visualization = new JLabel();
+		}
+		
+		Set<Entry<Object,Boolean>> entrySet = item.entrySet();
+		String html = "<html>";
+		if (!itemTruth){
+			html = html + "<strike><font color=black>";
+		}
+		for (Entry<Object,Boolean> e : entrySet){
+			Boolean truth = e.getValue();
+			String objectString = e.getKey().toString();
+			char objectChar = objectString.charAt(0);
+			if (truth && itemTruth){
+				html = html + "<font color=green>" + objectChar + " </font>";
+			} else if (!truth && itemTruth) {
+				html = html + "<font color=red>" + objectChar + " </font>";
+			} else if (!itemTruth){
+				html = html + objectChar + " ";
+			}
+		}
+		if (!itemTruth){
+			html = html + "</strike>";
+		}
+		html = html + "</html>";
+		visualization.setText(html);
+		visualization.setAlignmentX(Component.CENTER_ALIGNMENT);
+		visualization.setFont(new Font("Serif", Font.BOLD, 32));
+		
+		if (!editingOldVisualization){
+			
+			infoPanel.add(visualization);
+		}
+		
+		infoPanel.add(Box.createVerticalGlue());
+		visualizations.put(item, visualization);
 	}
 	
 	public void addText(String text){
@@ -132,6 +208,22 @@ public class DefaultInterfaceView {
         catch (BadLocationException e){}
 		
 		frame.pack();
+		
+		textPane.setCaretPosition(textPane.getDocument().getLength());
+		scroll.revalidate();
+		
+		
+	}
+	
+	public void clearInfoPanel(){
+		infoPanel.removeAll();
+		visualizations = new HashMap<Map<Object,Boolean>,JLabel>();
+	}
+	
+	private void setupVisualizationPane(){
+		infoPanel.removeAll();
+		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
+		infoPanel.add(Box.createVerticalGlue());
 		
 	}
 	

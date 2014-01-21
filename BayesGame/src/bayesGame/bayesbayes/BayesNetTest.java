@@ -237,6 +237,46 @@ public class BayesNetTest {
 		assertEquals("These two sets be equal", comparisonSet, mappingsSet);
 	}
 	
+	@Test
+	public void getNonZeroProbabilitiesFromUniformProbabilityObject(){
+		testNet.addNode("Object");
+		
+		ArrayList<Map> mappingsList = testNet.getNonZeroProbabilities("Object");
+		Set<Map> mappingsSet = new HashSet<Map>(mappingsList);
+		
+		Set<Map> comparisonSet = new HashSet<Map>();
+		
+		Map<Object,Boolean> yesObject = new HashMap<Object,Boolean>();
+		yesObject.put("Object", true);
+		
+		Map<Object,Boolean> noObject = new HashMap<Object,Boolean>();
+		noObject.put("Object", false);
+		
+		comparisonSet.add(yesObject);
+		comparisonSet.add(noObject);
+		
+		assertEquals("These two sets be equal", comparisonSet, mappingsSet);		
+	}
+	
+	@Test
+	public void getNonZeroProbabilitiesAfterObservation(){
+		testNet.addNode("Object");
+		testNet.observe("Object", true);
+		
+		ArrayList<Map> mappingsList = testNet.getNonZeroProbabilities("Object");
+		Set<Map> mappingsSet = new HashSet<Map>(mappingsList);
+		
+		Set<Map> comparisonSet = new HashSet<Map>();
+		
+		Map<Object,Boolean> yesObject = new HashMap<Object,Boolean>();
+		yesObject.put("Object", true);
+		
+		comparisonSet.add(yesObject);
+		
+		assertEquals("These two sets be equal", comparisonSet, mappingsSet);		
+	}
+	
+	
 	
 	
 	
