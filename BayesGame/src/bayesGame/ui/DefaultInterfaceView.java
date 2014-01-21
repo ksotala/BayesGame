@@ -180,10 +180,12 @@ public class DefaultInterfaceView {
 		if (!editingOldVisualization){
 			
 			infoPanel.add(visualization);
+			infoPanel.add(Box.createVerticalGlue());
 		}
 		
-		infoPanel.add(Box.createVerticalGlue());
+		
 		visualizations.put(item, visualization);
+		frame.revalidate();
 	}
 	
 	public void addText(String text){

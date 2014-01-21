@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Box;
+
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.ui.DefaultInterfaceView;
 
@@ -78,7 +80,8 @@ public class BayesGame {
 		defaultInterface.addTutorialText("You may click on any of the three people in the display on the upper left to talk with them and find out what they know.");
 		defaultInterface.addTutorialText("The display on the upper right shows different possibilities for who might know what; whenever you find out something that eliminates one or more possibilities, it will be marked as eliminated.");
 		defaultInterface.addTutorialText("Try to eliminate all the incorrect possibilities in as few clicks as possible!");
-		
+
+		defaultInterface.setVisualizationTruth(fromBoth, false);
 		defaultInterface.setVisualizationTruth(fromNeither, false);
 	}
 	
