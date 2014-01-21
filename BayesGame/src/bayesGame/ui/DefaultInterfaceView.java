@@ -1,6 +1,7 @@
 package bayesGame.ui;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,7 +55,7 @@ public class DefaultInterfaceView {
 	
 	public static final int graphTypeBayesGraph = 0;
 	
-	public DefaultInterfaceView() throws IOException {
+	public DefaultInterfaceView() {
 		
 		frame = new JFrame("Academy Game");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,7 +67,7 @@ public class DefaultInterfaceView {
 				
 	}
 	
-	private void addComponentsToPane(Container pane) throws IOException {
+	private void addComponentsToPane(Container pane) {
 		
 		GridBagConstraints c;
 		
@@ -105,6 +106,7 @@ public class DefaultInterfaceView {
 	    textPane = new JTextPane();
 	    textPane.setEditable(false);
 	    textPane.setPreferredSize(new Dimension(400,200));
+	    textPane.putClientProperty("IgnoreCharsetDirective", Boolean.TRUE);
 	    
 	    scroll = new JScrollPane (textPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	    frame.add(scroll);
@@ -160,7 +162,13 @@ public class DefaultInterfaceView {
 		for (Entry<Object,Boolean> e : entrySet){
 			Boolean truth = e.getValue();
 			String objectString = e.getKey().toString();
-			char objectChar = objectString.charAt(0);
+			char objectChar;
+			if (truth){
+				objectChar = objectString.toUpperCase().charAt(0);
+			} else {
+				objectChar = objectString.toLowerCase().charAt(0);
+			}
+			
 			if (truth && itemTruth){
 				html = html + "<font color=green>" + objectChar + " </font>";
 			} else if (!truth && itemTruth) {
@@ -188,15 +196,49 @@ public class DefaultInterfaceView {
 		frame.revalidate();
 	}
 	
+	public void highlightVisualization(Map<Object,Boolean> item, boolean highlight){
+		if (visualizations.containsKey(item)){
+			JLabel label = visualizations.get(item);
+			label.setBackground(Color.WHITE);
+			label.setOpaque(highlight);
+		}
+	}
+	
+	public void clearVisualizationHighlights(){
+		Set<Entry<Map<Object, Boolean>, JLabel>> set = visualizations.entrySet();
+		for (Entry<Map<Object,Boolean>, JLabel> e : set){
+			JLabel label = e.getValue();
+			label.setOpaque(false);
+		}
+	}
+	
+	public void switchVisualizationHightlight(Map<Object,Boolean> item){
+		clearVisualizationHighlights();
+		highlightVisualization(item, true);
+	}
+	
 	public void addText(String text){
 		SimpleAttributeSet style = new SimpleAttributeSet();
 		StyleConstants.setFontSize(style, 16);
 		addText(text, style); 
 	}
 	
+	public void addTextMore(String text){
+		addText(text);
+		SimpleAttributeSet style = new SimpleAttributeSet();
+		StyleConstants.setFontSize(style, 12);
+		addText("");
+		addText("(more)", style);
+	}
+	
+	public void addTextMoreClear(String text){
+		clearText();
+		addTextMore(text);
+	}
+	
 	public void addTutorialText(String text){
 		SimpleAttributeSet style = new SimpleAttributeSet();
-		StyleConstants.setFontSize(style, 18);
+		StyleConstants.setFontSize(style, 16);
 		StyleConstants.setBold(style, true);
 		addText(text, style);
 	}
@@ -215,6 +257,16 @@ public class DefaultInterfaceView {
 		scroll.revalidate();
 		
 		
+	}
+	
+	public void clearText(){
+		textPane.setText("");
+	}
+	
+	public void addKeyListener(KeyAdapter k){
+		graphPanel.addKeyListener(k);
+		infoPanel.addKeyListener(k);
+		textPane.addKeyListener(k);
 	}
 	
 	public void clearInfoPanel(){
