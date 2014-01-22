@@ -129,11 +129,15 @@ public class DefaultInterfaceView {
 	}
 	
 	public void addVisualization(Map<Object,Boolean> item){
+		addVisualization(item, true);
+	}
+	
+	public void addVisualization(Map<Object,Boolean> item, boolean truth){
 		if (visualizations == null){
 			visualizations = new HashMap<Map<Object,Boolean>,JLabel>();
 			setupVisualizationPane();
 		}
-		addVisualizationToPane(item, true);
+		addVisualizationToPane(item, truth);
 	}
 	
 	public boolean setVisualizationTruth(Map<Object,Boolean> item, boolean truth){
@@ -212,7 +216,7 @@ public class DefaultInterfaceView {
 		}
 	}
 	
-	public void switchVisualizationHightlight(Map<Object,Boolean> item){
+	public void switchVisualizationHighlight(Map<Object,Boolean> item){
 		clearVisualizationHighlights();
 		highlightVisualization(item, true);
 	}
@@ -225,6 +229,15 @@ public class DefaultInterfaceView {
 	
 	public void addTextMore(String text){
 		addText(text);
+		addMore();
+	}
+	
+	public void addTextClear(String text){
+		clearText();
+		addText(text);
+	}
+	
+	public void addMore(){
 		SimpleAttributeSet style = new SimpleAttributeSet();
 		StyleConstants.setFontSize(style, 12);
 		addText("");
@@ -241,6 +254,11 @@ public class DefaultInterfaceView {
 		StyleConstants.setFontSize(style, 16);
 		StyleConstants.setBold(style, true);
 		addText(text, style);
+	}
+	
+	public void addTutorialTextMore(String text){
+		addTutorialText(text);
+		
 	}
 	
 	private void addText(String text, SimpleAttributeSet style){
