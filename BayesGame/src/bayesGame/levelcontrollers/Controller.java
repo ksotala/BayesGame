@@ -9,7 +9,9 @@ public abstract class Controller {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public abstract void keyMessage(KeyEvent e);
-	public abstract void mouseMessage(MouseEvent e);
+	public abstract void keyMessage(Object o);
+	public abstract void mouseMessage(Object o);
+	public abstract void genericMessage();
+	public abstract void genericMessage(Object o);
 
 }

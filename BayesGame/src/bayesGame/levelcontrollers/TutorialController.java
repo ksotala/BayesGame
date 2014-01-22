@@ -6,9 +6,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
+import edu.uci.ics.jung.visualization.control.PluggableGraphMouse;
+import edu.uci.ics.jung.visualization.control.RotatingGraphMousePlugin;
+import edu.uci.ics.jung.visualization.control.ScalingGraphMousePlugin;
+import edu.uci.ics.jung.visualization.control.TranslatingGraphMousePlugin;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.ui.AnyKeyListener;
+import bayesGame.ui.AssumingMousePlugin;
 import bayesGame.ui.DefaultInterfaceView;
+import bayesGame.ui.TutorialMousePlugin;
 
 public class TutorialController extends Controller {
 	
@@ -16,7 +23,9 @@ public class TutorialController extends Controller {
 	int level = 0;
 	int part = 0;
 	int usedobservations = 0;
+	
 	BayesNet net;
+	
 	boolean awaitingkeypresses;
 	boolean awaitingmousemessage;
 
@@ -108,7 +117,7 @@ public class TutorialController extends Controller {
 			
 			UI.addVisualization(fromNeither);
 			UI.switchVisualizationHighlight(fromNeither);
-			UI.addTextClear("Celia: ...or maybe I misheard, and he was talking about something else entirely?");
+			UI.addTextClear("Celia: ...or maybe I misheard, and he was talking about something else entirely? Opin doesn't make up things, though: if he says he heard something, then he did.");
 			UI.addText("");
 			UI.addTutorialTextMore("And here nobody knows, so they are all in red / small letters. These are the only four possible worlds that the rule of 'brother knows if (and only if) at least one parent knows' allows!");
 			break;
@@ -127,8 +136,14 @@ public class TutorialController extends Controller {
 			UI.clearText();
 			UI.clearVisualizationHighlights();
 			UI.addTutorialText("You may left-click on any of the people in the above graph to assume that they know about the treasure. Left-click on the same person again to assume that they don't know. A third left-click clears the assumption. Try clicking on your brother once.");
-			// awaitingkeypresses = false;
-			// UI.addGraphMouseListener(new TutorialMouseListener(this, "Opin"));
+			
+			PluggableGraphMouse gm = new PluggableGraphMouse();
+			gm.add(new TutorialMousePlugin(this, "Opin"));
+			UI.addGraphMouse(gm);
+			
+			awaitingkeypresses = false;
+			awaitingmousemessage = true;
+			
 			break;
 		case 10:
 			UI.clearText();
@@ -143,7 +158,6 @@ public class TutorialController extends Controller {
 			UI.clearText();
 			net.assume("Opin", false);
 			ArrayList<Map<Object,Boolean>> moreNewPossibilities = net.getNonZeroProbabilities("Opin");
-			System.out.println(moreNewPossibilities);
 			UI.updateVisualizations(moreNewPossibilities);
 			UI.addTutorialText("And now you are assuming that your brother doesn't know. This assumption is very much compatible with the world we eliminated previously, so it becomes a possible world again, but the three other worlds now become impossible.");
 			UI.addText("");
@@ -157,24 +171,41 @@ public class TutorialController extends Controller {
 			UI.addTutorialText("Now we're back to where we started from. You can now play around with the map, left-clicking the various people involved to test what it'd look like if you assumed specific things. You can assume things about more than one person at a time.");
 			UI.addText("");
 			UI.addTutorialText("When you are done, you can right-click on anyone to talk to them and find out what they *actually* know. When you've eliminated all but one of the possible worlds, you've found the true one. Try to find it in as few right-clicks as possible!");
-			// UI.removeGraphMouseListeners;
-			// UI.addGraphMouseListener(new AssumingObservingMouseListener(this));
+			awaitingmousemessage = false;
+			
+			UI.clearMouseListeners();
+			
+			PluggableGraphMouse pgm = new PluggableGraphMouse();
+			pgm.add(new AssumingMousePlugin(this));
+			UI.addGraphMouse(pgm);			
 		}
 		part++;
 	}
 	
 	@Override
-	public void keyMessage(KeyEvent e){
+	public void keyMessage(Object o){
 		if (awaitingkeypresses){
 			advanceTutorial();
 		}
 	}
 	
 	@Override
-	public void mouseMessage(MouseEvent e){
+	public void mouseMessage(Object o){
 		if (awaitingmousemessage){
 			advanceTutorial();
 		}
+	}
+
+	@Override
+	public void genericMessage() {
+		ArrayList<Map<Object,Boolean>> newPossibilities = net.getNonZeroProbabilities("Opin");
+		System.out.println(newPossibilities);
+		UI.updateVisualizations(newPossibilities);
+	}
+	
+	@Override
+	public void genericMessage(Object o){
+		
 	}
 
 }

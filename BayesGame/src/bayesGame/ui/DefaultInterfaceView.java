@@ -2,6 +2,7 @@ package bayesGame.ui;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.AbstractGraph;
 import edu.uci.ics.jung.visualization.Layer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.PluggableGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 
 /**
@@ -50,8 +52,8 @@ public class DefaultInterfaceView {
 	private JTextPane textPane;
 	private JScrollPane scroll;
 	
+	private VisualizationViewer<BayesNode, Pair<Integer,Integer>> vv;
 	private Map<Map<Object, Boolean>,JLabel> visualizations;
-	
 	private AbstractGraph graph;
 	
 	public static final int graphTypeBayesGraph = 0;
@@ -313,6 +315,17 @@ public class DefaultInterfaceView {
 		textPane.addKeyListener(k);
 	}
 	
+	public void addGraphMouse(PluggableGraphMouse gm){
+		vv.addMouseListener(gm);
+	}
+	
+	public void clearMouseListeners(){
+		MouseListener[] listeners = vv.getMouseListeners();
+		for (MouseListener m : listeners){
+			vv.removeMouseListener(m);
+		}
+	}
+	
 	public void clearInfoPanel(){
 		infoPanel.removeAll();
 		visualizations = new HashMap<Map<Object,Boolean>,JLabel>();
@@ -342,14 +355,19 @@ public class DefaultInterfaceView {
 		Layout<BayesNode, Pair<Integer,Integer>> layout = new DAGLayout<BayesNode, Pair<Integer, Integer>>(graph);
         layout.setSize(new Dimension(400,400));
         
-        VisualizationViewer<BayesNode, Pair<Integer,Integer>> vv = new VisualizationViewer<BayesNode, Pair<Integer,Integer>>(layout);
+        vv = new VisualizationViewer<BayesNode, Pair<Integer,Integer>>(layout);
         
         Transformer<BayesNode,Paint> vertexPaint = new Transformer<BayesNode,Paint>() {
         	public Paint transform(BayesNode i) {
-        		if (i.isObserved()){
-        			return Color.BLUE;
-        		} else {
+        		Boolean assumed = i.assumedValue();
+        		if (assumed == null){
         			return Color.WHITE;
+        		} else {
+        			if (assumed){
+        				return Color.GREEN;
+        			} else {
+        				return Color.RED;
+        			}
         		}
         	}
         	}; 

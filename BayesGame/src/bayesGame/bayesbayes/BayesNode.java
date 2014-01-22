@@ -21,8 +21,8 @@ import org.apache.commons.math3.util.Pair;
 
 public class BayesNode {
 	
-	protected final Object type;
-	protected final Object[] scope;
+	public final Object type;
+	public final Object[] scope;
 	
 	protected HashMap<Object,Integer> strides = new HashMap<Object,Integer>();
 	
@@ -113,6 +113,7 @@ public class BayesNode {
 		for (int i = 0; i < potential.length; i++){
 			Fraction f = potential[i];
 			if (f.doubleValue() > 0.00d){
+				System.out.println(f.doubleValue());
 				ArrayList<Boolean> valuesAtIndex = chooser.getTruthValues(i);
 				Map<Object,Boolean> row = new HashMap<Object,Boolean>(valuesAtIndex.size());
 				for (int j = 0; j < valuesAtIndex.size(); j++){
@@ -165,7 +166,8 @@ public class BayesNode {
 	
 	/**
 	 * Resets the node's potential to the initial CPT, clearing any changes from messages.
-	 * If the node has been observed, it remains so, with corresponding effects to the CPT.
+	 * If the node has been observed or assumed, it remains so, with corresponding effects
+	 * to the CPT.
 	 * To reset the node's observation status as well, use resetNode instead.
 	 */
 	public void resetPotential(){
@@ -173,6 +175,8 @@ public class BayesNode {
 		potential = copyFraction(cpt);
 		if (observed){
 			observe();
+		} else if (assumedValue != null){
+			assumeValue(assumedValue);
 		}
 		probability = null;
 	}
@@ -299,6 +303,18 @@ public class BayesNode {
 			} else {
 				assumedValue = null;
 			}
+		}
+	}
+	
+	
+	public Boolean assumedValue(){
+		if (assumedValue == null){
+			return null;
+		}
+		if (assumedValue){
+			return Boolean.TRUE;
+		} else {
+			return Boolean.FALSE;
 		}
 	}
 	

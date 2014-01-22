@@ -16,13 +16,13 @@ public class BayesNet {
 
 	private int edgeCounter = 0;
 	private ArrayList<BayesNode> nodes;
-	private DirectedSparseGraph<BayesNode, Pair<Integer,Integer>> graph;
+	private NetGraph graph;
 	
 	private HashSet<BayesNode> visitedDownstreamNodes;
 	private Stack<Pair<BayesNode, BayesNode>> downstreamMessagePaths;
 	
 	public BayesNet() {
-		graph = new DirectedSparseGraph<BayesNode, Pair<Integer,Integer>>();
+		graph = new NetGraph(this);
 		nodes = new ArrayList<BayesNode>();
 	}
 	
@@ -225,12 +225,18 @@ public class BayesNet {
 	}
 	
 	public void assume(Object object, boolean value){
-		BayesNode node = getNode(object);
+		BayesNode node = getNodeIffPresent(object);
+		if (node == null){
+			throw new IllegalArgumentException("Requested object not found in the graph");
+		}
 		node.assumeValue(value);
 	}
 	
 	public void assume(Object object){
-		BayesNode node = getNode(object);
+		BayesNode node = getNodeIffPresent(object);
+		if (node == null){
+			throw new IllegalArgumentException("Requested object not found in the graph");
+		}
 		node.clearAssumedValue();
 	}
 	
