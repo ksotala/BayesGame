@@ -251,6 +251,42 @@ public class BayesNodeTest {
 		
 	}
 	
+	@Test
+	public void testAssumedValue(){
+		String type = "Badger Badger Badger Mushroom Mushroom";
+		BayesNode testNode = new BayesNode(type);
+		testNode.assumeValue(true);
+		
+		assertEquals("If we've assumed badger, we should get P = 1 for badger", Fraction.ONE, testNode.getProbability());
+		assertEquals("If we've asumed badger, we should get P = 0 for !badger", Fraction.ZERO, testNode.getNormalizedMarginalPotential(type)[1]);
+	}
+	
+	@Test
+	public void testObserveOverridesAssumed(){
+		String type = "Badger Badger Badger Mushroom Mushroom";
+		BayesNode testNode = new BayesNode(type);
+		testNode.assumeValue(true);
+		testNode.observe(false);
+		
+		assertEquals("If we've first assumed badger and then observed non-badger, we should get P = 0 for badger", Fraction.ZERO, testNode.getProbability());
+		assertEquals("If we've first assumed badger and then observed non-badger, we should get P = 1 for !badger", Fraction.ONE, testNode.getNormalizedMarginalPotential(type)[1]);
+	}
+	
+	@Test
+	public void testAssumeDoesNotAffectObserved(){
+		String type = "Badger Badger Badger Mushroom Mushroom";
+		BayesNode testNode = new BayesNode(type);
+		testNode.observe(false);
+		testNode.assumeValue(true);
+		
+		assertEquals("If we've first observed non-badger and then assumed badger, we should get P = 0 for badger", Fraction.ZERO, testNode.getProbability());
+		assertEquals("If we've first observed non-badger and then assumed badger, we should get P = 1 for !badger", Fraction.ONE, testNode.getNormalizedMarginalPotential(type)[1]);
+
+		
+	}
+	
+	
+	
 	
 
 }

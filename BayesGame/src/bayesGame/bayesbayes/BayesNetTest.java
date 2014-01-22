@@ -204,7 +204,7 @@ public class BayesNetTest {
 		testNet.addNode("Father");
 		testNet.addDeterministicOr("Brother", "Mother", "Father");
 		
-		ArrayList<Map> mappingsList = testNet.getNonZeroProbabilities("Brother");
+		ArrayList<Map<Object,Boolean>> mappingsList = testNet.getNonZeroProbabilities("Brother");
 		Set<Map> mappingsSet = new HashSet<Map>(mappingsList);
 		
 		Set<Map> comparisonSet = new HashSet<Map>();
@@ -241,7 +241,7 @@ public class BayesNetTest {
 	public void getNonZeroProbabilitiesFromUniformProbabilityObject(){
 		testNet.addNode("Object");
 		
-		ArrayList<Map> mappingsList = testNet.getNonZeroProbabilities("Object");
+		ArrayList<Map<Object,Boolean>> mappingsList = testNet.getNonZeroProbabilities("Object");
 		Set<Map> mappingsSet = new HashSet<Map>(mappingsList);
 		
 		Set<Map> comparisonSet = new HashSet<Map>();
@@ -263,7 +263,7 @@ public class BayesNetTest {
 		testNet.addNode("Object");
 		testNet.observe("Object", true);
 		
-		ArrayList<Map> mappingsList = testNet.getNonZeroProbabilities("Object");
+		ArrayList<Map<Object,Boolean>> mappingsList = testNet.getNonZeroProbabilities("Object");
 		Set<Map> mappingsSet = new HashSet<Map>(mappingsList);
 		
 		Set<Map> comparisonSet = new HashSet<Map>();

@@ -206,7 +206,7 @@ public class BayesNet {
 		return node.getProbability();
 	}
 	
-	public ArrayList<Map> getNonZeroProbabilities(Object object){
+	public ArrayList<Map<Object,Boolean>> getNonZeroProbabilities(Object object){
 		BayesNode node = getNodeIffPresent(object);
 		if (node == null){
 			throw new IllegalArgumentException("Requested object not found in the graph");
@@ -222,6 +222,16 @@ public class BayesNet {
 	public void observe(Object object, boolean value){
 		BayesNode node = getNode(object);
 		node.observe(value);
+	}
+	
+	public void assume(Object object, boolean value){
+		BayesNode node = getNode(object);
+		node.assumeValue(value);
+	}
+	
+	public void assume(Object object){
+		BayesNode node = getNode(object);
+		node.clearAssumedValue();
 	}
 	
 	public boolean setProbabilityOfUntrue(Object object, Fraction probability, Object... variables){

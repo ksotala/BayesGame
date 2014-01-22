@@ -3,6 +3,7 @@ package bayesGame.ui;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -198,6 +199,31 @@ public class DefaultInterfaceView {
 		
 		visualizations.put(item, visualization);
 		frame.revalidate();
+	}
+	
+	public void updateVisualizations(ArrayList<Map<Object,Boolean>> newVisualizations){
+		Set<Map<Object, Boolean>> oldVisualizations = new HashSet<Map<Object,Boolean>>(visualizations.keySet());
+		
+		Set<Map<Object, Boolean>> newItems = new HashSet<Map<Object,Boolean>>(newVisualizations);
+		newItems.removeAll(oldVisualizations);
+		
+		Set<Map<Object, Boolean>> oldImpossibleItems = new HashSet<Map<Object,Boolean>>(oldVisualizations);
+		oldImpossibleItems.removeAll(newVisualizations);
+		
+		oldVisualizations.removeAll(oldImpossibleItems);
+		
+		for (Map<Object, Boolean> m : newItems){
+			this.addVisualization(m);
+		}
+		
+		for (Map<Object, Boolean> m : oldImpossibleItems){
+			this.setVisualizationTruth(m, false);
+		}
+		
+		for (Map<Object, Boolean> m : oldVisualizations){
+			this.setVisualizationTruth(m, true);
+		}
+		
 	}
 	
 	public void highlightVisualization(Map<Object,Boolean> item, boolean highlight){

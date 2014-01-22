@@ -37,6 +37,7 @@ public class BayesNode {
 	private HashSet<Message> downstreamMessages = new HashSet<Message>();
 	
 	private boolean observed = false;
+	private Boolean assumedValue = null;
 	private Boolean trueValue = null;
 	
 	protected BayesNode(Object type){
@@ -102,9 +103,9 @@ public class BayesNode {
 		return copyFraction(probability);
 	}
 	
-	protected ArrayList<Map> getNonZeroProbabilities(){
+	protected ArrayList<Map<Object,Boolean>> getNonZeroProbabilities(){
 		indexChooser chooser = new indexChooser();
-		ArrayList<Map> truthValues = new ArrayList<Map>();
+		ArrayList<Map<Object,Boolean>> truthValues = new ArrayList<Map<Object,Boolean>>();
 		
 		// map<object,boolean> items = the truth values of single items in a p > 0 row
 		// list of maps = the whole thing
@@ -148,16 +149,18 @@ public class BayesNode {
 		trueValue = value;
 	}
 	
+	
 	/**
-	 * Resets the node's potential to the initial CPT, clearing any changes from messages
-	 * and setting the node as unobserved. To reset the node's potential while maintaining
-	 * its status as observed, use resetPotential instead.
+	 * Resets the node's potential to the initial CPT, clearing any changes from messages,
+	 * setting the node as unobserved, and clearing any assumed values. To reset the node's
+	 * potential while maintaining its status as observed, use resetPotential instead.
 	 */
 	public void resetNode(){
 		
 		observed = false;
-		potential = cpt.clone();
+		potential = copyFraction(cpt);
 		probability = null;
+		assumedValue = null;
 	}
 	
 	/**
@@ -167,7 +170,7 @@ public class BayesNode {
 	 */
 	public void resetPotential(){
 	
-		potential = cpt.clone();
+		potential = copyFraction(cpt);
 		if (observed){
 			observe();
 		}
@@ -224,6 +227,7 @@ public class BayesNode {
 	 */
 	public void observe(){
 		
+		resetNode();
 		observed = true;
 		
 		indexChooser selfChooser = new indexChooser();
@@ -256,6 +260,46 @@ public class BayesNode {
 	public void observe(boolean observation){
 		trueValue = observation;
 		observe();
+	}
+	
+	public boolean assumeValue(boolean value){
+		if (observed){
+			return false;
+		}
+		
+		if (assumedValue != null){
+			clearAssumedValue();
+		}
+		
+		assumedValue = value;
+		
+		indexChooser selfChooser = new indexChooser();
+		ArrayList<Integer> locationsToZero;
+		
+		if (value){
+			
+			locationsToZero = selfChooser.getAllIndexes(type, false);
+			
+		} else {
+			
+			locationsToZero = selfChooser.getAllIndexes(type, true);
+		}
+		
+		for (Integer i : locationsToZero){
+			potential[i] = Fraction.ZERO;
+		}	
+		
+		return true;
+	}
+	
+	public void clearAssumedValue(){
+		if (assumedValue != null){
+			if (!observed){
+				resetNode();
+			} else {
+				assumedValue = null;
+			}
+		}
 	}
 	
 	public Fraction[] getPotential(){

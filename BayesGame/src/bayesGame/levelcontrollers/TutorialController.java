@@ -16,6 +16,7 @@ public class TutorialController extends Controller {
 	int level = 0;
 	int part = 0;
 	int usedobservations = 0;
+	BayesNet net;
 	boolean awaitingkeypresses;
 	boolean awaitingmousemessage;
 
@@ -50,7 +51,7 @@ public class TutorialController extends Controller {
 			UI.addTextMoreClear("Celia: I asked Opin how he knew about the treasure, but he told me to figure it out myself.");
 			break;
 		case 3:
-			BayesNet net = new BayesNet();
+			net = new BayesNet();
 			net.addNode("Mom");
 			net.addNode("Dad");
 			net.addDeterministicOr("Opin", "Mom", "Dad");
@@ -61,7 +62,7 @@ public class TutorialController extends Controller {
 			UI.addTextClear("Celia: Well, I’d show him! He hadn’t been out of the house today, and he was too impatient to keep a secret for the whole night.");
 			UI.addText("So he must have heard it this morning, from either mom or dad.");
 			UI.addText("");
-			UI.addTutorialTextMore("Celia has figured out a rule: your brother knows about the treasure, if (and only if) at least one of your parents knows about it.");
+			UI.addTutorialTextMore("Celia has figured out a rule: your brother knows about the treasure, if (and only if) at least one of your parents knows about it. She knows this from Opin's impatient nature, and from the fact that mom and dad are the only ones he could have learned this from today.");
 			break;
 		case 4:
 			Map<Object,Boolean> fromMom = new HashMap<Object, Boolean>();
@@ -73,7 +74,7 @@ public class TutorialController extends Controller {
 			UI.highlightVisualization(fromMom, true);
 			UI.addTextClear("Celia: So. Maybe he heard it from mom, and dad didn't know anything...");
 			UI.addText("");
-			UI.addTutorialTextMore("The display on the right shows a possible world consistent with the rule: your mother knows (marked by the green color and large letter), and so does your brother. Your father does not know about it (marked with the red color and small letter).");
+			UI.addTutorialTextMore("The display on the right shows a possible world which the rule allows: your mother knows (marked by the green color and large letter), and so does your brother. Your father does not know about it (marked with the red color and small letter).");
 			break;
 		case 5:
 			Map<Object,Boolean> fromDad = new HashMap<Object, Boolean>();
@@ -85,7 +86,7 @@ public class TutorialController extends Controller {
 			UI.switchVisualizationHighlight(fromDad);
 			UI.addTextClear("Celia: ...or maybe he heard it from dad, and mom was innocent to this crime of not telling me...");
 			UI.addText("");
-			UI.addTutorialTextMore("Here's another possible world: your father knows and so does your brother, but your mother does not.");
+			UI.addTutorialTextMore("Here's another possible world allowed by the rule: your father knows and so does your brother, but your mother does not.");
 			break;
 		case 6:
 			Map<Object,Boolean> fromBoth = new HashMap<Object, Boolean>();
@@ -126,13 +127,13 @@ public class TutorialController extends Controller {
 			UI.clearText();
 			UI.clearVisualizationHighlights();
 			UI.addTutorialText("You may left-click on any of the people in the above graph to assume that they know about the treasure. Left-click on the same person again to assume that they don't know. A third left-click clears the assumption. Try clicking on your brother once.");
-			awaitingkeypresses = false;
-			UI.addGraphMouseListener(new TutorialMouseListener(this, "Opin"));
+			// awaitingkeypresses = false;
+			// UI.addGraphMouseListener(new TutorialMouseListener(this, "Opin"));
 			break;
 		case 10:
 			UI.clearText();
-			net.assumeTruthValue("Opin", true);
-			ArrayList<Map> newPossibilities = net.getNonZeroProbabilities("Opin");
+			net.assume("Opin", true);
+			ArrayList<Map<Object,Boolean>> newPossibilities = net.getNonZeroProbabilities("Opin");
 			UI.updateVisualizations(newPossibilities);
 			UI.addTutorialText("You are now assuming that your brother does know. Since him knowing isn't compatible with the world where he doesn't know, that world gets marked as an impossible one.");
 			UI.addText("");
@@ -140,8 +141,9 @@ public class TutorialController extends Controller {
 			break;
 		case 11:
 			UI.clearText();
-			net.assumeTruthValue("Opin", false);
-			ArrayList<Map> moreNewPossibilities = net.getNonZeroProbabilities("Opin");
+			net.assume("Opin", false);
+			ArrayList<Map<Object,Boolean>> moreNewPossibilities = net.getNonZeroProbabilities("Opin");
+			System.out.println(moreNewPossibilities);
 			UI.updateVisualizations(moreNewPossibilities);
 			UI.addTutorialText("And now you are assuming that your brother doesn't know. This assumption is very much compatible with the world we eliminated previously, so it becomes a possible world again, but the three other worlds now become impossible.");
 			UI.addText("");
@@ -149,14 +151,14 @@ public class TutorialController extends Controller {
 			break;
 		case 12:
 			UI.clearText();
-			net.assumeTruthValue("Opin");
-			ArrayList<Map> oldPossibilities = net.getNonZeroProbabilities("Opin");
+			net.assume("Opin");
+			ArrayList<Map<Object,Boolean>> oldPossibilities = net.getNonZeroProbabilities("Opin");
 			UI.updateVisualizations(oldPossibilities);
 			UI.addTutorialText("Now we're back to where we started from. You can now play around with the map, left-clicking the various people involved to test what it'd look like if you assumed specific things. You can assume things about more than one person at a time.");
 			UI.addText("");
 			UI.addTutorialText("When you are done, you can right-click on anyone to talk to them and find out what they *actually* know. When you've eliminated all but one of the possible worlds, you've found the true one. Try to find it in as few right-clicks as possible!");
-			UI.removeGraphMouseListeners;
-			UI.addGraphMouseListener(new AssumingObservingMouseListener(this));
+			// UI.removeGraphMouseListeners;
+			// UI.addGraphMouseListener(new AssumingObservingMouseListener(this));
 		}
 		part++;
 	}
