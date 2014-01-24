@@ -254,6 +254,12 @@ public class BayesNet {
 		return true;
 	}
 	
+	public void clearAssumptions(){
+		for (BayesNode node : nodes){
+			node.clearAssumedValue();
+		}
+	}
+	
 	public void resetNetworkBeliefs(){
 		for (BayesNode node : nodes){
 			node.resetPotential();

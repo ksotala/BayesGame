@@ -96,7 +96,7 @@ public class BayesNode {
 		probability = probabilities[0];
 	}
 	
-	protected Fraction getProbability(){
+	public Fraction getProbability(){
 		if (probability == null){
 			updateProbability();
 		}
@@ -113,7 +113,6 @@ public class BayesNode {
 		for (int i = 0; i < potential.length; i++){
 			Fraction f = potential[i];
 			if (f.doubleValue() > 0.00d){
-				System.out.println(f.doubleValue());
 				ArrayList<Boolean> valuesAtIndex = chooser.getTruthValues(i);
 				Map<Object,Boolean> row = new HashMap<Object,Boolean>(valuesAtIndex.size());
 				for (int j = 0; j < valuesAtIndex.size(); j++){

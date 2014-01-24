@@ -3,6 +3,8 @@ package bayesGame.ui;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -267,7 +270,7 @@ public class DefaultInterfaceView {
 	
 	public void addMore(){
 		SimpleAttributeSet style = new SimpleAttributeSet();
-		StyleConstants.setFontSize(style, 12);
+		StyleConstants.setFontSize(style, 16);
 		addText("");
 		addText("(more)", style);
 	}
@@ -286,7 +289,7 @@ public class DefaultInterfaceView {
 	
 	public void addTutorialTextMore(String text){
 		addTutorialText(text);
-		
+		addMore();
 	}
 	
 	private void addText(String text, SimpleAttributeSet style){
@@ -313,6 +316,11 @@ public class DefaultInterfaceView {
 		graphPanel.addKeyListener(k);
 		infoPanel.addKeyListener(k);
 		textPane.addKeyListener(k);
+		
+		frame.getRootPane().addKeyListener(k);
+		
+		// frame.getRootPane().getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "in_spaaace");
+		// frame.getRootPane().getActionMap().put("in_spaaace", k);
 	}
 	
 	public void addGraphMouse(PluggableGraphMouse gm){
@@ -360,6 +368,14 @@ public class DefaultInterfaceView {
         Transformer<BayesNode,Paint> vertexPaint = new Transformer<BayesNode,Paint>() {
         	public Paint transform(BayesNode i) {
         		Boolean assumed = i.assumedValue();
+        		if (i.isObserved()){
+        			if (i.getProbability().doubleValue() == 1.0d){
+        				return Color.GREEN;
+        			} else {
+        				return Color.RED;
+        			}
+        		}
+        		
         		if (assumed == null){
         			return Color.WHITE;
         		} else {
@@ -372,7 +388,18 @@ public class DefaultInterfaceView {
         	}
         	}; 
         	
+        Transformer<BayesNode,Shape> vertexShape = new Transformer<BayesNode,Shape>(){
+        	public Shape transform(BayesNode b){
+        		if (!b.isObserved()){
+        			return new Ellipse2D.Double(-16, -16, 32, 32);
+        		} else {
+        			return new RoundRectangle2D.Double(-16, -16, 32, 32, 16, 16);
+        		}
+        	}
+        };
+        	
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
+        vv.getRenderContext().setVertexShapeTransformer(vertexShape);
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller()); 
 
         vv.setPreferredSize(new Dimension(500,500)); //Sets the viewing area size
@@ -384,5 +411,8 @@ public class DefaultInterfaceView {
         graphPanel.setVisible(true);
 	}
 	
+	public void updateGraph(){
+		vv.repaint();
+	}
 
 }

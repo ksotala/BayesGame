@@ -12,9 +12,11 @@ import edu.uci.ics.jung.visualization.control.RotatingGraphMousePlugin;
 import edu.uci.ics.jung.visualization.control.ScalingGraphMousePlugin;
 import edu.uci.ics.jung.visualization.control.TranslatingGraphMousePlugin;
 import bayesGame.bayesbayes.BayesNet;
+import bayesGame.bayesbayes.BayesNode;
 import bayesGame.ui.AnyKeyListener;
 import bayesGame.ui.AssumingMousePlugin;
 import bayesGame.ui.DefaultInterfaceView;
+import bayesGame.ui.InteractingMousePlugin;
 import bayesGame.ui.TutorialMousePlugin;
 
 public class TutorialController extends Controller {
@@ -25,6 +27,7 @@ public class TutorialController extends Controller {
 	int usedobservations = 0;
 	
 	BayesNet net;
+	ArrayList<String> order = new ArrayList<String>(3);
 	
 	boolean awaitingkeypresses;
 	boolean awaitingmousemessage;
@@ -41,6 +44,19 @@ public class TutorialController extends Controller {
 		switch(level){
 		case 0:
 			levelOne();
+			break;
+		case 2:
+			talkToOpin();
+			break;
+		case 3:
+			talkToMom();
+			break;
+		case 4:
+			talkToDad();
+			break;
+		case 5:
+			beginWaitingPlayerActions();
+			break;
 		}
 
 		
@@ -65,11 +81,14 @@ public class TutorialController extends Controller {
 			net.addNode("Dad");
 			net.addDeterministicOr("Opin", "Mom", "Dad");
 			
+			net.setTrueValue("Mom", false);
+			net.setTrueValue("Dad", true);
+			net.setTrueValue("Opin", true);
+			
 			UI.setGraph(net);
 			UI.displayGraph(DefaultInterfaceView.graphTypeBayesGraph);
 			
-			UI.addTextClear("Celia: Well, I’d show him! He hadn’t been out of the house today, and he was too impatient to keep a secret for the whole night.");
-			UI.addText("So he must have heard it this morning, from either mom or dad.");
+			UI.addTextClear("Celia: Well, I’d show him! He hadn’t been out of the house today, and he was too impatient to keep a secret for the whole night. So he must have heard it this morning, from either mom or dad.");
 			UI.addText("");
 			UI.addTutorialTextMore("Celia has figured out a rule: your brother knows about the treasure, if (and only if) at least one of your parents knows about it. She knows this from Opin's impatient nature, and from the fact that mom and dad are the only ones he could have learned this from today.");
 			break;
@@ -173,11 +192,13 @@ public class TutorialController extends Controller {
 			UI.addTutorialText("When you are done, you can right-click on anyone to talk to them and find out what they *actually* know. When you've eliminated all but one of the possible worlds, you've found the true one. Try to find it in as few right-clicks as possible!");
 			awaitingmousemessage = false;
 			
-			UI.clearMouseListeners();
+			level = 1;
+			part = -1;
 			
-			PluggableGraphMouse pgm = new PluggableGraphMouse();
-			pgm.add(new AssumingMousePlugin(this));
-			UI.addGraphMouse(pgm);			
+			UI.clearMouseListeners();
+			addGameMouseListeners();
+			
+
 		}
 		part++;
 	}
@@ -199,13 +220,134 @@ public class TutorialController extends Controller {
 	@Override
 	public void genericMessage() {
 		ArrayList<Map<Object,Boolean>> newPossibilities = net.getNonZeroProbabilities("Opin");
-		System.out.println(newPossibilities);
 		UI.updateVisualizations(newPossibilities);
 	}
 	
 	@Override
 	public void genericMessage(Object o){
+		BayesNode node = (BayesNode)o;
+		String s = node.toString();
+		if (!order.contains(s)){
+			order.add(s);
+			
+			net.clearAssumptions();
+			net.updateBeliefs();
+			UI.updateGraph();
+			UI.updateVisualizations(net.getNonZeroProbabilities("Opin"));
+			
+			switch(s){
+			case "Opin":
+				talkToOpin();
+				break;
+			case "Mom":
+				talkToMom();
+				break;
+			case "Dad":
+				talkToDad();
+				break;
+			}
+		}
+	}
+	
+	private void addGameMouseListeners(){
+		PluggableGraphMouse pgm = new PluggableGraphMouse();
+		pgm.add(new AssumingMousePlugin(this, MouseEvent.BUTTON1));
+		pgm.add(new InteractingMousePlugin(this, MouseEvent.BUTTON3));
+		UI.addGraphMouse(pgm);
+	}
+	
+	private void beginWaitingPlayerActions(){
+		level = 1;
+		part = 0;
+		awaitingkeypresses = false;
 		
+		net.observe(order.get(order.size()-1));
+		net.updateBeliefs();
+		
+		ArrayList newPossibilities = net.getNonZeroProbabilities("Opin");
+		UI.updateVisualizations(newPossibilities);
+		UI.updateGraph();
+		
+		UI.clearText();
+		
+		if (newPossibilities.size() == 1){
+			levelComplete();
+		} else {
+			addGameMouseListeners();
+			UI.addTutorialText("Looks like you still need to narrow down the possibilities.");
+		}
+	}
+	
+	private void talkToOpin(){
+		switch(part){
+		case 0:
+			level = 2;
+			UI.clearMouseListeners();
+			UI.addTextMoreClear("Celia: Opin, did you really say 'treasure'?");
+			awaitingkeypresses = true;
+			part++;
+			break;
+		case 1:
+			UI.addTextMoreClear("Opin: That's right! A big huge treasure, just waiting for us to find it! But we need to hurry, before anyone else finds it.");
+			part++;
+			break;
+		case 2:
+			UI.addTextMoreClear("Celia: I thought you only knew that it was a treasure. Now you say it's huge too. And that we need to hurry.");
+			part++;
+			break;
+		case 3:
+			UI.addTextMoreClear("Opin: Well, aren't those things part of the definition of 'treasure'?");
+			level = 5;
+			break;
+		}
+	}
+	
+	private void talkToMom(){
+		switch(part){
+		case 0:
+			level = 3;
+			UI.clearMouseListeners();
+			UI.addTextMoreClear("You go downstairs to find your mother. She's in her study, heating up stones and then throwing them into the large ball of water that is floating mid-air. The shapes of steam that are formed this way will give her some insight to what will happen in the future.");
+			awaitingkeypresses = true;
+			part++;
+			break;
+		case 1:
+			UI.addTextMoreClear("Celia: Mom, did you hear about some treasure in the village?");
+			part++;
+			break;
+		case 2:
+			UI.addTextMoreClear("Mom: What did you say, dear? Treasure? No, I've been in my study all day, haven't heard of any treasures.");
+			level = 5;
+			break;
+		}
+	}
+	
+	private void talkToDad(){
+		switch(part){
+		case 0:
+			level = 4;
+			UI.clearMouseListeners();
+			UI.addTextMoreClear("You go outside to find your father. He's just getting ready to go hunt one of the wild beasts in the forest in order to get all of you breakfast.");
+			awaitingkeypresses = true;
+			part++;
+			break;
+		case 1:
+			UI.addTextMoreClear("Celia: Dad, did you hear about some treasure in the village?");
+			part++;
+			break;
+		case 2:
+			UI.addTextMoreClear("Your father looks up from the runestone that he has been calibrating. He has been preparing it so that it will glow warmer whenever he gets closer to a beast that's large enough for all of you to eat, but not dangerous enough that he'll be risking his life.");
+			part++;
+			break;
+		case 3:
+			UI.addTextMoreClear("Dad: Oh yes, I heard it from the mailman as he was doing his rounds. Didn't say much else, though.");
+			level = 5;
+			break;
+		}
+	}
+	
+	private void levelComplete(){
+		UI.addTextClear("Level complete!");
 	}
 
 }

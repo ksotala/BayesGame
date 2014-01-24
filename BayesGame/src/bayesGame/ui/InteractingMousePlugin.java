@@ -1,6 +1,5 @@
 package bayesGame.ui;
 
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
@@ -16,19 +15,19 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.AbstractGraphMousePlugin;
 
-public class AssumingMousePlugin extends AbstractGraphMousePlugin implements MouseListener {
-	
+public class InteractingMousePlugin extends AbstractGraphMousePlugin implements MouseListener {
+
 	private final Controller owner;
 	private final int button;
 	
-	public AssumingMousePlugin(Controller owner, int button) {
-		super(MouseEvent.BUTTON1_DOWN_MASK);
+	public InteractingMousePlugin(Controller owner, int button) {
+		super(0);
 		this.owner = owner;
 		this.button = button;
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -49,39 +48,18 @@ public class AssumingMousePlugin extends AbstractGraphMousePlugin implements Mou
 	public void mousePressed(MouseEvent e) {
 		if (e.getButton() == button){
 			VisualizationViewer<BayesNode,Pair<Integer,Integer>> vv = (VisualizationViewer)e.getSource();
-			Layout<BayesNode,Pair<Integer,Integer>> layout = vv.getGraphLayout();
-			NetGraph graph = (NetGraph)layout.getGraph();
-			BayesNet net = graph.getNet();
-
 			BayesNode node = getVertex(e.getPoint(), vv);
-			if (node != null ) {
-				Boolean assumedValue = node.assumedValue();
-				if (!node.isObserved()){
-					if (assumedValue != null){
-						if (assumedValue){
-							net.assume(node.type, false);
-						} else {
-							net.assume(node.type);
-					    }
-					} else {
-						net.assume(node.type, true);
-					}
-				    net.updateBeliefs();
-					vv.repaint();
-					owner.genericMessage();
-			}
-			}
+			owner.genericMessage(node);
 		}
 	}
 
-	
-	
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
 	/**
 	 * Transform the point to the coordinate system in the
 	 * VisualizationViewer, then use either PickSuuport
@@ -103,5 +81,5 @@ public class AssumingMousePlugin extends AbstractGraphMousePlugin implements Mou
 	    } 
 	    return v;
 	}
-	
+
 }
