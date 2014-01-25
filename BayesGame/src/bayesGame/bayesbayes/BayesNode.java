@@ -185,6 +185,15 @@ public class BayesNode {
 		return observed;
 	}
 	
+	public boolean isAssumed(){
+		
+		if (assumedValue == null){
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	public boolean setProbabilityOfUntrueVariables(Fraction probability, Object... variables){
 		probability = copyFraction(probability);
 		
@@ -375,11 +384,17 @@ public class BayesNode {
 		for (Fraction f : targetPotential){
 			totalSum = totalSum.add(f);
 		}
-		for (int i = 0; i < targetPotential.length; i++){
-			Fraction f = targetPotential[i];
-			targetPotential[i] = f.divide(totalSum);
+		if (totalSum.equals(Fraction.ZERO)){
+			Fraction f = Fraction.ZERO;
+			Arrays.fill(targetPotential, f);
+			System.out.println("Encountered division by zero, check your network");
+		} else {
+			for (int i = 0; i < targetPotential.length; i++){
+				Fraction f = targetPotential[i];
+				targetPotential[i] = f.divide(totalSum);
+			}
 		}
-		
+
 		return targetPotential;
 	}
 	

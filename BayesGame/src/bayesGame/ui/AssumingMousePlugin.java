@@ -55,8 +55,8 @@ public class AssumingMousePlugin extends AbstractGraphMousePlugin implements Mou
 
 			BayesNode node = getVertex(e.getPoint(), vv);
 			if (node != null ) {
-				Boolean assumedValue = node.assumedValue();
 				if (!node.isObserved()){
+					Boolean assumedValue = node.assumedValue();
 					if (assumedValue != null){
 						if (assumedValue){
 							net.assume(node.type, false);
@@ -66,7 +66,6 @@ public class AssumingMousePlugin extends AbstractGraphMousePlugin implements Mou
 					} else {
 						net.assume(node.type, true);
 					}
-				    net.updateBeliefs();
 					vv.repaint();
 					owner.genericMessage();
 			}

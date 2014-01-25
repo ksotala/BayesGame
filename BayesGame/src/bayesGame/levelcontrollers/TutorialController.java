@@ -11,6 +11,7 @@ import edu.uci.ics.jung.visualization.control.PluggableGraphMouse;
 import edu.uci.ics.jung.visualization.control.RotatingGraphMousePlugin;
 import edu.uci.ics.jung.visualization.control.ScalingGraphMousePlugin;
 import edu.uci.ics.jung.visualization.control.TranslatingGraphMousePlugin;
+import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.ui.AnyKeyListener;
@@ -24,7 +25,9 @@ public class TutorialController extends Controller {
 	DefaultInterfaceView UI;
 	int level = 0;
 	int part = 0;
-	int usedobservations = 0;
+	int failedtries = 0;
+	
+	int correctGnorantSolutions = 0;
 	
 	BayesNet net;
 	ArrayList<String> order = new ArrayList<String>(3);
@@ -45,16 +48,16 @@ public class TutorialController extends Controller {
 		case 0:
 			levelOne();
 			break;
-		case 2:
+		case 5:
 			talkToOpin();
 			break;
-		case 3:
+		case 6:
 			talkToMom();
 			break;
-		case 4:
+		case 7:
 			talkToDad();
 			break;
-		case 5:
+		case 8:
 			beginWaitingPlayerActions();
 			break;
 		}
@@ -76,129 +79,77 @@ public class TutorialController extends Controller {
 			UI.addTextMoreClear("Celia: I asked Opin how he knew about the treasure, but he told me to figure it out myself.");
 			break;
 		case 3:
+			UI.addTextMoreClear("Celia: Well, I’ll show him, I thought! I'll find out how he knows, and then I can learn more about the treasure!");
+			break;
+		case 4:
+			UI.addTextMoreClear("Celia: Okay, so let me think. He's too impatient to keep a secret overnight, that means he must have heard it today. And he hasn't been out of the house today, so he must have heard it from either mom or dad. And on the other hand, if there is a treasure that mom or dad knows about, they would definitely have told him.");
+			break;
+		case 5:
 			net = new BayesNet();
-			net.addNode("Mom");
 			net.addNode("Dad");
+			net.addNode("Mom");
 			net.addDeterministicOr("Opin", "Mom", "Dad");
-			
-			net.setTrueValue("Mom", false);
-			net.setTrueValue("Dad", true);
-			net.setTrueValue("Opin", true);
-			
+						
 			UI.setGraph(net);
 			UI.displayGraph(DefaultInterfaceView.graphTypeBayesGraph);
 			
-			UI.addTextClear("Celia: Well, I’d show him! He hadn’t been out of the house today, and he was too impatient to keep a secret for the whole night. So he must have heard it this morning, from either mom or dad.");
+			UI.clearText();
+			UI.addTutorialText("Celia has figured out a rule: your brother knows about the treasure, if (and only if) at least one of your parents knows about it.");
 			UI.addText("");
-			UI.addTutorialTextMore("Celia has figured out a rule: your brother knows about the treasure, if (and only if) at least one of your parents knows about it. She knows this from Opin's impatient nature, and from the fact that mom and dad are the only ones he could have learned this from today.");
-			break;
-		case 4:
-			Map<Object,Boolean> fromMom = new HashMap<Object, Boolean>();
-			fromMom.put("Mom", true);
-			fromMom.put("Dad", false);
-			fromMom.put("Opin", true);
-			
-			UI.addVisualization(fromMom);
-			UI.highlightVisualization(fromMom, true);
-			UI.addTextClear("Celia: So. Maybe he heard it from mom, and dad didn't know anything...");
-			UI.addText("");
-			UI.addTutorialTextMore("The display on the right shows a possible world which the rule allows: your mother knows (marked by the green color and large letter), and so does your brother. Your father does not know about it (marked with the red color and small letter).");
-			break;
-		case 5:
-			Map<Object,Boolean> fromDad = new HashMap<Object, Boolean>();
-			fromDad.put("Mom", false);
-			fromDad.put("Dad", true);
-			fromDad.put("Opin", true);
-			
-			UI.addVisualization(fromDad);
-			UI.switchVisualizationHighlight(fromDad);
-			UI.addTextClear("Celia: ...or maybe he heard it from dad, and mom was innocent to this crime of not telling me...");
-			UI.addText("");
-			UI.addTutorialTextMore("Here's another possible world allowed by the rule: your father knows and so does your brother, but your mother does not.");
+			UI.addTextMore("Celia: So if I want to know more, I think I should talk to at least mom or dad. Or maybe both, if they both know different things? Hmm.");
 			break;
 		case 6:
-			Map<Object,Boolean> fromBoth = new HashMap<Object, Boolean>();
-			fromBoth.put("Mom", true);
-			fromBoth.put("Dad", true);
-			fromBoth.put("Opin", true);
-			
-			UI.addVisualization(fromBoth);
-			UI.switchVisualizationHighlight(fromBoth);
-			UI.addTextClear("Celia: ...or maybe they both knew...");
-			UI.addText("");
-			UI.addTutorialTextMore("In this possible world, everyone knows, so they are all in green / large letters.");
+			UI.addTextMoreClear("Celia: But this is a serious investigation about a big treasure in our village! So I have to think about all possibilities. First, maybe I just misheard, and Opin doesn't actually know anything about a treasure. In that case, what does that mean about mom or dad knowing?");
 			break;
 		case 7:
-			Map<Object,Boolean> fromNeither = new HashMap<Object, Boolean>();
-			fromNeither.put("Mom", false);
-			fromNeither.put("Dad", false);
-			fromNeither.put("Opin", false);
-			
-			UI.addVisualization(fromNeither);
-			UI.switchVisualizationHighlight(fromNeither);
-			UI.addTextClear("Celia: ...or maybe I misheard, and he was talking about something else entirely? Opin doesn't make up things, though: if he says he heard something, then he did.");
-			UI.addText("");
-			UI.addTutorialTextMore("And here nobody knows, so they are all in red / small letters. These are the only four possible worlds that the rule of 'brother knows if (and only if) at least one parent knows' allows!");
+			net.observe("Opin", false);
+			UI.updateGraph();
+			UI.clearText();
+			UI.addTutorialText("In the above picture, your brother is painted as " + BayesGame.falseColorName + ", since you are considering a possibility where he does not actually know about the treasure after all. In that case, would your parents know? Left-click on your parents to change them to " + BayesGame.trueColorName + ", showing that they know, or " + BayesGame.falseColorName + ", showing that they don't know. When both of your parents have the colors you think are correct, right-click on someone to check your answer. Remember, the rule is that your brother knows, if and only if either of your parents knows.");
+			awaitingkeypresses = false;
+			addGameMouseListeners();
+			level = 1;
 			break;
 		case 8:
-			Map<Object,Boolean> magicalKnowledge = new HashMap<Object, Boolean>();
-			magicalKnowledge.put("Mom", false);
-			magicalKnowledge.put("Dad", false);
-			magicalKnowledge.put("Opin", true);
-			UI.addVisualization(magicalKnowledge, false);
-			UI.switchVisualizationHighlight(magicalKnowledge);
-			
-			UI.clearText();
-			UI.addTutorialTextMore("For example, if neither of your parents knew about the treasure, then there's no way your brother could have found out about it just this morning. So we know that that's an impossible world.");
+			net.clearAssumptions();
+			net.observe("Opin", true);
+			UI.clearMouseListeners();
+			UI.addTextMoreClear("Celia: Right, so if my brother doesn't actually know about a treasure, that means mom and dad don't know, either! So if I find out that Opin doesn't know, I don't need to talk to mom or dad anymore.");
+			awaitingkeypresses = true;
 			break;
 		case 9:
-			UI.clearText();
 			UI.clearVisualizationHighlights();
-			UI.addTutorialText("You may left-click on any of the people in the above graph to assume that they know about the treasure. Left-click on the same person again to assume that they don't know. A third left-click clears the assumption. Try clicking on your brother once.");
-			
-			PluggableGraphMouse gm = new PluggableGraphMouse();
-			gm.add(new TutorialMousePlugin(this, "Opin"));
-			UI.addGraphMouse(gm);
-			
+			UI.updateGraph();
+			addGameMouseListeners();
 			awaitingkeypresses = false;
-			awaitingmousemessage = true;
-			
+			UI.addTextClear("Celia: So what if Opin does really know? What are the possibilities then?");
+			UI.addText("");
+			UI.addTutorialText("There are several possibilities that are consistent with your brother knowing. Enter them one at a time, again left-clicking on your parents to select your reply and then right-clicking to make it. Again, the rule is that your brother knows, if and only if either of your parents knows.");
+			level = 2;
 			break;
 		case 10:
-			UI.clearText();
-			net.assume("Opin", true);
-			ArrayList<Map<Object,Boolean>> newPossibilities = net.getNonZeroProbabilities("Opin");
-			UI.updateVisualizations(newPossibilities);
-			UI.addTutorialText("You are now assuming that your brother does know. Since him knowing isn't compatible with the world where he doesn't know, that world gets marked as an impossible one.");
-			UI.addText("");
-			UI.addTutorialText("Now click on your brother again.");
+			UI.clearMouseListeners();
+			UI.addTextMoreClear("Celia: Yes, I know every possibility now! So... who should I talk to?");
+			awaitingkeypresses = true;
 			break;
 		case 11:
+			net.clearAssumptions();
+			net.resetNetworkBeliefsObservations();
+			net.setTrueValue("Opin", true);
+			net.setTrueValue("Mom", false);
+			net.setTrueValue("Dad", false);
+			
+			UI.updateGraph();
+			
 			UI.clearText();
-			net.assume("Opin", false);
-			ArrayList<Map<Object,Boolean>> moreNewPossibilities = net.getNonZeroProbabilities("Opin");
-			UI.updateVisualizations(moreNewPossibilities);
-			UI.addTutorialText("And now you are assuming that your brother doesn't know. This assumption is very much compatible with the world we eliminated previously, so it becomes a possible world again, but the three other worlds now become impossible.");
-			UI.addText("");
-			UI.addTutorialText("Click on your brother one more time.");
-			break;
-		case 12:
-			UI.clearText();
-			net.assume("Opin");
-			ArrayList<Map<Object,Boolean>> oldPossibilities = net.getNonZeroProbabilities("Opin");
-			UI.updateVisualizations(oldPossibilities);
-			UI.addTutorialText("Now we're back to where we started from. You can now play around with the map, left-clicking the various people involved to test what it'd look like if you assumed specific things. You can assume things about more than one person at a time.");
-			UI.addText("");
-			UI.addTutorialText("When you are done, you can right-click on anyone to talk to them and find out what they *actually* know. When you've eliminated all but one of the possible worlds, you've found the true one. Try to find it in as few right-clicks as possible!");
+			UI.addTutorialText("Time to actually talk to someone! If you want, you can now play around with the map, left-clicking the various people involved to test what it'd look like if you assumed specific things. When you are done, you can right-click on anyone to talk to them and find out what they *actually* know. When you've eliminated all but one of the possibilities, you've found the true one. Try to find it in as few right-clicks as possible!");
 			awaitingmousemessage = false;
 			
-			level = 1;
+			level = 4;
 			part = -1;
 			
 			UI.clearMouseListeners();
 			addGameMouseListeners();
-			
-
 		}
 		part++;
 	}
@@ -219,12 +170,115 @@ public class TutorialController extends Controller {
 
 	@Override
 	public void genericMessage() {
-		ArrayList<Map<Object,Boolean>> newPossibilities = net.getNonZeroProbabilities("Opin");
-		UI.updateVisualizations(newPossibilities);
+		if (level >= 4){
+			net.updateBeliefs();
+			ArrayList<Map<Object,Boolean>> newPossibilities = net.getNonZeroProbabilities("Opin");
+			UI.updateVisualizations(newPossibilities);
+		}
 	}
 	
 	@Override
 	public void genericMessage(Object o){
+		if (level < 4){
+			checkFirstStageMessage();
+		} else {
+			checkSecondStageMessage(o);
+		}
+	}
+	
+	private void checkFirstStageMessage(){
+		if (net.isFullyAssumed()){
+			if(level == 1){
+				opinIgnorantAttempt();
+			} else {
+				opinGnorantAttempt();
+			}
+		}
+	}
+	
+	private void opinIgnorantAttempt(){
+		Map<Object,Boolean> offeredSolution = net.getCurrentAssignments();
+		Map<Object,Boolean> correctSolution = new HashMap<Object,Boolean>(3);
+		correctSolution.put("Mom", false);
+		correctSolution.put("Dad", false);
+		correctSolution.put("Opin", false);
+		UI.clearVisualizationHighlights();
+		if (offeredSolution.equals(correctSolution)){
+			UI.addVisualization(correctSolution);
+			UI.highlightVisualization(correctSolution, true);
+			level = 0;
+			part = 8;
+			advanceTutorial();
+		} else {
+			if (UI.containsVisualization(offeredSolution)){
+				UI.addTextClear("You tried that solution already, remember? It's listed there on the right.");
+				UI.highlightVisualization(offeredSolution, true);
+			} else {
+				switch(failedtries){
+				case(0):
+					UI.addTextClear("That's not quite it. Remember, if either mom or dad knew, they would tell your brother. Still, you've found out that one possibility doesn't work, which is progress as well!");
+				    break;
+				case(1):
+					UI.addTextClear("Nope, not that either. But at least you've eliminated another incorrect solution! Remember, if either mom or dad knew, they would tell your brother.");
+				    break;
+				case(2):
+					UI.addTextClear("That wasn't it, either. But now you've eliminated all but one possibility, so what's the final answer?");
+				    break;
+				}
+			    UI.addVisualization(offeredSolution, false);
+			    UI.highlightVisualization(offeredSolution, true);
+			    failedtries++;
+			}
+		}
+	}
+	
+	private void opinGnorantAttempt(){
+		Map<Object,Boolean> offeredSolution = net.getCurrentAssignments();
+		
+		Map<Object,Boolean> incorrectSolution = new HashMap<Object,Boolean>(3);
+		incorrectSolution.put("Opin", true);
+		incorrectSolution.put("Mom", false);
+		incorrectSolution.put("Dad", false);
+		
+		Map<Object,Boolean> bothKnowSolution = new HashMap<Object,Boolean>(3);
+		bothKnowSolution.put("Opin", true);
+		bothKnowSolution.put("Mom", true);
+		bothKnowSolution.put("Dad", true);
+		
+		UI.clearVisualizationHighlights();
+		
+		if (UI.containsVisualization(offeredSolution)){
+			if (offeredSolution.equals(incorrectSolution)){
+				UI.addTextClear("You already tried that, remember? It's listed there on the right.");
+			} else {
+				UI.addTextClear("Well, that's certainly a correct solution, but you already gave it, remember? It's listed there on the right.");
+			}
+			UI.highlightVisualization(offeredSolution, true);
+		} else {
+			
+			if (offeredSolution.equals(incorrectSolution)){
+				UI.addTextClear("I'm afraid that's not quite it - remember, if neither of your parents knows, then there's no way for your brother to know (according to this rule, at least).");
+				UI.addVisualization(offeredSolution, false);
+				UI.highlightVisualization(offeredSolution, true);
+			} else {
+				UI.addVisualization(offeredSolution);
+				UI.highlightVisualization(offeredSolution, true);
+				if (offeredSolution.equals(bothKnowSolution)){
+					UI.addTextClear("Celia: Ha, I got it! If Opin knows, then it's possible that both mom and dad know!");
+				} else {
+					UI.addTextClear("Celia: So, hmm, if Opin knows, then at least mom or dad has to know...");
+				}
+				correctGnorantSolutions++;
+				if (correctGnorantSolutions == 3){
+					level = 0;
+					part = 10;
+					advanceTutorial();
+				}
+			}
+		}
+	}
+	
+	private void checkSecondStageMessage(Object o){
 		BayesNode node = (BayesNode)o;
 		String s = node.toString();
 		if (!order.contains(s)){
@@ -257,7 +311,7 @@ public class TutorialController extends Controller {
 	}
 	
 	private void beginWaitingPlayerActions(){
-		level = 1;
+		level = 4;
 		part = 0;
 		awaitingkeypresses = false;
 		
@@ -281,7 +335,7 @@ public class TutorialController extends Controller {
 	private void talkToOpin(){
 		switch(part){
 		case 0:
-			level = 2;
+			level = 5;
 			UI.clearMouseListeners();
 			UI.addTextMoreClear("Celia: Opin, did you really say 'treasure'?");
 			awaitingkeypresses = true;
@@ -297,7 +351,7 @@ public class TutorialController extends Controller {
 			break;
 		case 3:
 			UI.addTextMoreClear("Opin: Well, aren't those things part of the definition of 'treasure'?");
-			level = 5;
+			level = 8;
 			break;
 		}
 	}
@@ -305,7 +359,7 @@ public class TutorialController extends Controller {
 	private void talkToMom(){
 		switch(part){
 		case 0:
-			level = 3;
+			level = 6;
 			UI.clearMouseListeners();
 			UI.addTextMoreClear("You go downstairs to find your mother. She's in her study, heating up stones and then throwing them into the large ball of water that is floating mid-air. The shapes of steam that are formed this way will give her some insight to what will happen in the future.");
 			awaitingkeypresses = true;
@@ -317,7 +371,7 @@ public class TutorialController extends Controller {
 			break;
 		case 2:
 			UI.addTextMoreClear("Mom: What did you say, dear? Treasure? No, I've been in my study all day, haven't heard of any treasures.");
-			level = 5;
+			level = 8;
 			break;
 		}
 	}
@@ -325,7 +379,7 @@ public class TutorialController extends Controller {
 	private void talkToDad(){
 		switch(part){
 		case 0:
-			level = 4;
+			level = 7;
 			UI.clearMouseListeners();
 			UI.addTextMoreClear("You go outside to find your father. He's just getting ready to go hunt one of the wild beasts in the forest in order to get all of you breakfast.");
 			awaitingkeypresses = true;
@@ -341,7 +395,7 @@ public class TutorialController extends Controller {
 			break;
 		case 3:
 			UI.addTextMoreClear("Dad: Oh yes, I heard it from the mailman as he was doing his rounds. Didn't say much else, though.");
-			level = 5;
+			level = 8;
 			break;
 		}
 	}

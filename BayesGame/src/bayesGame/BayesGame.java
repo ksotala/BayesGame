@@ -1,33 +1,32 @@
 package bayesGame;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.Color;
 
-import javax.swing.Box;
-
-import bayesGame.bayesbayes.BayesNet;
 import bayesGame.levelcontrollers.TutorialController;
-import bayesGame.ui.DefaultInterfaceView;
 
 /**
- * 
- * @author Kaj Sotala
- * 
- * 
- * Class naming conventions:
- * 
- * This game attempts to follow a Model-View-Controller pattern. To keep things clear, the following naming conventions should be followed:
- * 
- * - MODEL classes should just be named after the thing they model, e.g. "Character".
- * - CONTROLLER classes should have "Controller" at the end, e.g. "CharacterController".
- * - VIEW classes should have "View" at the end, e.g. "CharacterPanelView".
- *
- * Please note that models are allowed to have extensive program logic inside them, as long as that 
- * 
+ *    Copyright 2014 Kaj Sotala
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 public class BayesGame {
+	
+	public static String falseColorName = "red";
+	public static String trueColorName = "green";
+	public static String unknownColorName = "white";
+	public static Color falseColor = Color.RED;
+	public static Color trueColor = Color.GREEN;
+	public static Color unknownColor = Color.WHITE;
 
 	public static void main(String[] args) {
 		

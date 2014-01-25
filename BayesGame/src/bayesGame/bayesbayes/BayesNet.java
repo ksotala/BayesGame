@@ -3,6 +3,7 @@ package bayesGame.bayesbayes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Stack;
@@ -71,6 +72,17 @@ public class BayesNet {
 			}
 		}
 		return false;
+	}
+	
+	public boolean isFullyAssumed(){
+		boolean fullyAssumed = true;
+		for (BayesNode existingNode : nodes){
+			if (!existingNode.isObserved() && !existingNode.isAssumed()){
+				fullyAssumed = false;
+				break;
+			}
+		}
+		return fullyAssumed;
 	}
 	
 	private BayesNode getNodeIffPresent(Object o){
@@ -212,6 +224,17 @@ public class BayesNet {
 			throw new IllegalArgumentException("Requested object not found in the graph");
 		}
 		return node.getNonZeroProbabilities();
+	}
+	
+	public Map<Object,Boolean> getCurrentAssignments(){
+		Map<Object,Boolean> assignments = new HashMap<Object,Boolean>(nodes.size());
+		for (BayesNode node : nodes){
+			if (node.isObserved() || node.isAssumed()){
+				boolean truthValue = node.getProbability().equals(Fraction.ONE);
+				assignments.put(node.type, truthValue);
+			}
+		}
+		return assignments;
 	}
 	
 	public void observe(Object object){

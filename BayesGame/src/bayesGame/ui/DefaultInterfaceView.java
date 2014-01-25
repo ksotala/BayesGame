@@ -31,6 +31,7 @@ import javax.swing.text.StyledDocument;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.math3.util.Pair;
 
+import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
 import edu.uci.ics.jung.algorithms.layout.DAGLayout;
@@ -68,6 +69,10 @@ public class DefaultInterfaceView {
 		
 		addComponentsToPane(frame.getContentPane());
 		
+		visualizations = new HashMap<Map<Object,Boolean>,JLabel>();
+		
+		setupVisualizationPane();
+		
 		frame.pack();
 		frame.setVisible(true);
 				
@@ -83,7 +88,8 @@ public class DefaultInterfaceView {
 		
 	    graphPanel = new JPanel();
 	    graphPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		
+		graphPanel.setMinimumSize(new Dimension(500,500));
+	    
 	    c.gridx = 0;
 	    c.gridy = 0;
 	    c.weightx = 1;
@@ -97,13 +103,14 @@ public class DefaultInterfaceView {
 	    
 	    infoPanel = new JPanel();
 	    infoPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+	    infoPanel.setMinimumSize(new Dimension(250,500));
 	    
 	    c.gridx = 1;
 	    c.gridy = 0;
 	    c.weightx = 1;
 	    c.weighty = 1;
-	    c.ipady = 100;
-	    c.ipadx = 100;
+	    c.ipady = 0;
+	    c.ipadx = 0;
 	    c.fill = GridBagConstraints.BOTH;
 	    pane.add(infoPanel, c);
 	    
@@ -139,15 +146,11 @@ public class DefaultInterfaceView {
 	}
 	
 	public void addVisualization(Map<Object,Boolean> item, boolean truth){
-		if (visualizations == null){
-			visualizations = new HashMap<Map<Object,Boolean>,JLabel>();
-			setupVisualizationPane();
-		}
 		addVisualizationToPane(item, truth);
 	}
 	
 	public boolean setVisualizationTruth(Map<Object,Boolean> item, boolean truth){
-		if (!visualizations.containsKey(item)){
+		if (!containsVisualization(item)){
 			return false;
 		}
 		addVisualizationToPane(item, truth);
@@ -156,7 +159,7 @@ public class DefaultInterfaceView {
 	
 	private void addVisualizationToPane(Map<Object,Boolean> item, boolean itemTruth){
 		JLabel visualization;
-		boolean editingOldVisualization = visualizations.containsKey(item);
+		boolean editingOldVisualization = containsVisualization(item);
 		
 		if (editingOldVisualization){
 			visualization = visualizations.get(item);
@@ -180,9 +183,9 @@ public class DefaultInterfaceView {
 			}
 			
 			if (truth && itemTruth){
-				html = html + "<font color=green>" + objectChar + " </font>";
+				html = html + "<font color=" + BayesGame.trueColorName + ">" + objectChar + " </font>";
 			} else if (!truth && itemTruth) {
-				html = html + "<font color=red>" + objectChar + " </font>";
+				html = html + "<font color=" + BayesGame.falseColorName + ">" + objectChar + " </font>";
 			} else if (!itemTruth){
 				html = html + objectChar + " ";
 			}
@@ -193,7 +196,7 @@ public class DefaultInterfaceView {
 		html = html + "</html>";
 		visualization.setText(html);
 		visualization.setAlignmentX(Component.CENTER_ALIGNMENT);
-		visualization.setFont(new Font("Serif", Font.BOLD, 32));
+		visualization.setFont(new Font("Serif", Font.BOLD, 28));
 		
 		if (!editingOldVisualization){
 			
@@ -204,6 +207,11 @@ public class DefaultInterfaceView {
 		
 		visualizations.put(item, visualization);
 		frame.revalidate();
+	}
+	
+	public boolean containsVisualization(Map<Object,Boolean> visualization){
+		System.out.println(visualizations.containsKey(visualization));
+		return visualizations.containsKey(visualization);
 	}
 	
 	public void updateVisualizations(ArrayList<Map<Object,Boolean>> newVisualizations){
@@ -232,10 +240,12 @@ public class DefaultInterfaceView {
 	}
 	
 	public void highlightVisualization(Map<Object,Boolean> item, boolean highlight){
-		if (visualizations.containsKey(item)){
+		clearVisualizationHighlights();
+		if (containsVisualization(item)){
 			JLabel label = visualizations.get(item);
 			label.setBackground(Color.WHITE);
 			label.setOpaque(highlight);
+			infoPanel.repaint();
 		}
 	}
 	
@@ -244,12 +254,7 @@ public class DefaultInterfaceView {
 		for (Entry<Map<Object,Boolean>, JLabel> e : set){
 			JLabel label = e.getValue();
 			label.setOpaque(false);
-		}
-	}
-	
-	public void switchVisualizationHighlight(Map<Object,Boolean> item){
-		clearVisualizationHighlights();
-		highlightVisualization(item, true);
+		}	
 	}
 	
 	public void addText(String text){
@@ -272,7 +277,7 @@ public class DefaultInterfaceView {
 		SimpleAttributeSet style = new SimpleAttributeSet();
 		StyleConstants.setFontSize(style, 16);
 		addText("");
-		addText("(more)", style);
+		addText("(space for more)", style);
 	}
 	
 	public void addTextMoreClear(String text){
@@ -370,19 +375,19 @@ public class DefaultInterfaceView {
         		Boolean assumed = i.assumedValue();
         		if (i.isObserved()){
         			if (i.getProbability().doubleValue() == 1.0d){
-        				return Color.GREEN;
+        				return BayesGame.trueColor;
         			} else {
-        				return Color.RED;
+        				return BayesGame.falseColor;
         			}
         		}
         		
         		if (assumed == null){
-        			return Color.WHITE;
+        			return BayesGame.unknownColor;
         		} else {
         			if (assumed){
-        				return Color.GREEN;
+        				return BayesGame.trueColor;
         			} else {
-        				return Color.RED;
+        				return BayesGame.falseColor;
         			}
         		}
         	}
