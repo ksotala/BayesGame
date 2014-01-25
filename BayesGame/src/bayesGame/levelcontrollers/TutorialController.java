@@ -111,13 +111,13 @@ public class TutorialController extends Controller {
 			level = 1;
 			break;
 		case 8:
-			net.clearAssumptions();
-			net.observe("Opin", true);
 			UI.clearMouseListeners();
 			UI.addTextMoreClear("Celia: Right, so if my brother doesn't actually know about a treasure, that means mom and dad don't know, either! So if I find out that Opin doesn't know, I don't need to talk to mom or dad anymore.");
 			awaitingkeypresses = true;
 			break;
 		case 9:
+			net.clearAssumptions();
+			net.observe("Opin", true);
 			UI.clearVisualizationHighlights();
 			UI.updateGraph();
 			addGameMouseListeners();
@@ -142,7 +142,41 @@ public class TutorialController extends Controller {
 			UI.updateGraph();
 			
 			UI.clearText();
-			UI.addTutorialText("Time to actually talk to someone! If you want, you can now play around with the map, left-clicking the various people involved to test what it'd look like if you assumed specific things. When you are done, you can right-click on anyone to talk to them and find out what they *actually* know. When you've eliminated all but one of the possibilities, you've found the true one. Try to find it in as few right-clicks as possible!");
+			UI.addTutorialText("Now that you know the four possible worlds that are consistent with the rule Celia came up with, you can test different assumptions to see how many of the worlds they're consistent with. Try left-clicking on your brother once.");
+			awaitingmousemessage = false;
+			
+			UI.clearVisualizationHighlights();
+
+			PluggableGraphMouse gm = new PluggableGraphMouse();
+			gm.add(new TutorialMousePlugin(this, "Opin"));
+			UI.addGraphMouse(gm);
+			awaitingkeypresses = false;
+			awaitingmousemessage = true;
+			break;
+		case 12:
+			UI.clearText();
+			net.assume("Opin", true);
+			ArrayList<Map<Object,Boolean>> newPossibilities = net.getNonZeroProbabilities("Opin");
+			UI.updateVisualizations(newPossibilities);
+			UI.addTutorialText("You are now assuming that your brother does know. Since him knowing isn't compatible with the world where he doesn't know, that world gets marked as an impossible one.");
+			UI.addText("");
+			UI.addTutorialText("Now click on your brother again.");
+			break;
+		case 13:
+			net.assume("Opin", false);
+			ArrayList<Map<Object,Boolean>> moreNewPossibilities = net.getNonZeroProbabilities("Opin");
+			UI.updateVisualizations(moreNewPossibilities);
+			UI.clearText();
+			UI.addTutorialText("And now you are assuming that your brother doesn't know. This assumption is very much compatible with the world we eliminated previously, so it becomes a possible world again, but the three other worlds now become impossible.");
+			UI.addText("");
+			UI.addTutorialText("Click on your brother one more time.");
+			break;
+		case 14:
+			UI.clearText();
+			net.assume("Opin");
+			ArrayList<Map<Object,Boolean>> oldPossibilities = net.getNonZeroProbabilities("Opin");
+			UI.updateVisualizations(oldPossibilities);
+			UI.addTutorialText("Now we're back to where we started from. If you wish, you can now play around with the map, left-clicking the various people involved to test what it'd look like if you assumed specific things. You can assume things about more than one person at a time. When you are ready, right-click on people to talk to them and find out what they actually know. Try to use as few right-clicks as possible! (Though there's an element of luck involved, so you may need three right-clicks even if you play perfectly.)");
 			awaitingmousemessage = false;
 			
 			level = 4;

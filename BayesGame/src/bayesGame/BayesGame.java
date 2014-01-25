@@ -2,7 +2,11 @@ package bayesGame;
 
 import java.awt.Color;
 
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
 import bayesGame.levelcontrollers.TutorialController;
+import bayesGame.ui.ColorSelection;
 
 /**
  *    Copyright 2014 Kaj Sotala
@@ -27,14 +31,28 @@ public class BayesGame {
 	public static Color falseColor = Color.RED;
 	public static Color trueColor = Color.GREEN;
 	public static Color unknownColor = Color.WHITE;
+	
+	private static JFrame frame;
 
 	public static void main(String[] args) {
 		
-		TutorialController tutorial = new TutorialController();
+		frame = new JFrame("Select colors");
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        JComponent newContentPane = new ColorSelection();
+        newContentPane.setOpaque(true);
+        frame.setContentPane(newContentPane);
+
+        frame.pack();
+        frame.setVisible(true);
 	}
 	
-	
+	public static void beginTutorial(){
+		
+		frame.dispose();
+		TutorialController tutorial = new TutorialController();
+		
+	}
 	
 
 
