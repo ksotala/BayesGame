@@ -1,16 +1,11 @@
 package bayesGame.levelcontrollers;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.PluggableGraphMouse;
-import edu.uci.ics.jung.visualization.control.RotatingGraphMousePlugin;
-import edu.uci.ics.jung.visualization.control.ScalingGraphMousePlugin;
-import edu.uci.ics.jung.visualization.control.TranslatingGraphMousePlugin;
 import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
@@ -137,7 +132,7 @@ public class TutorialController extends Controller {
 			net.resetNetworkBeliefsObservations();
 			net.setTrueValue("Opin", true);
 			net.setTrueValue("Mom", false);
-			net.setTrueValue("Dad", false);
+			net.setTrueValue("Dad", true);
 			
 			UI.updateGraph();
 			
@@ -184,6 +179,26 @@ public class TutorialController extends Controller {
 			
 			UI.clearMouseListeners();
 			addGameMouseListeners();
+			break;
+		case 15:
+			net.observe("Mom");
+			net.observe("Dad");
+			net.observe("Opin");
+			UI.updateGraph();
+			
+			if (order.size() < 3){
+				UI.clearText();
+				UI.addTutorialTextMore("Now you know everyone in the house who knows about the treasure! And by narrowing down the options, you saved time and figured it out without needing to talk with everyone!");
+			} else {
+				UI.clearText();
+				UI.addTutorialTextMore("Now you know everyone in the house who knows about the treasure! You had to talk with everyone to find it out, so you didn't manage to save any time using your powers of reasoning, but maybe you were just unlucky in that regard.");
+			}
+			
+			UI.clearMouseListeners();
+			awaitingkeypresses = true;
+			break;
+		case 16:
+			levelComplete();
 		}
 		part++;
 	}
@@ -298,9 +313,13 @@ public class TutorialController extends Controller {
 				UI.addVisualization(offeredSolution);
 				UI.highlightVisualization(offeredSolution, true);
 				if (offeredSolution.equals(bothKnowSolution)){
-					UI.addTextClear("Celia: Ha, I got it! If Opin knows, then it's possible that both mom and dad know!");
+					UI.addTextClear("Celia: Ha, here's one possibility! If Opin knows, then it's possible that both mom and dad know!");
+					UI.addText("");
+					UI.addTutorialText("You just found a possibility. Continue until you've found them all!");
 				} else {
 					UI.addTextClear("Celia: So, hmm, if Opin knows, then at least mom or dad has to know...");
+					UI.addText("");
+					UI.addTutorialText("You just found a possibility. Continue until you've found them all!");
 				}
 				correctGnorantSolutions++;
 				if (correctGnorantSolutions == 3){
@@ -359,7 +378,15 @@ public class TutorialController extends Controller {
 		UI.clearText();
 		
 		if (newPossibilities.size() == 1){
-			levelComplete();
+			level = 0;
+			part = 15;
+			if (order.size() == 3){
+				advanceTutorial();
+			} else {
+				UI.clearText();
+				UI.addTutorialTextMore("You have narrowed down the possibilities to one! And although you haven't talked with everyone yet, you now know what they'd say...");
+				awaitingkeypresses = true;
+			}
 		} else {
 			addGameMouseListeners();
 			UI.addTutorialText("Looks like you still need to narrow down the possibilities.");
@@ -435,7 +462,14 @@ public class TutorialController extends Controller {
 	}
 	
 	private void levelComplete(){
-		UI.addTextClear("Level complete!");
+		Object [] options = {"Quit", "Replay level"};
+		int n = UI.displayDialog(options, "Level complete!");
+		if (n == 1){
+			UI.dispose();
+			BayesGame.beginTutorial();
+		} else {
+			System.exit(0);
+		}
 	}
 
 }

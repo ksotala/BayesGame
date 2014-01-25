@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -210,7 +211,6 @@ public class DefaultInterfaceView {
 	}
 	
 	public boolean containsVisualization(Map<Object,Boolean> visualization){
-		System.out.println(visualizations.containsKey(visualization));
 		return visualizations.containsKey(visualization);
 	}
 	
@@ -418,6 +418,14 @@ public class DefaultInterfaceView {
 	
 	public void updateGraph(){
 		vv.repaint();
+	}
+	
+	public int displayDialog(Object[] options, String text){
+		return JOptionPane.showOptionDialog(frame, text, text, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+	}
+	
+	public void dispose(){
+		frame.dispose();
 	}
 
 }
