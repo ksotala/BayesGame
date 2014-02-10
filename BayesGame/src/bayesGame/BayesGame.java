@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 
 import bayesGame.levelcontrollers.TutorialController;
 import bayesGame.ui.ColorSelection;
+import bayesGame.ui.LanguageChooser;
 
 /**
  *    Copyright 2014 Kaj Sotala
@@ -43,21 +44,27 @@ public class BayesGame {
 	public static void main(String[] args) {
 		
 		showLanguageSelector();
-		showColorSelector();
 	}
 	
 	public static void showLanguageSelector(){
 		
 		currentLocale = Locale.getDefault();
 		
-		
-		
-		// TODO: create and display language selector
-		// TODO: remove explicit call to this function from main
+		frame = new JFrame("Select language");
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        JComponent newContentPane = new LanguageChooser();
+        newContentPane.setOpaque(true);
+        frame.setContentPane(newContentPane);
+
+        frame.pack();
+        frame.setVisible(true);
 		
 	}
 	
 	public static void showColorSelector(){
+		
+		frame.dispose();
 		
 		frame = new JFrame("Select colors");
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
