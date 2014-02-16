@@ -9,11 +9,15 @@ import edu.uci.ics.jung.visualization.control.PluggableGraphMouse;
 import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
-import bayesGame.ui.AnyKeyListener;
-import bayesGame.ui.AssumingMousePlugin;
 import bayesGame.ui.DefaultInterfaceView;
-import bayesGame.ui.InteractingMousePlugin;
-import bayesGame.ui.TutorialMousePlugin;
+import bayesGame.ui.swinglisteners.AnyKeyListener;
+import bayesGame.ui.swinglisteners.AssumingMousePlugin;
+import bayesGame.ui.swinglisteners.InteractingMousePlugin;
+import bayesGame.ui.swinglisteners.TutorialMousePlugin;
+import bayesGame.ui.verbs.AssumeVerb;
+import bayesGame.ui.verbs.InteractingVerb;
+import bayesGame.ui.verbs.TutorialVerb;
+import bayesGame.ui.verbs.Verb;
 
 public class TutorialController extends Controller {
 	
@@ -143,8 +147,9 @@ public class TutorialController extends Controller {
 			UI.clearVisualizationHighlights();
 
 			PluggableGraphMouse gm = new PluggableGraphMouse();
-			gm.add(new TutorialMousePlugin(this, "Opin"));
-			UI.addGraphMouse(gm);
+			// gm.add(new TutorialMousePlugin(this, "Opin"));
+			// UI.addGraphMouse(gm);
+			UI.addVerb(new TutorialVerb(this, Verb.returnCall.MouseMessage));
 			awaitingkeypresses = false;
 			awaitingmousemessage = true;
 			break;
@@ -357,10 +362,14 @@ public class TutorialController extends Controller {
 	}
 	
 	private void addGameMouseListeners(){
+		/*
 		PluggableGraphMouse pgm = new PluggableGraphMouse();
 		pgm.add(new AssumingMousePlugin(this, MouseEvent.BUTTON1));
 		pgm.add(new InteractingMousePlugin(this, MouseEvent.BUTTON3));
-		UI.addGraphMouse(pgm);
+		UI.addGraphMouse(pgm); */
+		
+		UI.addVerb(new AssumeVerb(this, Verb.returnCall.GenericMessage));
+		UI.addVerb(new InteractingVerb(this, Verb.returnCall.GenericMessageObject));
 	}
 	
 	private void beginWaitingPlayerActions(){

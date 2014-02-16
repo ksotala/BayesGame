@@ -1,4 +1,4 @@
-package bayesGame.ui;
+package bayesGame.ui.swinglisteners;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

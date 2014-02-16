@@ -1,4 +1,4 @@
-package bayesGame.ui;
+package bayesGame.ui.swinglisteners;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
@@ -11,6 +11,7 @@ import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.bayesbayes.NetGraph;
 import bayesGame.levelcontrollers.Controller;
+import bayesGame.ui.verbs.Verb;
 import edu.uci.ics.jung.algorithms.layout.GraphElementAccessor;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
@@ -18,10 +19,10 @@ import edu.uci.ics.jung.visualization.control.AbstractGraphMousePlugin;
 
 public class AssumingMousePlugin extends AbstractGraphMousePlugin implements MouseListener {
 	
-	private final Controller owner;
+	private final Verb owner;
 	private final int button;
 	
-	public AssumingMousePlugin(Controller owner, int button) {
+	public AssumingMousePlugin(Verb owner, int button) {
 		super(MouseEvent.BUTTON1_DOWN_MASK);
 		this.owner = owner;
 		this.button = button;
@@ -67,7 +68,7 @@ public class AssumingMousePlugin extends AbstractGraphMousePlugin implements Mou
 						net.assume(node.type, true);
 					}
 					vv.repaint();
-					owner.genericMessage();
+					owner.message();
 			}
 			}
 		}

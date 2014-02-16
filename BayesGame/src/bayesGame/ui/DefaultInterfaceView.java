@@ -35,6 +35,7 @@ import org.apache.commons.math3.util.Pair;
 import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
+import bayesGame.ui.verbs.Verb;
 import edu.uci.ics.jung.algorithms.layout.DAGLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.AbstractGraph;
@@ -328,7 +329,11 @@ public class DefaultInterfaceView {
 		// frame.getRootPane().getActionMap().put("in_spaaace", k);
 	}
 	
-	public void addGraphMouse(PluggableGraphMouse gm){
+	public void addVerb(Verb verb){
+		addGraphMouse(verb.getPGM());
+	}
+	
+	private void addGraphMouse(PluggableGraphMouse gm){
 		vv.addMouseListener(gm);
 	}
 	

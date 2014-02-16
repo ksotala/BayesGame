@@ -1,5 +1,6 @@
-package bayesGame.ui;
+package bayesGame.ui.swinglisteners;
 
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
@@ -9,21 +10,22 @@ import org.apache.commons.math3.util.Pair;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.bayesbayes.NetGraph;
-import bayesGame.levelcontrollers.Controller;
+import bayesGame.ui.verbs.Verb;
 import edu.uci.ics.jung.algorithms.layout.GraphElementAccessor;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.AbstractGraphMousePlugin;
 
-public class InteractingMousePlugin extends AbstractGraphMousePlugin implements MouseListener {
-
-	private final Controller owner;
-	private final int button;
+public class TutorialMousePlugin extends AbstractGraphMousePlugin implements MouseListener {
 	
-	public InteractingMousePlugin(Controller owner, int button) {
-		super(0);
+	private final Verb owner;
+	private final Object target;
+	private int targetClicked;
+
+	public TutorialMousePlugin(Verb owner, Object target) {
+		super(InputEvent.BUTTON1_MASK);
 		this.owner = owner;
-		this.button = button;
+		this.target = target;
 	}
 
 	@Override
@@ -46,20 +48,47 @@ public class InteractingMousePlugin extends AbstractGraphMousePlugin implements 
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (e.getButton() == button){
-			VisualizationViewer<BayesNode,Pair<Integer,Integer>> vv = (VisualizationViewer)e.getSource();
-			BayesNode node = getVertex(e.getPoint(), vv);
-			owner.genericMessage(node);
+		VisualizationViewer<BayesNode,Pair<Integer,Integer>> vv = (VisualizationViewer)e.getSource();
+		Layout<BayesNode,Pair<Integer,Integer>> layout = vv.getGraphLayout();
+		NetGraph graph = (NetGraph)layout.getGraph();
+		BayesNet net = graph.getNet();
+
+		BayesNode node = getVertex(e.getPoint(), vv);
+		if (node != null ) {
+			if (node.type.equals(target)){
+				owner.message(e);
+				switch(targetClicked){
+				case 0:
+					net.assume(target, true);
+					System.out.println("geree111");
+					break;
+				case 1:
+					net.assume(target, false);
+					System.out.println("geree222");
+					break;
+				case 2:
+					net.assume(target);
+					System.out.println("geree333");
+					break;
+				}
+				if (targetClicked < 2){
+					targetClicked++;
+				} else {
+					targetClicked = 0;
+				}
+			vv.repaint();
+			}
 		}
 	}
 
+	
+	
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
+
 	/**
 	 * Transform the point to the coordinate system in the
 	 * VisualizationViewer, then use either PickSuuport
@@ -81,5 +110,5 @@ public class InteractingMousePlugin extends AbstractGraphMousePlugin implements 
 	    } 
 	    return v;
 	}
-
+	
 }
