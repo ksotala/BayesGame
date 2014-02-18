@@ -115,7 +115,7 @@ public class ColorSelection extends JPanel implements ActionListener {
 	}
 
 	private void closeButtonPushed(){
-		BayesGame.beginTutorial();
+		BayesGame.beginTutorial(1);
 		
 	}
 	

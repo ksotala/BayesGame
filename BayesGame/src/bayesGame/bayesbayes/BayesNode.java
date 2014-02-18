@@ -22,7 +22,7 @@ import org.apache.commons.math3.util.Pair;
 public class BayesNode {
 	
 	public final Object type;
-	public final Object[] scope;
+	protected final Object[] scope;
 	
 	protected HashMap<Object,Integer> strides = new HashMap<Object,Integer>();
 	

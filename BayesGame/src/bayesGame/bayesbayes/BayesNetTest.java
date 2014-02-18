@@ -207,6 +207,12 @@ public class BayesNetTest {
 		ArrayList<Map<Object,Boolean>> mappingsList = testNet.getNonZeroProbabilities("Brother");
 		Set<Map> mappingsSet = new HashSet<Map>(mappingsList);
 		
+		Set<Map> comparisonSet = this.getNonZeroProbabilitySetForDeterministicOrBrother();
+		
+		assertEquals("These two sets be equal", comparisonSet, mappingsSet);
+	}
+	
+	private Set<Map> getNonZeroProbabilitySetForDeterministicOrBrother(){
 		Set<Map> comparisonSet = new HashSet<Map>();
 		
 		Map<Object,Boolean> fromMom = new HashMap<Object, Boolean>();
@@ -234,7 +240,7 @@ public class BayesNetTest {
 		comparisonSet.add(fromBoth);
 		comparisonSet.add(fromNeither);
 		
-		assertEquals("These two sets be equal", comparisonSet, mappingsSet);
+		return comparisonSet;
 	}
 	
 	@Test
@@ -276,8 +282,48 @@ public class BayesNetTest {
 		assertEquals("These two sets be equal", comparisonSet, mappingsSet);		
 	}
 	
+	@Test
+	public void makeDeterministicOrInvalidInputNoParents(){
+		testNet.addNode("Object");
+		boolean returnvalue = testNet.makeDeterministicOr("Object");
+		
+		assertFalse("Should refuse to do anything if makeDeterminsticOrNode is called for node with no parents", returnvalue);
+	}
+	
+	@Test
+	public void makeDeterministicOrInvalidInputNonexistentNode(){
+		boolean returnvalue = testNet.makeDeterministicOr("Object");
+		
+		assertFalse("Should refuse to do anything if makeDeterminsticOrNode is called for a non-existent node", returnvalue);
+	}
+	
+	@Test
+	public void makeDeterministicOrValidInput(){
+		testNet.addNode("Object", new Object[]{"Object","Parent"});
+		testNet.addNode("Parent");
+		testNet.connectNodes("Parent", "Object");
+		boolean returnvalue = testNet.makeDeterministicOr("Object");
+		
+		assertTrue("Should return true when called with valid values", returnvalue);
+	}
 	
 	
+	@Test
+	public void makeDeterministicOrTwoParents(){
+		testNet.addNode("Mother");
+		testNet.addNode("Father");
+		testNet.addNode("Brother", new Object[]{"Mother","Father", "Brother"});
+		testNet.connectNodes("Mother", "Brother");
+		testNet.connectNodes("Father", "Brother");
+		testNet.makeDeterministicOr("Brother");
+		
+		ArrayList<Map<Object,Boolean>> mappingsList = testNet.getNonZeroProbabilities("Brother");
+		Set<Map> mappingsSet = new HashSet<Map>(mappingsList);
+		
+		Set<Map> comparisonSet = this.getNonZeroProbabilitySetForDeterministicOrBrother();
+		
+		assertEquals("These two sets be equal", comparisonSet, mappingsSet);
+	}
 	
 	
 	

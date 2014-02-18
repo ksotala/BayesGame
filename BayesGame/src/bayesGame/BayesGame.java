@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import bayesGame.levelcontrollers.TutorialController;
+import bayesGame.levelcontrollers.TutorialLevel2Controller;
 import bayesGame.ui.ColorSelection;
 import bayesGame.ui.LanguageChooser;
 
@@ -43,7 +44,8 @@ public class BayesGame {
 
 	public static void main(String[] args) {
 		
-		showLanguageSelector();
+		// showLanguageSelector();
+		beginTutorial(2);
 	}
 	
 	public static void showLanguageSelector(){
@@ -78,10 +80,17 @@ public class BayesGame {
 		
 	}
 	
-	public static void beginTutorial(){
+	public static void beginTutorial(int level){
 		
-		frame.dispose();
-		TutorialController tutorial = new TutorialController();
+		if (level == 1){
+			frame.dispose();
+			TutorialController tutorial = new TutorialController();
+		}
+		
+		if (level == 2){
+			TutorialLevel2Controller tutorial = new TutorialLevel2Controller();
+		}
+		
 		
 	}
 	

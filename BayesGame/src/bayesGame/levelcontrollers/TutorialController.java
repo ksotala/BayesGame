@@ -475,7 +475,7 @@ public class TutorialController extends Controller {
 		int n = UI.displayDialog(options, "Level complete!");
 		if (n == 1){
 			UI.dispose();
-			BayesGame.beginTutorial();
+			BayesGame.beginTutorial(2);
 		} else {
 			System.exit(0);
 		}

@@ -60,15 +60,12 @@ public class TutorialMousePlugin extends AbstractGraphMousePlugin implements Mou
 				switch(targetClicked){
 				case 0:
 					net.assume(target, true);
-					System.out.println("geree111");
 					break;
 				case 1:
 					net.assume(target, false);
-					System.out.println("geree222");
 					break;
 				case 2:
 					net.assume(target);
-					System.out.println("geree333");
 					break;
 				}
 				if (targetClicked < 2){

@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.math3.fraction.Fraction;
@@ -96,6 +98,7 @@ public class BayesNet {
 		
 	public boolean removeBayesNode(Object object){
 		BayesNode node = new BayesNode(object);
+		nodes.remove(node);
 		return graph.removeVertex(node);
 	}
 	
@@ -139,10 +142,25 @@ public class BayesNet {
 	    	}
 	    }
 		
+	    this.setNodeToDeterministicOr(orBayesNode, parents);
+	    
 		boolean added = addNode(orBayesNode);
 		if (!added){
 			return false;
 		}
+        
+        for (Object o : parents){
+        	boolean sanityCheck = connectNodes(o, orNode);
+        	if (!sanityCheck){
+        		throw new IllegalStateException("Failed to connect nodes that should be connected fine ??? Shouldn't be possible");
+        	}
+        }
+        
+        return true;
+	}
+	
+	private void setNodeToDeterministicOr(BayesNode orBayesNode, Object[] parents){
+		Object orNode = orBayesNode.type;
 		
 		ArrayList<Object> allItems = new ArrayList<Object>(Arrays.asList(parents));
 		allItems.add(0, parents);
@@ -180,15 +198,48 @@ public class BayesNet {
                 }
             }
         }
-        
-        for (Object o : parents){
-        	boolean sanityCheck = connectNodes(o, orNode);
-        	if (!sanityCheck){
-        		throw new IllegalStateException("Failed to connect nodes that should be connected fine ??? Shouldn't be possible");
-        	}
-        }
-        
-        return true;
+		
+	}
+	
+	
+	/**
+	 * Turns an existing node with at least one parent into a deterministic OR node.
+	 * 
+	 * @param orNode The node to be made into a deterministic OR node
+	 * @return false if the node doesn't exist, has no parents, or doesn't have its parents in its scope. True otherwise;
+	 */
+	public boolean makeDeterministicOr(Object orObject){
+		BayesNode node = getNodeIffPresent(orObject);
+		
+		if (node == null){
+			return false;
+		}
+		
+		ArrayList<BayesNode> parentNodes = new ArrayList<BayesNode>(graph.getPredecessors(node));
+		
+		if (parentNodes.size() == 0){
+			return false;
+		}
+				
+		Object[] parents = new Object[parentNodes.size()];
+		
+		for (int i = 0; i < parentNodes.size(); i++){
+			parents[i] = parentNodes.get(i).type;
+		}
+		
+		Set<Object> scopeSet = new HashSet<Object>(Arrays.asList(node.scope));
+		for (Object p : parents){
+			if (!scopeSet.contains(p)){
+				System.out.println(scopeSet);
+				System.out.println(p + " not contained");
+				return false;
+			}
+		}
+		
+		this.setNodeToDeterministicOr(node, parents);
+		
+		return true;
+		
 	}
 	
 	private boolean scopesCompatible(BayesNode node1, BayesNode node2){

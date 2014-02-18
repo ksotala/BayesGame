@@ -6,6 +6,8 @@ import edu.uci.ics.jung.graph.DirectedSparseGraph;
 
 public class NetGraph extends DirectedSparseGraph<BayesNode,Pair<Integer,Integer>> {
 	
+	//TODO: fix this...
+	
 	private final BayesNet net;
 
 	public NetGraph(BayesNet net) {
