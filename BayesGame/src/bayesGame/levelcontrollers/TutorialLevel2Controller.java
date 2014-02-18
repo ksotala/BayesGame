@@ -36,27 +36,31 @@ public class TutorialLevel2Controller extends Controller {
 		case 0:
 			net = new BayesNet();
 			
-			/*
 			net.addNode("Mailman");
 			net.addDeterministicOr("Dad", "Mailman");
 			net.addNode("Mom");
 			net.addDeterministicOr("Opin", "Mom", "Dad");
-			*/
-			
+
+			/*
 			net.addNode("Mom");
-			net.addNode("Dad", new Object[]{"Mailman"});
-			net.addNode("Opin", new Object[]{"Mom", "Dad"});
+			net.addNode("Dad");
+			net.addNode("Opin");
 			net.addNode("Mailman");
 			
-			net.connectNodes("Mom", "Opin");
-			net.connectNodes("Dad", "Opin");
-			net.connectNodes("Mailman", "Dad");
+			net.forceConnectNodes("Mom", "Opin");
+			net.forceConnectNodes("Dad", "Opin");
+			net.forceConnectNodes("Mailman", "Dad");
 			
+			net.makeDeterministicOr("Dad");
+			net.makeDeterministicOr("Opin");
+			*/
+
 			net.observe("Mom", false);
-			net.observe("Dad", true);
-			net.observe("Opin", true);
 			net.observe("Mailman", true);
-			
+			net.updateBeliefs();
+			net.observe("Dad");
+			net.observe("Opin");
+
 			UI.setGraph(net);
 			UI.displayGraph(DefaultInterfaceView.graphTypeBayesGraph);
 			

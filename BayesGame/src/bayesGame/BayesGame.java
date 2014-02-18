@@ -44,8 +44,8 @@ public class BayesGame {
 
 	public static void main(String[] args) {
 		
-		// showLanguageSelector();
-		beginTutorial(2);
+		showLanguageSelector();
+		// beginTutorial(2);
 	}
 	
 	public static void showLanguageSelector(){

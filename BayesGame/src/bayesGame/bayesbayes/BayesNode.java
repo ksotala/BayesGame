@@ -22,7 +22,7 @@ import org.apache.commons.math3.util.Pair;
 public class BayesNode {
 	
 	public final Object type;
-	protected final Object[] scope;
+	protected Object[] scope;
 	
 	protected HashMap<Object,Integer> strides = new HashMap<Object,Integer>();
 	
@@ -61,14 +61,7 @@ public class BayesNode {
 		if (!Arrays.asList(scope).contains(type)){
 			// if one is missing, try to add the type of the node to the scope
 			if ((strides == null) && (cpt == null)){				
-				Object[] newscope = new Object[scope.length + 1];
-				newscope[0] = type;
-				int location = 1;
-				for (Object o : scope){
-					newscope[location] = o;
-					location++;
-				}
-				scope = newscope;
+				scope = this.copyArrayAddingItem(scope, type);
 			} else {
 				throw new IllegalArgumentException("The scope of a node must contain its own type");
 			}
@@ -89,6 +82,33 @@ public class BayesNode {
 		}
 		
 		this.potential = copyFraction(this.cpt);
+	}
+	
+	private Object[] copyArrayAddingItem(Object [] array, Object item){
+		Object[] newscope = new Object[array.length + 1];
+		newscope[0] = item;
+		int location = 1;
+		for (Object o : array){
+			newscope[location] = o;
+			location++;
+		}
+		
+		return newscope;
+	}
+	
+	protected boolean addItemToScope(Object item){
+		if (Arrays.asList(scope).contains(item)){
+			return false;
+		}
+		
+		scope = copyArrayAddingItem(scope, item);
+		
+		cpt = this.createRawFractionArray(scope);
+		strides = this.createStridesFromScope(scope);
+		
+		resetPotential();
+		
+		return true;	
 	}
 	
 	protected void updateProbability(){
@@ -241,12 +261,8 @@ public class BayesNode {
 		
 		resetNode();
 		observed = true;
-		
-		indexChooser selfChooser = new indexChooser();
-		ArrayList<Integer> locationsToZero;
-		
+				
 		if (trueValue == null){
-			System.out.println("doing random generation");
 			double diceRoll = Math.random();
 			if (diceRoll <= this.getProbability().doubleValue()){
 				trueValue = Boolean.TRUE;
@@ -254,6 +270,9 @@ public class BayesNode {
 				trueValue = Boolean.FALSE;
 			}
 		}
+		
+		indexChooser selfChooser = new indexChooser();
+		ArrayList<Integer> locationsToZero;
 		
 		if (trueValue){
 			
@@ -266,7 +285,9 @@ public class BayesNode {
 		
 		for (Integer i : locationsToZero){
 			potential[i] = Fraction.ZERO;
-		}	
+		}
+		
+		probability = null;
 	}
 	
 	public void observe(boolean observation){
@@ -357,10 +378,12 @@ public class BayesNode {
 	
 	protected void receiveUpstreamMessage(Message message){
 		upstreamMessages.add(message);
+		System.out.println("Upstream message of " + message.scope[0] + " to " + type + " from " + message.sender + ", reported probability of " + message.message[0].doubleValue());
 	}
 	
 	protected void receiveDownstreamMessage(Message message){
 		downstreamMessages.add(message);
+		System.out.println("Downstream message of " + message.scope[0] + " to " + type + " from " + message.sender + ", reported probability of " + message.message[0].doubleValue());
 	}
 	
 	protected boolean receivedMessageFrom(BayesNode source, boolean upstream){
@@ -444,13 +467,19 @@ public class BayesNode {
 	
 	protected void multiplyPotentialWithMessages(){
 		
+		System.out.println("------------" + type + "----------------");
+		
 		if (!upstreamMessages.isEmpty()){
 			potential = multiplyPotentialWithMessages(potential, upstreamMessages);
 		}
 		
+		System.out.println(type + " upstream probability " + this.getProbability());
+		
 		if (!downstreamMessages.isEmpty()){
 			potential = multiplyPotentialWithMessages(potential, downstreamMessages);
 		}
+		
+		System.out.println(type + " downstream probability " + this.getProbability());
 		
 		clearMessages();
 		probability = null;

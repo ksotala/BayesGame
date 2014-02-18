@@ -119,6 +119,15 @@ public class BayesNet {
 		return this.connectNodes(node1, node2);
 	}
 	
+	public boolean forceConnectNodes(Object rawNode1, Object rawNode2){
+		BayesNode node1 = getNode(rawNode1);
+		BayesNode node2 = getNode(rawNode2);
+		if (!scopesCompatible(node1, node2)){
+			node2.addItemToScope(node1.type);
+		}
+		return this.connectNodes(node1, node2);
+	}
+	
 	/**
 	 * Adds a node to the network which evaluates to true (with P = 1) iff at least one
 	 * of its parents is true (with P = 1). The parents of the node must already exist
@@ -206,7 +215,7 @@ public class BayesNet {
 	 * Turns an existing node with at least one parent into a deterministic OR node.
 	 * 
 	 * @param orNode The node to be made into a deterministic OR node
-	 * @return false if the node doesn't exist, has no parents, or doesn't have its parents in its scope. True otherwise;
+	 * @return false if the node doesn't exist or has no parents, true otherwise.
 	 */
 	public boolean makeDeterministicOr(Object orObject){
 		BayesNode node = getNodeIffPresent(orObject);
@@ -230,16 +239,13 @@ public class BayesNet {
 		Set<Object> scopeSet = new HashSet<Object>(Arrays.asList(node.scope));
 		for (Object p : parents){
 			if (!scopeSet.contains(p)){
-				System.out.println(scopeSet);
-				System.out.println(p + " not contained");
-				return false;
+				node.addItemToScope(p);
 			}
 		}
 		
 		this.setNodeToDeterministicOr(node, parents);
 		
 		return true;
-		
 	}
 	
 	private boolean scopesCompatible(BayesNode node1, BayesNode node2){
@@ -364,10 +370,12 @@ public class BayesNet {
 		
 	private void sendDownstreamMessages(BayesNode source){
 		visitedDownstreamNodes.add(source);
+		
 		ArrayList<BayesNode> sourceNeighbors = new ArrayList<BayesNode>(graph.getNeighbors(source));
 		for (BayesNode neighbor : sourceNeighbors){
 			if (!visitedDownstreamNodes.contains(neighbor)){
 				Object[] sharedScope = getScopeDifference(source, neighbor).toArray();
+				// Object[] sharedScope = new Object[]{source.type};
 				Message message = source.generateDownstreamMessage(sharedScope);
 				neighbor.receiveDownstreamMessage(message);
 				downstreamMessagePaths.push(new Pair<BayesNode,BayesNode>(source, neighbor));
@@ -381,8 +389,8 @@ public class BayesNet {
 			Pair<BayesNode,BayesNode> path = downstreamMessagePaths.pop();
 			BayesNode source = path.getSecond();
 			BayesNode receiver = path.getFirst();
-			
 			Object[] sharedScope = getScopeDifference(source, receiver).toArray();
+			// Object[] sharedScope = new Object[]{source.type};
 			Message message = source.generateUpstreamMessage(sharedScope);
 			receiver.receiveUpstreamMessage(message);
 			source.multiplyPotentialWithMessages();
