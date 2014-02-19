@@ -13,6 +13,8 @@ import java.util.Stack;
 import org.apache.commons.math3.fraction.Fraction;
 import org.apache.commons.math3.util.Pair;
 
+import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
+import bayesGame.bayesbayes.nodeCPD.NodeCPD;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 
 public class BayesNet {
@@ -151,12 +153,18 @@ public class BayesNet {
 	    	}
 	    }
 		
-	    this.setNodeToDeterministicOr(orBayesNode, parents);
+	    this.setNodeTo(orBayesNode, parents, new DeterministicOR());
 	    
 		boolean added = addNode(orBayesNode);
 		if (!added){
 			return false;
 		}
+		
+		System.out.println("Node " + orNode + " potentials: ");
+		for (Fraction f : orBayesNode.getPotential()){
+			System.out.println(f.doubleValue() + " ");
+		};
+		System.out.println("");
         
         for (Object o : parents){
         	boolean sanityCheck = connectNodes(o, orNode);
@@ -168,49 +176,12 @@ public class BayesNet {
         return true;
 	}
 	
-	private void setNodeToDeterministicOr(BayesNode orBayesNode, Object[] parents){
-		Object orNode = orBayesNode.type;
-		
-		ArrayList<Object> allItems = new ArrayList<Object>(Arrays.asList(parents));
-		allItems.add(0, parents);
-		
-		int rows = (int) Math.pow(2, allItems.size());
-		
-        for (int i=0; i<rows; i++) {
-        	boolean trueSeen = false;
-        	ArrayList<Object> falseObjects = new ArrayList<Object>();
-            for (int j=allItems.size()-1; j>=0; j--) {
-                if (j > 0){
-                	if((i/(int) Math.pow(2, j))%2 == 1){
-                    	trueSeen = true;
-                    } else {
-                    	falseObjects.add(allItems.get(j));
-                    }
-                } else {
-                	Fraction probability;
-                	if((i/(int) Math.pow(2, j))%2 == 1){
-                		if (trueSeen){
-                			probability = Fraction.ONE;
-                		} else {
-                			probability = Fraction.ZERO;
-                		}
-                	} else {
-                		falseObjects.add(orNode);
-                		if (trueSeen){
-                			probability = Fraction.ZERO;
-                		} else {
-                			probability = Fraction.ONE;
-                		}
-                	}
-                	
-                	orBayesNode.setProbabilityOfUntrueVariables(probability, falseObjects.toArray());
-                }
-            }
-        }
-		
+	public BayesNode setNodeTo(BayesNode node, Object[] parents, NodeCPD cpd){
+		return node = cpd.getNode(node, parents);
 	}
 	
 	
+		
 	/**
 	 * Turns an existing node with at least one parent into a deterministic OR node.
 	 * 
@@ -220,22 +191,27 @@ public class BayesNet {
 	public boolean makeDeterministicOr(Object orObject){
 		BayesNode node = getNodeIffPresent(orObject);
 		
+		// the node has to already exist for us to do anything
 		if (node == null){
 			return false;
 		}
 		
 		ArrayList<BayesNode> parentNodes = new ArrayList<BayesNode>(graph.getPredecessors(node));
 		
+		// and it should have parents
 		if (parentNodes.size() == 0){
 			return false;
 		}
 				
 		Object[] parents = new Object[parentNodes.size()];
 		
+		// the graph object returns the parents as a list of BayesNodes, so let's extract their
+		// types into a separate array
 		for (int i = 0; i < parentNodes.size(); i++){
 			parents[i] = parentNodes.get(i).type;
 		}
 		
+		// as the node relies on the values of its parents, it should have its parents in its scope
 		Set<Object> scopeSet = new HashSet<Object>(Arrays.asList(node.scope));
 		for (Object p : parents){
 			if (!scopeSet.contains(p)){
@@ -243,7 +219,7 @@ public class BayesNet {
 			}
 		}
 		
-		this.setNodeToDeterministicOr(node, parents);
+		this.setNodeTo(node, parents, new DeterministicOR());
 		
 		return true;
 	}
@@ -375,7 +351,7 @@ public class BayesNet {
 		for (BayesNode neighbor : sourceNeighbors){
 			if (!visitedDownstreamNodes.contains(neighbor)){
 				Object[] sharedScope = getScopeDifference(source, neighbor).toArray();
-				// Object[] sharedScope = new Object[]{source.type};
+				//b Object[] sharedScope = new Object[]{source.type};
 				Message message = source.generateDownstreamMessage(sharedScope);
 				neighbor.receiveDownstreamMessage(message);
 				downstreamMessagePaths.push(new Pair<BayesNode,BayesNode>(source, neighbor));

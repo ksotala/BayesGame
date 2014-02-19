@@ -258,8 +258,12 @@ public class BayesNode {
 	 * probabilities of any adjacent nodes afterwards.
 	 */
 	public void observe(){
+		boolean assumedCleared = false;;
+		if (assumedValue != null){
+			assumedCleared = true;
+			resetNode();
+		}
 		
-		resetNode();
 		observed = true;
 				
 		if (trueValue == null){
@@ -269,25 +273,37 @@ public class BayesNode {
 			} else {
 				trueValue = Boolean.FALSE;
 			}
+			if (assumedCleared){
+				System.out.println("WARNING: the node had an assumed value which was cleared when observing it, and its value was then randomly generated - the probability used for generating the value may not have been the intended one.");
+			}
 		}
 		
-		indexChooser selfChooser = new indexChooser();
-		ArrayList<Integer> locationsToZero;
 		
-		if (trueValue){
+		changePotentialOfValues(!trueValue, Fraction.ZERO);
+		
+		// normalizeNodePotential();
+		
+		probability = null;
+	}
+	
+	private void changePotentialOfValues(boolean value, Fraction newpotential){
+		indexChooser selfChooser = new indexChooser();
+		ArrayList<Integer> locationsToChange;
+		
+		if (value){
 			
-			locationsToZero = selfChooser.getAllIndexes(type, false);
+			locationsToChange = selfChooser.getAllIndexes(type, true);
 			
 		} else {
 			
-			locationsToZero = selfChooser.getAllIndexes(type, true);
+			locationsToChange = selfChooser.getAllIndexes(type, false);
 		}
 		
-		for (Integer i : locationsToZero){
-			potential[i] = Fraction.ZERO;
+		for (Integer i : locationsToChange){
+			potential[i] = newpotential;
 		}
 		
-		probability = null;
+		
 	}
 	
 	public void observe(boolean observation){
@@ -306,21 +322,11 @@ public class BayesNode {
 		
 		assumedValue = value;
 		
-		indexChooser selfChooser = new indexChooser();
-		ArrayList<Integer> locationsToZero;
+		changePotentialOfValues(!value, Fraction.ZERO);
 		
-		if (value){
-			
-			locationsToZero = selfChooser.getAllIndexes(type, false);
-			
-		} else {
-			
-			locationsToZero = selfChooser.getAllIndexes(type, true);
-		}
+		// normalizeNodePotential();
 		
-		for (Integer i : locationsToZero){
-			potential[i] = Fraction.ZERO;
-		}	
+		probability = null;
 		
 		return true;
 	}
@@ -376,14 +382,34 @@ public class BayesNode {
 		return this.normalizePotentials(marginalPotential);
 	}
 	
+	protected void normalizeNodePotential(){
+		Fraction total = Fraction.ZERO;
+		for (Fraction f : potential){
+			total = total.add(f);
+		}
+		if (!total.equals(Fraction.ZERO)){
+			for (int i = 0; i < potential.length; i++){
+				Fraction f = potential[i];
+				potential[i] = f.divide(total);
+				System.out.println("After dividing with " + total.doubleValue() + ": " + potential[i].doubleValue());
+			}
+		}
+		
+		System.out.print("Normalized potentials of " + type + ":");
+		for (Fraction f : potential){
+			System.out.print(", " + f.doubleValue());
+		}
+		System.out.println("");
+	}
+	
 	protected void receiveUpstreamMessage(Message message){
 		upstreamMessages.add(message);
-		System.out.println("Upstream message of " + message.scope[0] + " to " + type + " from " + message.sender + ", reported probability of " + message.message[0].doubleValue());
+		System.out.println("Upstream message of " + message.scope[0] + " to " + type + " from " + message.sender + ", reported true probability of " + message.message[0].doubleValue() + " and false probability of " + message.message[1].doubleValue());
 	}
 	
 	protected void receiveDownstreamMessage(Message message){
 		downstreamMessages.add(message);
-		System.out.println("Downstream message of " + message.scope[0] + " to " + type + " from " + message.sender + ", reported probability of " + message.message[0].doubleValue());
+		System.out.println("Downstream message of " + message.scope[0] + " to " + type + " from " + message.sender + ", reported true probability of " + message.message[0].doubleValue() + " and false probability of " + message.message[1].doubleValue());
 	}
 	
 	protected boolean receivedMessageFrom(BayesNode source, boolean upstream){
@@ -469,16 +495,21 @@ public class BayesNode {
 		
 		System.out.println("------------" + type + "----------------");
 		
+		probability = null;
+		System.out.println(type + " original probability " + this.getProbability());
+		
 		if (!upstreamMessages.isEmpty()){
 			potential = multiplyPotentialWithMessages(potential, upstreamMessages);
 		}
 		
+		probability = null;
 		System.out.println(type + " upstream probability " + this.getProbability());
 		
 		if (!downstreamMessages.isEmpty()){
 			potential = multiplyPotentialWithMessages(potential, downstreamMessages);
 		}
 		
+		probability = null;
 		System.out.println(type + " downstream probability " + this.getProbability());
 		
 		clearMessages();
