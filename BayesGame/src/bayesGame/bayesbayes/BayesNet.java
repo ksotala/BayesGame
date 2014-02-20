@@ -121,6 +121,17 @@ public class BayesNet {
 		return this.connectNodes(node1, node2);
 	}
 	
+	/**
+	 * Connects two existing nodes, adding the parent to the child's scope if neither has the
+	 * other in its scope. Note that this will rewrite the child's conditional probability table.
+	 * To avoid this, use the regular connectNodes function which takes no action for incompatible
+	 * scopes, or use the changeNodeCPD function to make the child conform to the desired probability
+	 * distribution.
+	 * 
+	 * @param rawNode1
+	 * @param rawNode2
+	 * @return
+	 */
 	public boolean forceConnectNodes(Object rawNode1, Object rawNode2){
 		BayesNode node1 = getNode(rawNode1);
 		BayesNode node2 = getNode(rawNode2);
@@ -141,7 +152,12 @@ public class BayesNet {
 	 * @return true if the node was added, false otherwise
 	 */
 	public boolean addDeterministicOr(Object orNode, Object... parents){
-		BayesNode orBayesNode = new BayesNode(orNode, parents);
+		return addNodeWithParents(orNode, new DeterministicOR(), parents);
+	}
+	
+	
+	public boolean addNodeWithParents(Object object, NodeCPD cpd, Object... parents){
+		BayesNode orBayesNode = new BayesNode(object, parents);
 		
 		if (parents.length == 0){
 			return false;
@@ -153,21 +169,15 @@ public class BayesNet {
 	    	}
 	    }
 		
-	    this.setNodeTo(orBayesNode, parents, new DeterministicOR());
+	    this.setNodeTo(orBayesNode, parents, cpd);
 	    
 		boolean added = addNode(orBayesNode);
 		if (!added){
 			return false;
 		}
-		
-		System.out.println("Node " + orNode + " potentials: ");
-		for (Fraction f : orBayesNode.getPotential()){
-			System.out.println(f.doubleValue() + " ");
-		};
-		System.out.println("");
         
         for (Object o : parents){
-        	boolean sanityCheck = connectNodes(o, orNode);
+        	boolean sanityCheck = connectNodes(o, object);
         	if (!sanityCheck){
         		throw new IllegalStateException("Failed to connect nodes that should be connected fine ??? Shouldn't be possible");
         	}
@@ -176,7 +186,7 @@ public class BayesNet {
         return true;
 	}
 	
-	public BayesNode setNodeTo(BayesNode node, Object[] parents, NodeCPD cpd){
+	private BayesNode setNodeTo(BayesNode node, Object[] parents, NodeCPD cpd){
 		return node = cpd.getNode(node, parents);
 	}
 	
@@ -189,7 +199,18 @@ public class BayesNet {
 	 * @return false if the node doesn't exist or has no parents, true otherwise.
 	 */
 	public boolean makeDeterministicOr(Object orObject){
-		BayesNode node = getNodeIffPresent(orObject);
+		return changeNodeCPD(orObject, new DeterministicOR());
+	}
+	
+	/**
+	 * Gives an existing node with at least one parent the kind of probability distribution specified in the parameter.
+	 * 
+	 * @param object The node to be changed
+	 * @param cpd The desired probability distribution
+	 * @return false if the node doesn't exist or has no parents, true otherwise.
+	 */
+	public boolean changeNodeCPD(Object object, NodeCPD cpd){
+		BayesNode node = getNodeIffPresent(object);
 		
 		// the node has to already exist for us to do anything
 		if (node == null){
@@ -219,9 +240,9 @@ public class BayesNet {
 			}
 		}
 		
-		this.setNodeTo(node, parents, new DeterministicOR());
+		this.setNodeTo(node, parents, cpd);
 		
-		return true;
+		return true;	
 	}
 	
 	private boolean scopesCompatible(BayesNode node1, BayesNode node2){

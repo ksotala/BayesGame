@@ -41,20 +41,6 @@ public class TutorialLevel2Controller extends Controller {
 			net.addNode("Mom");
 			net.addDeterministicOr("Opin", "Mom", "Dad");
 
-			/*
-			net.addNode("Mom");
-			net.addNode("Dad");
-			net.addNode("Opin");
-			net.addNode("Mailman");
-			
-			net.forceConnectNodes("Mom", "Opin");
-			net.forceConnectNodes("Dad", "Opin");
-			net.forceConnectNodes("Mailman", "Dad");
-			
-			net.makeDeterministicOr("Dad");
-			net.makeDeterministicOr("Opin");
-			*/
-
 			net.observe("Mom", false);
 			net.observe("Mailman", true);
 			net.updateBeliefs();
@@ -67,7 +53,18 @@ public class TutorialLevel2Controller extends Controller {
 			UI.addText("Celia: Okay, so we know that dad heard about the treasure from the mailman. And didn't know anything else about the treasure, just that the mailman had spoken about it. So we should find out how the mailman knows about it!");
 			break;
 		case 1:
-			UI.addTextClear("Opin: Right. So, the ");
+			UI.addTextClear("Opin: Right. So, our house is the fourth one that the mailman visits every morning, so that's three people that the mailman might have spoken with before.");
+			
+			net.addNode("Neighbor 1");
+			net.addNode("Neighbor 2");
+			net.addNode("Neighbor 3");
+			net.forceConnectNodes("Neighbor 1", "Mailman");
+			net.forceConnectNodes("Neighbor 2", "Mailman");
+			net.forceConnectNodes("Neighbor 3", "Mailman");
+			net.makeDeterministicOr("Mailman");
+			net.observe("Mailman", true);
+			
+			UI.updateGraph();
 		}
 		part++;
 	}
