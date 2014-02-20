@@ -49,6 +49,12 @@ public class BayesNet {
 		return addNode(node);
 	}
 	
+	public void addNodes(Object... nodes){
+		for (Object o : nodes){
+			addNode(o);
+		}
+	}
+	
 	private BayesNode getNode(Object o){
 		BayesNode newNode = getNodeIffPresent(o);
 		if (newNode == null){

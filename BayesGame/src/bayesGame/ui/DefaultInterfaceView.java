@@ -371,7 +371,7 @@ public class DefaultInterfaceView {
 	
 	private void displayBayesGraph(){
 		Layout<BayesNode, Pair<Integer,Integer>> layout = new DAGLayout<BayesNode, Pair<Integer, Integer>>(graph);
-        layout.setSize(new Dimension(400,400));
+        layout.setSize(new Dimension(700,700));
         
         vv = new VisualizationViewer<BayesNode, Pair<Integer,Integer>>(layout);
         
@@ -412,9 +412,9 @@ public class DefaultInterfaceView {
         vv.getRenderContext().setVertexShapeTransformer(vertexShape);
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller()); 
 
-        vv.setPreferredSize(new Dimension(500,500)); //Sets the viewing area size
+        vv.setPreferredSize(new Dimension(800,800)); //Sets the viewing area size
         
-        vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).rotate(-Math.PI, 200, 200);
+        vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).rotate(-Math.PI, 350, 350);
         
         graphPanel.add(vv);
         frame.pack();
@@ -423,6 +423,12 @@ public class DefaultInterfaceView {
 	
 	public void updateGraph(){
 		vv.repaint();
+	}
+	
+	public void redrawGraph(){
+		graphPanel.removeAll();
+		
+		displayBayesGraph();
 	}
 	
 	public int displayDialog(Object[] options, String text){
