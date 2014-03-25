@@ -35,6 +35,7 @@ import org.apache.commons.math3.util.Pair;
 import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
+import bayesGame.ui.transformers.BayesNodeProbabilityToGridTransformer;
 import bayesGame.ui.verbs.Verb;
 import edu.uci.ics.jung.algorithms.layout.DAGLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
@@ -375,6 +376,7 @@ public class DefaultInterfaceView {
         
         vv = new VisualizationViewer<BayesNode, Pair<Integer,Integer>>(layout);
         
+        /*
         Transformer<BayesNode,Paint> vertexPaint = new Transformer<BayesNode,Paint>() {
         	public Paint transform(BayesNode i) {
         		Boolean assumed = i.assumedValue();
@@ -410,6 +412,10 @@ public class DefaultInterfaceView {
         	
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setVertexShapeTransformer(vertexShape);
+        */
+        
+        vv.getRenderContext().setVertexIconTransformer(new BayesNodeProbabilityToGridTransformer());
+        
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller()); 
 
         vv.setPreferredSize(new Dimension(800,800)); //Sets the viewing area size

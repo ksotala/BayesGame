@@ -7,9 +7,11 @@ import java.util.ResourceBundle;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import bayesGame.bayesbayes.BayesNet;
 import bayesGame.levelcontrollers.TutorialController;
 import bayesGame.levelcontrollers.TutorialLevel2Controller;
 import bayesGame.ui.ColorSelection;
+import bayesGame.ui.DefaultInterfaceView;
 import bayesGame.ui.LanguageChooser;
 
 /**
@@ -82,6 +84,19 @@ public class BayesGame {
 	
 	public static void beginTutorial(int level){
 		
+		DefaultInterfaceView ui = new DefaultInterfaceView();
+		BayesNet net = new BayesNet();
+
+		net.addNode("Dad");
+		net.addNode("Mom");
+		net.addDeterministicOr("Opin", "Mom", "Dad");
+		
+		ui.setGraph(net);
+		ui.displayGraph(DefaultInterfaceView.graphTypeBayesGraph);
+		
+		
+		
+		/*
 		if (level == 1){
 			frame.dispose();
 			TutorialController tutorial = new TutorialController();
@@ -91,7 +106,7 @@ public class BayesGame {
 			TutorialLevel2Controller tutorial = new TutorialLevel2Controller();
 		}
 		
-		
+	*/	
 	}
 	
 
