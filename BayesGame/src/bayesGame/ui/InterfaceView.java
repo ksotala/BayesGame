@@ -12,4 +12,8 @@ public interface InterfaceView {
 	public static final int callbackLocationGenericMessage = 2;
 	public static final int callbackLocationGenericMessageObject = 3;
 	
+	public void addText(String text);
+	public void addRefreshDisplay();
+	public void processEventQueue();
+	
 }
