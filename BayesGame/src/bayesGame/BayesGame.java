@@ -46,8 +46,9 @@ public class BayesGame {
 
 	public static void main(String[] args) {
 		
-	    // showLanguageSelector();
-		beginTutorial(2);
+	    showLanguageSelector();
+	    // showColorSelector();
+		// beginTutorial(1);
 	}
 	
 	public static void showLanguageSelector(){
@@ -82,21 +83,7 @@ public class BayesGame {
 		
 	}
 	
-	public static void beginTutorial(int level){
-		
-		DefaultInterfaceView ui = new DefaultInterfaceView();
-		BayesNet net = new BayesNet();
-
-		net.addNode("Dad");
-		net.addNode("Mom");
-		net.addDeterministicOr("Opin", "Mom", "Dad");
-		
-		ui.setGraph(net);
-		ui.displayGraph(DefaultInterfaceView.graphTypeBayesGraph);
-		
-		
-		
-		/*
+	public static void beginTutorial(int level){		
 		if (level == 1){
 			frame.dispose();
 			TutorialController tutorial = new TutorialController();
@@ -106,7 +93,19 @@ public class BayesGame {
 			TutorialLevel2Controller tutorial = new TutorialLevel2Controller();
 		}
 		
-	*/	
+		if (level == 42){
+			DefaultInterfaceView ui = new DefaultInterfaceView();
+			BayesNet net = new BayesNet();
+
+			net.addNode("Dad");
+			net.addNode("Mom");
+			net.addDeterministicOr("Opin", "Mom", "Dad");
+			
+			ui.setGraph(net);
+			ui.displayGraph(DefaultInterfaceView.graphTypeBayesGraph);
+		}
+		
+	
 	}
 	
 

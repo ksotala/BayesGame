@@ -38,7 +38,6 @@ public class BayesNetTest {
 		String text = "Hello";
 		int number = 42;
 		
-		
 		assertFalse("Implementation requires nodes to exist before they are added", testNet.connectNodes(text, number));
 		assertTrue("Node should be added successfully", testNet.addNode(text));
 		assertTrue("Node should be added successfully", testNet.addNode(number));

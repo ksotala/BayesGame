@@ -258,7 +258,7 @@ public class BayesNode {
 	 * probabilities of any adjacent nodes afterwards.
 	 */
 	public void observe(){
-		boolean assumedCleared = false;;
+		boolean assumedCleared = false;
 		if (assumedValue != null){
 			assumedCleared = true;
 			resetNode();
