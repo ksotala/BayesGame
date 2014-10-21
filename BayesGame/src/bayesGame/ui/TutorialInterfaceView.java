@@ -125,7 +125,6 @@ public class TutorialInterfaceView {
 	    textPane.putClientProperty("IgnoreCharsetDirective", Boolean.TRUE);
 	    
 	    scroll = new JScrollPane (textPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	    frame.add(scroll);
 	    
 	    c.gridx = 0;
 	    c.gridy = 1;
@@ -134,7 +133,7 @@ public class TutorialInterfaceView {
 	    c.weightx = 1;
 	    c.weighty = 1;
 	    c.fill = GridBagConstraints.BOTH;
-	    pane.add(textPane, c);
+	    pane.add(scroll, c);
 		
 	}
 	
@@ -325,9 +324,6 @@ public class TutorialInterfaceView {
 		textPane.addKeyListener(k);
 		
 		frame.getRootPane().addKeyListener(k);
-		
-		// frame.getRootPane().getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "in_spaaace");
-		// frame.getRootPane().getActionMap().put("in_spaaace", k);
 	}
 	
 	public void addVerb(Verb verb){

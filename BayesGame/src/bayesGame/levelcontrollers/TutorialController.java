@@ -10,7 +10,7 @@ import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.ui.TutorialInterfaceView;
-import bayesGame.ui.swinglisteners.AnyKeyListener;
+import bayesGame.ui.swinglisteners.AnyKeyTutorialListener;
 import bayesGame.ui.swinglisteners.AssumingMousePlugin;
 import bayesGame.ui.swinglisteners.InteractingMousePlugin;
 import bayesGame.ui.swinglisteners.TutorialMousePlugin;
@@ -36,7 +36,7 @@ public class TutorialController extends Controller {
 
 	public TutorialController(){
 		UI = new TutorialInterfaceView();
-		UI.addKeyListener(new AnyKeyListener(this));
+		UI.addKeyListener(new AnyKeyTutorialListener(this));
 		advanceTutorial();
 		awaitingkeypresses = true;
 		awaitingmousemessage = false;

@@ -3,20 +3,20 @@ package bayesGame.ui.swinglisteners;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import bayesGame.levelcontrollers.Controller;
+import bayesGame.ui.InterfaceView;
 
 public class AnyKeyListener extends KeyAdapter {
 	
-	private final Controller controller;
+	private final InterfaceView controller;
 
-	public AnyKeyListener(Controller controller) {
+	public AnyKeyListener(InterfaceView controller) {
 		super();
 		this.controller = controller;
 	}
 	
 	@Override
 	public void keyTyped(KeyEvent e){
-		controller.keyMessage(e);
+		controller.proceed();
 	}
 
 }

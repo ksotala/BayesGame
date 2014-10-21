@@ -2,7 +2,7 @@ package bayesGame.levelcontrollers;
 
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.ui.TutorialInterfaceView;
-import bayesGame.ui.swinglisteners.AnyKeyListener;
+import bayesGame.ui.swinglisteners.AnyKeyTutorialListener;
 
 public class TutorialLevel2Controller extends Controller {
 	
@@ -17,7 +17,7 @@ public class TutorialLevel2Controller extends Controller {
 
 	public TutorialLevel2Controller() {
 		UI = new TutorialInterfaceView();
-		UI.addKeyListener(new AnyKeyListener(this));
+		UI.addKeyListener(new AnyKeyTutorialListener(this));
 		awaitingkeypresses = true;
 		awaitingmousemessage = false;
 		advanceTutorial();
