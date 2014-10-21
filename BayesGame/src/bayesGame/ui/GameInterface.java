@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import bayesGame.ui.swinglisteners.AnyKeyListener;
+import bayesGame.ui.swinglisteners.KeyController;
 
-public class GameInterface implements InterfaceView {
+public class GameInterface implements InterfaceView, KeyController {
 
 	private JFrame frame;
 	private JPanel bigPanel;
@@ -179,10 +181,12 @@ public class GameInterface implements InterfaceView {
 	}
 	
 	@Override
-	public void proceed(){
+	public void keyMessage(KeyEvent e) {
 		if (waitingForInput){
+			waitingForInput = false;
 			processEventQueue();
 		}
+		
 	}
 	
 	

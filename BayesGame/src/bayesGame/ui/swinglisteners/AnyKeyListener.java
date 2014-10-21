@@ -7,16 +7,16 @@ import bayesGame.ui.InterfaceView;
 
 public class AnyKeyListener extends KeyAdapter {
 	
-	private final InterfaceView controller;
+	private final KeyController controller;
 
-	public AnyKeyListener(InterfaceView controller) {
+	public AnyKeyListener(KeyController controller) {
 		super();
 		this.controller = controller;
 	}
 	
 	@Override
 	public void keyTyped(KeyEvent e){
-		controller.proceed();
+		controller.keyMessage(e);
 	}
 
 }
