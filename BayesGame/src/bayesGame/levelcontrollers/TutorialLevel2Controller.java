@@ -1,12 +1,12 @@
 package bayesGame.levelcontrollers;
 
 import bayesGame.bayesbayes.BayesNet;
-import bayesGame.ui.DefaultInterfaceView;
+import bayesGame.ui.TutorialInterfaceView;
 import bayesGame.ui.swinglisteners.AnyKeyListener;
 
 public class TutorialLevel2Controller extends Controller {
 	
-	private DefaultInterfaceView UI;
+	private TutorialInterfaceView UI;
 	private int level = 0;
 	private int part = 0;
 	
@@ -16,7 +16,7 @@ public class TutorialLevel2Controller extends Controller {
 	private boolean awaitingmousemessage;
 
 	public TutorialLevel2Controller() {
-		UI = new DefaultInterfaceView();
+		UI = new TutorialInterfaceView();
 		UI.addKeyListener(new AnyKeyListener(this));
 		awaitingkeypresses = true;
 		awaitingmousemessage = false;
@@ -48,7 +48,7 @@ public class TutorialLevel2Controller extends Controller {
 			net.observe("Opin");
 
 			UI.setGraph(net);
-			UI.displayGraph(DefaultInterfaceView.graphTypeBayesGraph);
+			UI.displayGraph(TutorialInterfaceView.graphTypeBayesGraph);
 			
 			UI.addTextMore("Celia: Okay, so we know that dad heard about the treasure from the mailman. And didn't know anything else about the treasure, just that the mailman had spoken about it. So we should find out how the mailman knows about it!");
 			break;

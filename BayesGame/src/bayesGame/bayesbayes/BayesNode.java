@@ -277,8 +277,7 @@ public class BayesNode {
 				System.out.println("WARNING: the node had an assumed value which was cleared when observing it, and its value was then randomly generated - the probability used for generating the value may not have been the intended one.");
 			}
 		}
-		
-		
+				
 		changePotentialOfValues(!trueValue, Fraction.ZERO);
 		
 		// normalizeNodePotential();
@@ -535,6 +534,7 @@ public class BayesNode {
 					}
 				}				
 			} else {
+				throw new IllegalStateException("Message contained truth values for multiple variables, not yet implemented");
 				//TODO: implement the case where the message contains the truth values for multiple variables!
 			}
 			selfChooser.resetUntrue();
@@ -682,7 +682,7 @@ public class BayesNode {
 		
 
 		/**
-		 * Returns an array of integers containing every index of the potential array
+		 * Returns a list of integers containing every index of the potential array
 		 * where all the variables specified via the requestUntrue methods are untrue.
 		 * 
 		 * This is probably a horrible terrible implementation and there's some obvious

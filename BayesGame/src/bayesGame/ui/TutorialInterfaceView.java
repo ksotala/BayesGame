@@ -51,7 +51,7 @@ import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
  * The default interface for the game. 
  *
  */
-public class DefaultInterfaceView {
+public class TutorialInterfaceView {
 
 	private JFrame frame;
 	private JPanel graphPanel;
@@ -65,7 +65,7 @@ public class DefaultInterfaceView {
 	
 	public static final int graphTypeBayesGraph = 0;
 	
-	public DefaultInterfaceView() {
+	public TutorialInterfaceView() {
 		
 		frame = new JFrame("Academy Game");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -376,7 +376,7 @@ public class DefaultInterfaceView {
         
         vv = new VisualizationViewer<BayesNode, Pair<Integer,Integer>>(layout);
         
-        /*
+        
         Transformer<BayesNode,Paint> vertexPaint = new Transformer<BayesNode,Paint>() {
         	public Paint transform(BayesNode i) {
         		Boolean assumed = i.assumedValue();
@@ -412,9 +412,9 @@ public class DefaultInterfaceView {
         	
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setVertexShapeTransformer(vertexShape);
-        */
         
-        vv.getRenderContext().setVertexIconTransformer(new BayesNodeProbabilityToGridTransformer());
+        
+        // vv.getRenderContext().setVertexIconTransformer(new BayesNodeProbabilityToGridTransformer());
         
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller()); 
 

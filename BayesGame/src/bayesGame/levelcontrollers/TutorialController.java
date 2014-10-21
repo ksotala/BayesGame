@@ -9,7 +9,7 @@ import edu.uci.ics.jung.visualization.control.PluggableGraphMouse;
 import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
-import bayesGame.ui.DefaultInterfaceView;
+import bayesGame.ui.TutorialInterfaceView;
 import bayesGame.ui.swinglisteners.AnyKeyListener;
 import bayesGame.ui.swinglisteners.AssumingMousePlugin;
 import bayesGame.ui.swinglisteners.InteractingMousePlugin;
@@ -21,7 +21,7 @@ import bayesGame.ui.verbs.Verb;
 
 public class TutorialController extends Controller {
 	
-	DefaultInterfaceView UI;
+	TutorialInterfaceView UI;
 	int level = 0;
 	int part = 0;
 	int failedtries = 0;
@@ -35,7 +35,7 @@ public class TutorialController extends Controller {
 	boolean awaitingmousemessage;
 
 	public TutorialController(){
-		UI = new DefaultInterfaceView();
+		UI = new TutorialInterfaceView();
 		UI.addKeyListener(new AnyKeyListener(this));
 		advanceTutorial();
 		awaitingkeypresses = true;
@@ -90,7 +90,7 @@ public class TutorialController extends Controller {
 			net.addDeterministicOr("Opin", "Mom", "Dad");
 						
 			UI.setGraph(net);
-			UI.displayGraph(DefaultInterfaceView.graphTypeBayesGraph);
+			UI.displayGraph(TutorialInterfaceView.graphTypeBayesGraph);
 			
 			UI.clearText();
 			UI.addTutorialText("Celia has figured out a rule: your brother knows about the treasure, if (and only if) at least one of your parents knows about it.");
@@ -115,7 +115,7 @@ public class TutorialController extends Controller {
 			awaitingkeypresses = true;
 			break;
 		case 9:
-			net.clearAssumptions();
+			net.resetNetworkBeliefsObservations();
 			net.observe("Opin", true);
 			UI.clearVisualizationHighlights();
 			UI.updateGraph();

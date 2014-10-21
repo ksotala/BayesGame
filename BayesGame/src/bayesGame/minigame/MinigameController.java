@@ -1,5 +1,7 @@
 package bayesGame.minigame;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,25 +10,31 @@ import bayesGame.bayesbayes.*;
 
 public class MinigameController {
 
-	private InterfaceView gameInterface = null;
+	private InterfaceView gameInterface;
 	private Map<Object,String[]> discussions;
 	private BayesNet gameNet;
 	private int timeLimit;
-	private Set<Object> observableNodes;
+	private Set<Object> hiddenNodes;
 	private Set<Object> targetNodes;
 	
 	private boolean ready = false;
 	private int turnsTaken;
 	
-	public MinigameController() {
+	public MinigameController(BayesNet gameNet, InterfaceView gameInterface, Set<Object> targetNodes) {
+		this.gameNet = gameNet;
+		this.gameInterface = gameInterface;
+		this.targetNodes = targetNodes;
+		
+		this.hiddenNodes = new HashSet<Object>();
+		this.discussions = new HashMap<Object,String[]>();
 	}
 	
-	public void setNet(BayesNet gameNet){
-		this.gameNet = gameNet;
+	public void setHiddenNodes(Set<Object> hiddenNodes){
+		this.hiddenNodes = hiddenNodes;
 	}
-		
-	public void setInterface(InterfaceView gameInterface){
-		this.gameInterface = gameInterface;
+	
+	public void setDiscussions(Map<Object,String[]> discussions){
+		this.discussions = discussions;
 	}
 	
 	// game mode 1 = figure out the contents of target nodes
@@ -46,7 +54,7 @@ public class MinigameController {
 	
 	public void observeNode(Object node){
 		if (ready){
-			if (observableNodes.contains(node)){
+			if (!hiddenNodes.contains(node)){
 				String[] question = discussions.get(node);
 				if (question != null){
 					gameInterface.addText(question[0]);
@@ -67,7 +75,7 @@ public class MinigameController {
 		
 		boolean allTargetNodesKnown = true;
 		for (Object o : targetNodes){
-			if (gameNet.getProbability(o).intValue() < 1 && gameNet.getProbability(o).intValue() > 0){
+			if (gameNet.getProbability(o).doubleValue() > 0.0d && gameNet.getProbability(o).doubleValue() < 1.0d){
 				allTargetNodesKnown = false;
 				break;
 			}
@@ -75,8 +83,10 @@ public class MinigameController {
 		
 		if (allTargetNodesKnown){
 			// report game ended in success
+			ready = false;
 		} else if (turnsTaken == timeLimit){
 			// report game ended in failure
+			ready = false;
 		}
 	}
 	

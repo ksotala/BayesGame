@@ -11,7 +11,6 @@ import bayesGame.bayesbayes.BayesNet;
 import bayesGame.levelcontrollers.TutorialController;
 import bayesGame.levelcontrollers.TutorialLevel2Controller;
 import bayesGame.ui.ColorSelection;
-import bayesGame.ui.DefaultInterfaceView;
 import bayesGame.ui.LanguageChooser;
 
 /**
@@ -92,19 +91,7 @@ public class BayesGame {
 		if (level == 2){
 			TutorialLevel2Controller tutorial = new TutorialLevel2Controller();
 		}
-		
-		if (level == 42){
-			DefaultInterfaceView ui = new DefaultInterfaceView();
-			BayesNet net = new BayesNet();
-
-			net.addNode("Dad");
-			net.addNode("Mom");
-			net.addDeterministicOr("Opin", "Mom", "Dad");
-			
-			ui.setGraph(net);
-			ui.displayGraph(DefaultInterfaceView.graphTypeBayesGraph);
-		}
-		
+	
 	
 	}
 	

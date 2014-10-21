@@ -178,6 +178,7 @@ public class BayesNetTest {
 		assertEquals("Child should have P = 0 when both parents have P = 0", 0.00d, probabilityOfChild.doubleValue(), 0.01);
 	}
 	
+	
 	@Test
 	public final void deterministicOrMessagePassing(){
 		testNet.addNode("Mother");
@@ -195,6 +196,27 @@ public class BayesNetTest {
 		assertEquals("Child should have P = 1 when manually set to 1", 1.00d, probabilityOfChild.doubleValue(), 0.01);
 		assertEquals("Mother should have P = 0 when manually set to 0", 0.00d, probabilityOfMother.doubleValue(), 0.01);
 		assertEquals("Father should have P = 1 when P(Child) = 1 & P(Mother) = 0", 1.00d, probabilityOfFather.doubleValue(), 0.01);
+	}
+	
+	@Test
+	public final void threeParentMessagePassing(){
+		testNet.addNode("X");
+		testNet.addNode("Y");
+		testNet.addNode("Z");
+		
+		testNet.addDeterministicOr("DOR", new Object[]{"X","Y","Z"});
+		testNet.updateBeliefs();
+		
+		Fraction probabilityOfOR = testNet.getProbability("DOR");
+		
+		assertEquals("DOR should have P = 7/8 when both parents have P = 1/2", (7.0d / 8.0d), probabilityOfOR.doubleValue(), 0.01);
+		
+		testNet.observe("DOR", true);
+		testNet.updateBeliefs();
+		
+		Fraction probabilityOfX = testNet.getProbability("X");
+		
+		assertEquals("X should have P = 4/7", (4.0d / 7.0d), probabilityOfX.doubleValue(), 0.01);
 	}
 	
 	@Test
