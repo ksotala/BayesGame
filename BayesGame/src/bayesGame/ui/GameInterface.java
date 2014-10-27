@@ -150,7 +150,7 @@ public class GameInterface implements InterfaceView, KeyController {
 		String text = events.remove(0);
 		
 		if (text.equals("$$REFRESHDISPLAY")){
-			// redraw panels
+			bigPanel.repaint();
 		} else {
 			writeToTextPane(text);
 		}

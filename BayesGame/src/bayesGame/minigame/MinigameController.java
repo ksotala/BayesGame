@@ -25,6 +25,12 @@ public class MinigameController {
 		this.gameNet = gameNet;
 		this.targetNodes = targetNodes;
 		
+		if (targetNodes.size() == 0){
+			for (BayesNode n : gameNet.getGraph().getVertices().toArray(new BayesNode[gameNet.getGraph().getVertexCount()])){
+				targetNodes.add(n.type);
+			}
+		}
+		
 		this.hiddenNodes = new HashSet<Object>();
 		this.discussions = new HashMap<Object,String[]>();
 	}
@@ -49,6 +55,8 @@ public class MinigameController {
 		
 		// initialize interface
 		viewController = new MinigameViewController(this, gameNet);
+		viewController.addText("Target nodes: " + targetNodes.toString());
+		viewController.processEventQueue();
 		
 		ready = true;
 	}

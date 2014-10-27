@@ -23,7 +23,7 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 		Fraction probability = node.getProbability();
 		double cells = probability.percentageValue();
 		System.out.println(cells);
-		Image grid = GridPainter.paintPercentageGrid(cells, BayesGame.trueColor, 1, 5, 30);
+		Image grid = GridPainter.paintPercentageGrid(cells, BayesGame.trueColor, 2, 2, 10);
 		ImageIcon icon = new ImageIcon(grid);
 		
 		return icon;

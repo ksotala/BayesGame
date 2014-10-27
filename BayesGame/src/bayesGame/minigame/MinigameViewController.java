@@ -1,10 +1,14 @@
 package bayesGame.minigame;
 
 import bayesGame.bayesbayes.BayesNet;
+import bayesGame.bayesbayes.BayesNode;
+import bayesGame.levelcontrollers.Controller;
 import bayesGame.ui.GameInterface;
 import bayesGame.ui.GraphPanel;
+import bayesGame.ui.verbs.InteractingVerb;
+import bayesGame.ui.verbs.Verb;
 
-public class MinigameViewController {
+public class MinigameViewController extends Controller {
 	
 	private final MinigameController owner;
 	private final BayesNet gameNet;
@@ -23,6 +27,9 @@ public class MinigameViewController {
 	
 	private void initializeView(){
 		graphPanel = new GraphPanel(gameNet);
+		Verb interactingVerb = new InteractingVerb(this, Verb.returnCall.MouseMessage);
+		graphPanel.addVerb(interactingVerb);
+
 		gameInterface.setBigPanel(graphPanel);
 		gameInterface.display();
 	}
@@ -41,6 +48,32 @@ public class MinigameViewController {
 	
 	public void processEventQueue(){
 		gameInterface.processEventQueue();
+	}
+
+	@Override
+	public void keyMessage(Object o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMessage(Object o) {
+		BayesNode node = (BayesNode)o;
+		Object type = node.type;
+		owner.observeNode(type);
+		System.out.println("Observed " + node.toString());
+	}
+
+	@Override
+	public void genericMessage() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void genericMessage(Object o) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

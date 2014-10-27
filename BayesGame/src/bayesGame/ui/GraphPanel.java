@@ -15,11 +15,14 @@ import org.apache.commons.math3.util.Pair;
 import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
+import bayesGame.ui.transformers.BayesNodeProbabilityToGridTransformer;
+import bayesGame.ui.verbs.Verb;
 import edu.uci.ics.jung.algorithms.layout.DAGLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.visualization.Layer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.PluggableGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 
 public class GraphPanel extends JPanel {
@@ -95,7 +98,7 @@ public class GraphPanel extends JPanel {
         vv.getRenderContext().setVertexShapeTransformer(vertexShape);
         
         
-        // vv.getRenderContext().setVertexIconTransformer(new BayesNodeProbabilityToGridTransformer());
+        vv.getRenderContext().setVertexIconTransformer(new BayesNodeProbabilityToGridTransformer());
         
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller()); 
 
@@ -109,6 +112,14 @@ public class GraphPanel extends JPanel {
 	
 	public void updateGraph(){
 		vv.repaint();
+	}
+	
+	public void addVerb(Verb verb){
+		addGraphMouse(verb.getPGM());
+	}
+	
+	private void addGraphMouse(PluggableGraphMouse gm){
+		vv.addMouseListener(gm);
 	}
 	
 

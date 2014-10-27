@@ -492,24 +492,24 @@ public class BayesNode {
 	
 	protected void multiplyPotentialWithMessages(){
 		
-		System.out.println("------------" + type + "----------------");
+		// System.out.println("------------" + type + "----------------");
 		
 		probability = null;
-		System.out.println(type + " original probability " + this.getProbability());
+		// System.out.println(type + " original probability " + this.getProbability());
 		
 		if (!upstreamMessages.isEmpty()){
 			potential = multiplyPotentialWithMessages(potential, upstreamMessages);
 		}
 		
 		probability = null;
-		System.out.println(type + " upstream probability " + this.getProbability());
+		// System.out.println(type + " upstream probability " + this.getProbability());
 		
 		if (!downstreamMessages.isEmpty()){
 			potential = multiplyPotentialWithMessages(potential, downstreamMessages);
 		}
 		
 		probability = null;
-		System.out.println(type + " downstream probability " + this.getProbability());
+		// System.out.println(type + " downstream probability " + this.getProbability());
 		
 		clearMessages();
 		probability = null;

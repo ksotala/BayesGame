@@ -89,12 +89,21 @@ public class BayesGame {
 		frame.dispose();
 		
 		BayesNet net = new BayesNet();
-		net.addNode("Mom");
-		net.addNode("Dad");
-		net.addDeterministicOr("Kid", new Object[]{"Mom", "Dad"});
+		net.addNode("A");
+		net.addNode("B");
+		net.addDeterministicOr("C", "A");
+		net.addDeterministicOr("D", new Object[]{"A", "B"});
+		net.addDeterministicOr("E", "B");
+		net.addDeterministicOr("F", "D");
+		net.addDeterministicOr("G", "D");
+		net.addNode("H");
+		net.addDeterministicOr("I", new Object[]{"G", "H"});
 		
-		MinigameController controller = new MinigameController(net, new HashSet<Object>());
-		controller.startGame(2, new Object[]{"Mom"});
+		Set<Object> targets = new HashSet<Object>();
+		// targets.add("Cousin");
+		
+		MinigameController controller = new MinigameController(net, targets);
+		controller.startGame(10, new Object[]{""});
 		
 		
 		/*

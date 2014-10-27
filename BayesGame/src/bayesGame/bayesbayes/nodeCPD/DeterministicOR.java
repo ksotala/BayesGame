@@ -52,7 +52,7 @@ public class DeterministicOR implements NodeCPD {
                 }
             }
         }
-		
+        
 		return orBayesNode;
 	}
 
