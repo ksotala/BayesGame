@@ -10,7 +10,8 @@ import bayesGame.bayesbayes.*;
 
 public class MinigameController {
 
-	private InterfaceView gameInterface;
+	private MinigameViewController viewController;
+	
 	private Map<Object,String[]> discussions;
 	private BayesNet gameNet;
 	private int timeLimit;
@@ -20,9 +21,8 @@ public class MinigameController {
 	private boolean ready = false;
 	private int turnsTaken;
 	
-	public MinigameController(BayesNet gameNet, InterfaceView gameInterface, Set<Object> targetNodes) {
+	public MinigameController(BayesNet gameNet, Set<Object> targetNodes) {
 		this.gameNet = gameNet;
-		this.gameInterface = gameInterface;
 		this.targetNodes = targetNodes;
 		
 		this.hiddenNodes = new HashSet<Object>();
@@ -42,12 +42,13 @@ public class MinigameController {
 		this.timeLimit = timeLimit;
 		turnsTaken = 0;
 		
-		// initialize interface
-		
 		// mark known nodes as known
 		for (Object o : knowledges){
 			gameNet.observe(o);
 		}
+		
+		// initialize interface
+		viewController = new MinigameViewController(this, gameNet);
 		
 		ready = true;
 	}
@@ -57,13 +58,15 @@ public class MinigameController {
 			if (!hiddenNodes.contains(node)){
 				String[] question = discussions.get(node);
 				if (question != null){
-					gameInterface.addText(question[0]);
+					viewController.addText(question[0]);
 				}
 				gameNet.observe(node);
 				gameNet.updateBeliefs();
-				gameInterface.addRefreshDisplay();
-				gameInterface.addText(question[1]);
-				
+				viewController.addRefreshDisplay();
+				if (question != null){
+					viewController.addText(question[1]);
+				}
+				viewController.processEventQueue();
 				this.endOfTurn();
 			}
 		}
@@ -81,13 +84,17 @@ public class MinigameController {
 			}
 		}
 		
+		viewController.addText("Turn " + turnsTaken + "/" + timeLimit);
+		
 		if (allTargetNodesKnown){
-			// report game ended in success
+			viewController.addText("Success!");
 			ready = false;
 		} else if (turnsTaken == timeLimit){
-			// report game ended in failure
+			viewController.addText("Failure!");
 			ready = false;
 		}
+		
+		viewController.processEventQueue();
 	}
 	
 	

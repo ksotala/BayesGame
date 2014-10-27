@@ -1,8 +1,10 @@
 package bayesGame;
 
 import java.awt.Color;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -10,6 +12,7 @@ import javax.swing.JFrame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.levelcontrollers.TutorialController;
 import bayesGame.levelcontrollers.TutorialLevel2Controller;
+import bayesGame.minigame.MinigameController;
 import bayesGame.ui.ColorSelection;
 import bayesGame.ui.LanguageChooser;
 
@@ -82,7 +85,19 @@ public class BayesGame {
 		
 	}
 	
-	public static void beginTutorial(int level){		
+	public static void beginTutorial(int level){
+		frame.dispose();
+		
+		BayesNet net = new BayesNet();
+		net.addNode("Mom");
+		net.addNode("Dad");
+		net.addDeterministicOr("Kid", new Object[]{"Mom", "Dad"});
+		
+		MinigameController controller = new MinigameController(net, new HashSet<Object>());
+		controller.startGame(2, new Object[]{"Mom"});
+		
+		
+		/*
 		if (level == 1){
 			frame.dispose();
 			TutorialController tutorial = new TutorialController();
@@ -91,6 +106,7 @@ public class BayesGame {
 		if (level == 2){
 			TutorialLevel2Controller tutorial = new TutorialLevel2Controller();
 		}
+		*/
 	
 	
 	}
