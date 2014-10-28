@@ -58,10 +58,12 @@ public class MinigameViewController extends Controller {
 
 	@Override
 	public void mouseMessage(Object o) {
-		BayesNode node = (BayesNode)o;
-		Object type = node.type;
-		owner.observeNode(type);
-		System.out.println("Observed " + node.toString());
+		if (o != null){
+			BayesNode node = (BayesNode)o;
+			Object type = node.type;
+			owner.observeNode(type);
+			System.out.println("Observed " + node.toString());
+		}
 	}
 
 	@Override

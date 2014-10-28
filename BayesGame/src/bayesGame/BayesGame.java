@@ -48,9 +48,9 @@ public class BayesGame {
 
 	public static void main(String[] args) {
 		
-	    showLanguageSelector();
+	    // showLanguageSelector();
 	    // showColorSelector();
-		// beginTutorial(1);
+		beginTutorial(1);
 	}
 	
 	public static void showLanguageSelector(){
@@ -86,7 +86,7 @@ public class BayesGame {
 	}
 	
 	public static void beginTutorial(int level){
-		frame.dispose();
+		// frame.dispose();
 		
 		BayesNet net = new BayesNet();
 		net.addNode("A");
