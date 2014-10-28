@@ -1,5 +1,6 @@
 package bayesGame.ui.transformers;
 
+import java.awt.Color;
 import java.awt.Image;
 
 import javax.swing.Icon;
@@ -23,7 +24,15 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 		Fraction probability = node.getProbability();
 		double cells = probability.percentageValue();
 		System.out.println(cells);
-		Image grid = GridPainter.paintPercentageGrid(cells, BayesGame.trueColor, 2, 5, 8, true);
+
+		Image grid;
+		
+		if (node.isHidden()){
+			grid = GridPainter.paintPercentageGrid(cells, Color.WHITE, Color.BLACK, 2, 5, 8, true);
+		} else {
+			grid = GridPainter.paintPercentageGrid(cells, BayesGame.trueColor, BayesGame.falseColor, 2, 5, 8, true);	
+		}
+		
 		ImageIcon icon = new ImageIcon(grid);
 		
 		return icon;

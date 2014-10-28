@@ -39,6 +39,7 @@ public class BayesNode {
 	private boolean observed = false;
 	private Boolean assumedValue = null;
 	private Boolean trueValue = null;
+	private boolean hidden = false;
 	
 	protected BayesNode(Object type){
 		this.type = type;
@@ -624,6 +625,16 @@ public class BayesNode {
 	
 	
 	
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	protected void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+
+
+
 	private class indexChooser {
 		
 		private HashSet<Object> requestedUntrueVariables = new HashSet<Object>();

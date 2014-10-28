@@ -323,6 +323,14 @@ public class BayesNet {
 		node.clearAssumedValue();
 	}
 	
+	public void hide(Object object){
+		BayesNode node = getNodeIffPresent(object);
+		if (node == null){
+			throw new IllegalArgumentException("Requested object not found in the graph");
+		}
+		node.setHidden(true);
+	}
+	
 	public boolean setProbabilityOfUntrue(Object object, Fraction probability, Object... variables){
 		BayesNode node = getNode(object);
 		return node.setProbabilityOfUntrueVariables(probability, variables);

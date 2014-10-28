@@ -8,7 +8,7 @@ import bayesGame.BayesGame;
 
 public class GridPainter {
 	
-	public static BufferedImage paintGrid(double coloredCells, Color gridColor, int rows, int columns, int cell_size, boolean borders){
+	public static BufferedImage paintGrid(double coloredCells, Color gridColor, Color falseColor, int rows, int columns, int cell_size, boolean borders){
 		int cells = rows * columns;
 		
 		if (cells < coloredCells){
@@ -21,7 +21,7 @@ public class GridPainter {
 		BufferedImage img = new BufferedImage(size_x+1, size_y+1, BufferedImage.TYPE_INT_RGB);
 		Graphics g = img.getGraphics();
 		
-		g.setColor(BayesGame.falseColor);
+		g.setColor(falseColor);
 		g.fillRect(0, 0, size_x, size_y);
 		
 		int x = 0;
@@ -57,7 +57,7 @@ public class GridPainter {
 		}
 		
 		if (borders){
-			g.setColor(Color.BLACK);
+			g.setColor(Color.GRAY);
 	        for (int i = 0; i <= size_x; i += cell_size) {
 	            g.drawLine(i, 0, i, size_y);
 	        }
@@ -77,12 +77,12 @@ public class GridPainter {
 		return img;
 	}
 	
-	public static BufferedImage paintPercentageGrid(double percentage, Color gridColor, int rows, int columns, int cell_size, boolean borders){
+	public static BufferedImage paintPercentageGrid(double percentage, Color gridColor, Color falseColor, int rows, int columns, int cell_size, boolean borders){
 		percentage = percentage / 100.0;
 		
 		double cells = rows * columns;
 		double coloredCells = percentage * cells;
-		return paintGrid(coloredCells, gridColor, rows, columns, cell_size, borders);
+		return paintGrid(coloredCells, gridColor, falseColor, rows, columns, cell_size, borders);
 	}
 	
 	

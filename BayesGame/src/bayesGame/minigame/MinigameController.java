@@ -3,6 +3,7 @@ package bayesGame.minigame;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import bayesGame.ui.InterfaceView;
@@ -39,6 +40,16 @@ public class MinigameController {
 		this.hiddenNodes = hiddenNodes;
 	}
 	
+	public void randomizeHiddenNodes(int amount){
+		Random random = new Random();
+		BayesNode[] nodes = gameNet.getGraph().getVertices().toArray(new BayesNode[gameNet.getGraph().getVertexCount()]);
+		
+		for(int i = 0; i < amount; i++){
+			int item = random.nextInt(nodes.length);
+			hiddenNodes.add(nodes[item].type);
+		}
+	}
+	
 	public void setDiscussions(Map<Object,String[]> discussions){
 		this.discussions = discussions;
 	}
@@ -51,6 +62,11 @@ public class MinigameController {
 		// mark known nodes as known
 		for (Object o : knowledges){
 			gameNet.observe(o);
+		}
+		
+		for (Object h : hiddenNodes){
+			gameNet.hide(h);
+			targetNodes.remove(h);
 		}
 		
 		// initialize interface
