@@ -153,18 +153,18 @@ public class BayesNetTest {
 	
 	@Test
 	public final void addDeterministicOrOneParentTrue(){
-		testNet.addNode("Mother");
-		testNet.setProbabilityOfUntrue("Mother", Fraction.ONE);
-		testNet.setProbabilityOfUntrue("Mother", Fraction.ZERO, "Mother");
+		testNet.addNode("TMother");
+		testNet.setProbabilityOfUntrue("TMother", Fraction.ONE);
+		testNet.setProbabilityOfUntrue("TMother", Fraction.ZERO, "TMother");
 		
 		testNet.addNode("Father");
 		testNet.setProbabilityOfUntrue("Father", Fraction.ZERO);
 		testNet.setProbabilityOfUntrue("Father", Fraction.ONE, "Father");
 		
-		testNet.addDeterministicOr("Child", new Object[]{"Mother", "Father"});
+		testNet.addDeterministicOr("TChild", new Object[]{"TMother", "Father"});
 		testNet.updateBeliefs();
 		
-		Fraction probabilityOfChild = testNet.getProbability("Child");
+		Fraction probabilityOfChild = testNet.getProbability("TChild");
 		
 		assertEquals("Child should have P = 1 when a parent has P = 1", 1.00d, probabilityOfChild.doubleValue(), 0.01);
 	}

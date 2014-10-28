@@ -123,6 +123,10 @@ public class BayesNode {
 		return copyFraction(probability);
 	}
 	
+	protected void setProbability(Fraction probability){
+		this.probability = probability;
+	}
+	
 	protected ArrayList<Map<Object,Boolean>> getNonZeroProbabilities(){
 		indexChooser chooser = new indexChooser();
 		ArrayList<Map<Object,Boolean>> truthValues = new ArrayList<Map<Object,Boolean>>();
@@ -492,24 +496,24 @@ public class BayesNode {
 	
 	protected void multiplyPotentialWithMessages(){
 		
-		// System.out.println("------------" + type + "----------------");
+		System.out.println("------------" + type + "----------------");
 		
 		probability = null;
-		// System.out.println(type + " original probability " + this.getProbability());
+		System.out.println(type + " original probability " + this.getProbability());
 		
 		if (!upstreamMessages.isEmpty()){
 			potential = multiplyPotentialWithMessages(potential, upstreamMessages);
 		}
 		
 		probability = null;
-		// System.out.println(type + " upstream probability " + this.getProbability());
+		System.out.println(type + " upstream probability " + this.getProbability());
 		
 		if (!downstreamMessages.isEmpty()){
 			potential = multiplyPotentialWithMessages(potential, downstreamMessages);
 		}
 		
 		probability = null;
-		// System.out.println(type + " downstream probability " + this.getProbability());
+		System.out.println(type + " downstream probability " + this.getProbability());
 		
 		clearMessages();
 		probability = null;
@@ -518,7 +522,7 @@ public class BayesNode {
 	
 	private Fraction[] multiplyPotentialWithMessages(Fraction [] currentPotential, HashSet<Message> receivedMessages){
 		indexChooser selfChooser = new indexChooser();
-		Fraction[] newPotential = new Fraction[currentPotential.length];
+		Fraction[] newPotential = copyFraction(currentPotential);
 		for (Message m : receivedMessages){
 			if (m.scope.length == 1){
 				Object o = m.scope[0];
@@ -526,13 +530,15 @@ public class BayesNode {
 				ArrayList<Integer> arrayReferencesToWantedObjectBeingUntrueInOwnPotential = selfChooser.getAllIndexes();
 				Fraction trueMultiplier = m.message[0];
 				Fraction untrueMultiplier = m.message[1];
+				System.out.println("Message from " + m.sender.toString() + " to " + this.toString() + ", potential before applying message: " + currentPotential.toString());
 				for (int i = 0; i < currentPotential.length; i++){
 					if (arrayReferencesToWantedObjectBeingUntrueInOwnPotential.contains(i)){
-						newPotential[i] = currentPotential[i].multiply(untrueMultiplier);
+						newPotential[i] = newPotential[i].multiply(untrueMultiplier);
 					} else {
-						newPotential[i] = currentPotential[i].multiply(trueMultiplier);
+						newPotential[i] = newPotential[i].multiply(trueMultiplier);
 					}
-				}				
+				}
+				System.out.println("Message from " + m.sender.toString() + " to " + this.toString() + ", potential after applying message: " + currentPotential.toString());
 			} else {
 				throw new IllegalStateException("Message contained truth values for multiple variables, not yet implemented");
 				//TODO: implement the case where the message contains the truth values for multiple variables!

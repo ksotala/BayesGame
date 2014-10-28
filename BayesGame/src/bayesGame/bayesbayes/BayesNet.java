@@ -358,16 +358,26 @@ public class BayesNet {
 	// TODO: currently assumes that all the nodes are connected, this should be checked 
 	// TODO: only works on polytrees, doesn't check that the network is one
 	public void updateBeliefs(){
-		resetNetworkBeliefs();
 		if (nodes.size() > 1){
-			BayesNode root = nodes.get(0);
-			visitedDownstreamNodes = new HashSet<BayesNode>();
-			downstreamMessagePaths = new Stack<Pair<BayesNode,BayesNode>>();
+			HashMap<BayesNode,Fraction> calculatedProbabilities = new HashMap<BayesNode,Fraction>();
+			for (BayesNode root : nodes){
+				resetNetworkBeliefs();
+				visitedDownstreamNodes = new HashSet<BayesNode>();
+				downstreamMessagePaths = new Stack<Pair<BayesNode,BayesNode>>();
+					
+				sendDownstreamMessages(root);
+				visitedDownstreamNodes.clear();
+				sendUpstreamMessages();
+				root.multiplyPotentialWithMessages();
 				
-			sendDownstreamMessages(root);
-			visitedDownstreamNodes.clear();
-			sendUpstreamMessages();
-			root.multiplyPotentialWithMessages();
+				Fraction rootProbability = root.getProbability();
+				calculatedProbabilities.put(root, rootProbability);
+				System.out.println("Probability of " + root.toString() + " calculated as " + rootProbability.toString());
+			}
+			for (BayesNode node : nodes){
+				Fraction calculatedProbability = calculatedProbabilities.get(node);
+				node.setProbability(calculatedProbability);
+			}
 		}
 	}
 		
