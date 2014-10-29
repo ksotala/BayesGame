@@ -26,12 +26,29 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 		System.out.println(cells);
 
 		Image grid;
+		int squaresize;
+		Color trueColor;
+		Color falseColor;
 		
-		if (node.hasProperty("hidden")){
-			grid = GridPainter.paintPercentageGrid(cells, Color.WHITE, Color.BLACK, 2, 5, 8, true);
+		
+		boolean blackwhite = node.hasProperty("hidden");
+		boolean targetnode = node.hasProperty("target");
+		
+		if (blackwhite){
+			trueColor = Color.WHITE;
+			falseColor = Color.BLACK;
 		} else {
-			grid = GridPainter.paintPercentageGrid(cells, BayesGame.trueColor, BayesGame.falseColor, 2, 5, 8, true);	
+			trueColor = BayesGame.trueColor;
+			falseColor = BayesGame.falseColor;
 		}
+		
+		if (targetnode){
+			squaresize = 12;
+		} else {
+			squaresize = 8;
+		}
+		
+		grid = GridPainter.paintPercentageGrid(cells, trueColor, falseColor, 2, 5, squaresize, true);	
 		
 		ImageIcon icon = new ImageIcon(grid);
 		

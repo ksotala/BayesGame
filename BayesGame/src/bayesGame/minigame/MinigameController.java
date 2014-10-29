@@ -75,8 +75,13 @@ public class MinigameController {
 			gameNet.observe(o);
 		}
 		
+		// need to refactor these into their own class...
 		for (Object h : hiddenNodes){
 			gameNet.addProperty(h, "hidden");
+		}
+		
+		for (Object t : targetNodes){
+			gameNet.addProperty(t, "target");
 		}
 		
 		// initialize interface
@@ -104,8 +109,8 @@ public class MinigameController {
 					if (question != null){
 						viewController.addText(question[1]);
 					}
-					this.endOfTurn();
 				}
+				this.endOfTurn();
 				
 			}
 		}
@@ -124,17 +129,16 @@ public class MinigameController {
 		}
 		
 		viewController.addText("Turn " + turnsTaken + "/" + timeLimit);
+		viewController.processEventQueue();
 		
 		if (allTargetNodesKnown && gameMode == 0){
 			viewController.addText("Success!");
 			viewController.addText("Clearing this level with " + (timeLimit - turnsTaken) + " turns to spare confers " + (timeLimit - turnsTaken) + "fame.");
-			ready = false;
+			clear();
 		} else if (turnsTaken == timeLimit){
 			viewController.addText("Failure!");
-			ready = false;
+			clear();
 		}
-		
-		viewController.processEventQueue();
 	}
 	
 	private void decisionMade(Object node){
@@ -146,12 +150,22 @@ public class MinigameController {
 			reaction--;
 			viewController.addText("Negative reaction! Current reaction " + reaction);
 		}
-		viewController.processEventQueue();
-		
-		ready = false;
+		clear();
 	}
 	
-	
+	private void clear(){
+		ready = false;
+		viewController.processEventQueue();
+		
+		for (Object h : hiddenNodes){
+			gameNet.removeProperty(h, "hidden");
+		}
+		
+		for (Object t : targetNodes){
+			gameNet.removeProperty(t, "target");
+		}
+		
+	}
 	
 	
 	

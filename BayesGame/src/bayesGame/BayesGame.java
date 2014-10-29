@@ -119,17 +119,17 @@ public class BayesGame {
 		net.addNode("Has time");
 		net.addNode("Kind");
 		
-		net.addNode("Willing to help", new MajorityVote(), "Likes girls", "Has time", "Kind");
+		net.addNode("M: Willing to help", new MajorityVote(), "Likes girls", "Has time", "Kind");
 		
-		net.addNode("Ask nicely", new DeterministicOR(), "Willing to help");
-		net.addNode("Threaten with sword", new DeterministicNot(), "Willing to help");
+		net.addNode("OR: Ask nicely", new DeterministicOR(), "M: Willing to help");
+		net.addNode("NOT: Threaten with sword", new DeterministicNot(), "M: Willing to help");
 		
 		Set<Object> targets = new HashSet<Object>();
-		targets.add("Ask nicely");
-		targets.add("Threaten with sword");
+		targets.add("OR: Ask nicely");
+		targets.add("NOT: Threaten with sword");
 		
 		Set<Object> hidden = new HashSet<Object>();
-		hidden.add("Willing to help");
+		hidden.add("M: Willing to help");
 		// hidden.add("Ask nicely");
 		// hidden.add("Threaten with sword");
 		

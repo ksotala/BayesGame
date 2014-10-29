@@ -335,6 +335,11 @@ public class BayesNet {
 		node.addProperty(property);
 	}
 	
+	public void removeProperty(Object object, String property){
+		BayesNode node = getNodeIffPresent(object);
+		node.removeProperty(property);
+	}
+	
 	public boolean setProbabilityOfUntrue(Object object, Fraction probability, Object... variables){
 		BayesNode node = getNode(object);
 		return node.setProbabilityOfUntrueVariables(probability, variables);
