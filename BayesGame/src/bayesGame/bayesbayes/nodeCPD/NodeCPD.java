@@ -4,6 +4,6 @@ import bayesGame.bayesbayes.BayesNode;
 
 public interface NodeCPD {
 	
-	public BayesNode getNode(BayesNode orBayesNode, Object[] parents);
+	public BayesNode getNode(BayesNode sourceBayesNode, Object[] parents);
 
 }

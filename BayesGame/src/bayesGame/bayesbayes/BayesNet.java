@@ -49,6 +49,10 @@ public class BayesNet {
 		return addNode(node);
 	}
 	
+	public boolean addNode(Object object, NodeCPD cpd, Object... parents){
+		return addNodeWithParents(object, cpd, parents);
+	}
+	
 	public void addNodes(Object... nodes){
 		for (Object o : nodes){
 			addNode(o);
@@ -323,12 +327,12 @@ public class BayesNet {
 		node.clearAssumedValue();
 	}
 	
-	public void hide(Object object){
+	public void addProperty(Object object, String property){
 		BayesNode node = getNodeIffPresent(object);
 		if (node == null){
 			throw new IllegalArgumentException("Requested object not found in the graph");
 		}
-		node.setHidden(true);
+		node.addProperty(property);
 	}
 	
 	public boolean setProbabilityOfUntrue(Object object, Fraction probability, Object... variables){

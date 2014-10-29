@@ -39,7 +39,7 @@ public class BayesNode {
 	private boolean observed = false;
 	private Boolean assumedValue = null;
 	private Boolean trueValue = null;
-	private boolean hidden = false;
+	private Set<String> properties = new HashSet<String>();
 	
 	protected BayesNode(Object type){
 		this.type = type;
@@ -623,15 +623,18 @@ public class BayesNode {
 		return type.toString();
 	}
 	
+	public void addProperty(String property){
+		properties.add(property);
+	}
 	
+	public boolean hasProperty(String property){
+		return properties.contains(property);
+	}
 	
-	public boolean isHidden() {
-		return hidden;
+	public void removeProperty(String property){
+		properties.remove(property);
 	}
 
-	protected void setHidden(boolean hidden) {
-		this.hidden = hidden;
-	}
 
 
 

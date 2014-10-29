@@ -27,7 +27,7 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 
 		Image grid;
 		
-		if (node.isHidden()){
+		if (node.hasProperty("hidden")){
 			grid = GridPainter.paintPercentageGrid(cells, Color.WHITE, Color.BLACK, 2, 5, 8, true);
 		} else {
 			grid = GridPainter.paintPercentageGrid(cells, BayesGame.trueColor, BayesGame.falseColor, 2, 5, 8, true);	

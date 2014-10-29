@@ -7,14 +7,16 @@ import org.apache.commons.math3.fraction.Fraction;
 
 import bayesGame.bayesbayes.BayesNode;
 
-public class DeterministicOR implements NodeCPD {
+public class MajorityVote implements NodeCPD {
 
-	public DeterministicOR() {
+	public MajorityVote() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BayesNode getNode(BayesNode orBayesNode, Object[] parents) {
-		Object orNode = orBayesNode.type;
+	@Override
+	public BayesNode getNode(BayesNode sourceBayesNode, Object[] parents) {
+		
+		Object nodeType = sourceBayesNode.type;
 		
 		ArrayList<Object> allItems = new ArrayList<Object>(Arrays.asList(parents));
 		allItems.add(0, parents);
@@ -23,17 +25,19 @@ public class DeterministicOR implements NodeCPD {
 		int rows = (int) Math.pow(2, allItems.size());
 		
         for (int i=0; i<rows; i++) {
+        	int balance=0;
         	boolean trueSeen = false;
         	ArrayList<Object> falseObjects = new ArrayList<Object>();
         	for (int j=allItems.size()-1; j>=0; j--) {
                 // as we traverse each generated row from the end of the row, we keep track of
-            	// whether we've hit an item that should code for the value of TRUE. Also, for
-        		// each FALSE item on the row, we add that to the list of false items on this
-        		// row.
+            	// for the balance of TRUE-FALSE items. 
+        		// Also, for each FALSE item on the row, we add that to the list of false items
+        		// on this row.
             	if (j > 0){
                 	if((i/(int) Math.pow(2, j))%2 == 1){
-                    	trueSeen = true;
+                    	balance++;
                     } else {
+                    	balance--;
                     	falseObjects.add(allItems.get(j));
                     }
                 } else {
@@ -41,33 +45,37 @@ public class DeterministicOR implements NodeCPD {
                 	// once we get to the beginning of the row, we check whether
                 	// this row codes for the node being TRUE or FALSE
                 	if((i/(int) Math.pow(2, j))%2 == 1){
-                		// if this row codes for the node being TRUE and we have
-                		// seen a true variable, then we set the probability of
-                		// this row to one, since a deterministic OR is true with
-                		// P=1 if any input variable is true. If we haven't seen
-                		// a TRUE variable, we set the probability to zero.
-                		if (trueSeen){
+                		// if this row codes for the node being TRUE and the
+                		// balance is positive, then we set the probability of
+                		// this row to one. if the balance is negative we set
+                		// the probability of this row to zero, and if the balance
+                		// is even we set the probability to .5.
+                		if (balance > 0){
                 			probability = Fraction.ONE;
-                		} else {
+                		} else if (balance < 0){
                 			probability = Fraction.ZERO;
+                		} else{
+                			probability = Fraction.ONE_HALF;
                 		}
                 	} else {
                 		// Similarly, if this row codes for the node being FALSE,
                 		// we do the reverse.
-                		falseObjects.add(orNode);
-                		if (trueSeen){
+                		falseObjects.add(nodeType);
+                		if (balance > 0){
                 			probability = Fraction.ZERO;
-                		} else {
+                		} else if (balance < 0){
                 			probability = Fraction.ONE;
+                		} else{
+                			probability = Fraction.ONE_HALF;
                 		}
                 	}
                 	
-                	orBayesNode.setProbabilityOfUntrueVariables(probability, falseObjects.toArray());
+                	sourceBayesNode.setProbabilityOfUntrueVariables(probability, falseObjects.toArray());
                 }
             }
         }
         
-		return orBayesNode;
+		return sourceBayesNode;
 	}
 
 }

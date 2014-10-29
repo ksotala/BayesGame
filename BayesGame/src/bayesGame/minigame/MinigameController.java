@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.commons.math3.fraction.Fraction;
+
 import bayesGame.ui.InterfaceView;
 import bayesGame.bayesbayes.*;
 
@@ -19,12 +21,17 @@ public class MinigameController {
 	private Set<Object> hiddenNodes;
 	private Set<Object> targetNodes;
 	
+	private int gameMode;
+	private int reaction;
+	
 	private boolean ready = false;
 	private int turnsTaken;
 	
 	public MinigameController(BayesNet gameNet, Set<Object> targetNodes) {
 		this.gameNet = gameNet;
 		this.targetNodes = targetNodes;
+		this.gameMode = 0;
+		this.reaction = 0;
 		
 		if (targetNodes.size() == 0){
 			for (BayesNode n : gameNet.getGraph().getVertices().toArray(new BayesNode[gameNet.getGraph().getVertexCount()])){
@@ -38,6 +45,10 @@ public class MinigameController {
 	
 	public void setHiddenNodes(Set<Object> hiddenNodes){
 		this.hiddenNodes = hiddenNodes;
+	}
+	
+	public void setGameMode(int gameMode){
+		this.gameMode = gameMode;
 	}
 	
 	public void randomizeHiddenNodes(int amount){
@@ -65,8 +76,7 @@ public class MinigameController {
 		}
 		
 		for (Object h : hiddenNodes){
-			gameNet.hide(h);
-			targetNodes.remove(h);
+			gameNet.addProperty(h, "hidden");
 		}
 		
 		// initialize interface
@@ -87,11 +97,16 @@ public class MinigameController {
 				gameNet.observe(node);
 				gameNet.updateBeliefs();
 				viewController.addRefreshDisplay();
-				if (question != null){
-					viewController.addText(question[1]);
-				}
 				viewController.processEventQueue();
-				this.endOfTurn();
+				if (gameMode == 1 && targetNodes.contains(node)){
+					decisionMade(node);
+				} else {
+					if (question != null){
+						viewController.addText(question[1]);
+					}
+					this.endOfTurn();
+				}
+				
 			}
 		}
 		
@@ -110,8 +125,9 @@ public class MinigameController {
 		
 		viewController.addText("Turn " + turnsTaken + "/" + timeLimit);
 		
-		if (allTargetNodesKnown){
+		if (allTargetNodesKnown && gameMode == 0){
 			viewController.addText("Success!");
+			viewController.addText("Clearing this level with " + (timeLimit - turnsTaken) + " turns to spare confers " + (timeLimit - turnsTaken) + "fame.");
 			ready = false;
 		} else if (turnsTaken == timeLimit){
 			viewController.addText("Failure!");
@@ -119,6 +135,20 @@ public class MinigameController {
 		}
 		
 		viewController.processEventQueue();
+	}
+	
+	private void decisionMade(Object node){
+		Fraction probability = gameNet.getProbability(node);
+		if (probability.doubleValue() > 0.5d){
+			reaction++;
+			viewController.addText("Positive reaction! Current reaction " + reaction);
+		} else {
+			reaction--;
+			viewController.addText("Negative reaction! Current reaction " + reaction);
+		}
+		viewController.processEventQueue();
+		
+		ready = false;
 	}
 	
 	

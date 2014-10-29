@@ -10,6 +10,9 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import bayesGame.bayesbayes.BayesNet;
+import bayesGame.bayesbayes.nodeCPD.DeterministicNot;
+import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
+import bayesGame.bayesbayes.nodeCPD.MajorityVote;
 import bayesGame.levelcontrollers.TutorialController;
 import bayesGame.levelcontrollers.TutorialLevel2Controller;
 import bayesGame.minigame.MinigameController;
@@ -90,7 +93,7 @@ public class BayesGame {
 		
 		BayesNet net = new BayesNet();
 		
-		
+		/*
 		net.addNode("A");
 		net.addNode("B");
 		net.addNode("L");
@@ -104,15 +107,39 @@ public class BayesGame {
 		net.addNode("H");
 		net.addDeterministicOr("I", new Object[]{"G", "H"});
 		
-		
-		
-		
 		Set<Object> targets = new HashSet<Object>();
-		// targets.add("Cousin");
 		
 		MinigameController controller = new MinigameController(net, targets);
 		controller.randomizeHiddenNodes(4);
 		controller.startGame(10, new Object[]{""});
+		
+		*/
+		
+		net.addNode("Likes girls");
+		net.addNode("Has time");
+		net.addNode("Kind");
+		
+		net.addNode("Willing to help", new MajorityVote(), "Likes girls", "Has time", "Kind");
+		
+		net.addNode("Ask nicely", new DeterministicOR(), "Willing to help");
+		net.addNode("Threaten with sword", new DeterministicNot(), "Willing to help");
+		
+		Set<Object> targets = new HashSet<Object>();
+		targets.add("Ask nicely");
+		targets.add("Threaten with sword");
+		
+		Set<Object> hidden = new HashSet<Object>();
+		hidden.add("Willing to help");
+		// hidden.add("Ask nicely");
+		// hidden.add("Threaten with sword");
+		
+		MinigameController controller = new MinigameController(net, targets);
+		controller.setGameMode(1);
+		controller.setHiddenNodes(hidden);
+		controller.startGame(5, new Object[]{""});
+		
+		
+		
 		
 		
 		/*
