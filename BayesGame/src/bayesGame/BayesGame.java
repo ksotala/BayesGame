@@ -10,11 +10,14 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import bayesGame.bayesbayes.BayesNet;
+import bayesGame.bayesbayes.OptionNode;
+import bayesGame.bayesbayes.OptionNodeOption;
 import bayesGame.bayesbayes.nodeCPD.DeterministicNot;
 import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
 import bayesGame.bayesbayes.nodeCPD.MajorityVote;
 import bayesGame.levelcontrollers.TutorialController;
 import bayesGame.levelcontrollers.TutorialLevel2Controller;
+import bayesGame.minigame.DiscussionNet;
 import bayesGame.minigame.MinigameController;
 import bayesGame.ui.ColorSelection;
 import bayesGame.ui.LanguageChooser;
@@ -91,7 +94,7 @@ public class BayesGame {
 	public static void beginTutorial(int level){
 		// frame.dispose();
 		
-		BayesNet net = new BayesNet();
+		DiscussionNet net = new DiscussionNet();
 		
 		/*
 		net.addNode("A");
@@ -114,6 +117,9 @@ public class BayesGame {
 		controller.startGame(10, new Object[]{""});
 		
 		*/
+		
+		
+		/*
 		
 		net.addNode("Likes girls");
 		net.addNode("Has time");
@@ -138,6 +144,70 @@ public class BayesGame {
 		controller.setHiddenNodes(hidden);
 		controller.startGame(5, new Object[]{""});
 		
+		*/
+		
+		OptionNode girls = new OptionNode("Likes girls");
+		
+		OptionNodeOption flirty = new OptionNodeOption("Be flirty");
+		flirty.setPositiveResponse("He smiles in reaction to your subtle flirtation. You think he likes girls.");
+		flirty.setNegativeResponse("Your subtle flirtation doesn't elicit any response. You think he's not interested in girls.");
+		girls.addOption(flirty);
+
+		OptionNodeOption eyes = new OptionNodeOption("Look at his eyes");
+		eyes.setPositiveResponse("His pupils become slightly widened as he looks at your face. He seems to think you're pretty.");
+		eyes.setNegativeResponse("He looks at you indifferently. He doesn't seem to be particularly attracted to you.");
+		eyes.addRequirement("Empathy 1");
+		eyes.setNoTimeSpent(true);
+		girls.addOption(eyes);
+		
+		net.addNode(girls);
+		
+		
+		OptionNode time = new OptionNode("Has time");
+		
+		OptionNodeOption askrush = new OptionNodeOption("Are you in a rush?");
+		flirty.setPositiveResponse("Kind of, yeah.");
+		flirty.setNegativeResponse("No, I'm not in a hurry anywhere.");
+		time.addOption(askrush);
+
+		OptionNodeOption body = new OptionNodeOption("Read his body language");
+		eyes.setPositiveResponse("He looks at you politely, but he's kind of fidgeting and keeps glancing above your shoulder.");
+		eyes.setNegativeResponse("He appears calm and relaxed.");
+		eyes.addRequirement("Empathy 1");
+		eyes.setNoTimeSpent(true);
+		time.addOption(body);
+		
+		net.addNode(time);
+		
+		
+		OptionNode kind = new OptionNode("Kind");
+		
+		OptionNodeOption looks = new OptionNodeOption("How do I look?");
+		looks.setPositiveResponse("You could maybe work on your hair a bit.");
+		looks.setNegativeResponse("Pretty terrible.");
+		kind.addOption(looks);
+		
+		net.addNode(kind);
+		
+		
+		net.addNode("M: Willing to help", new MajorityVote(), "Likes girls", "Has time", "Kind");
+		
+		net.addNode("OR: Ask nicely", new DeterministicOR(), "M: Willing to help");
+		net.addNode("NOT: Threaten with sword", new DeterministicNot(), "M: Willing to help");
+		
+		Set<Object> targets = new HashSet<Object>();
+		targets.add("OR: Ask nicely");
+		targets.add("NOT: Threaten with sword");
+		
+		Set<Object> hidden = new HashSet<Object>();
+		hidden.add("M: Willing to help");
+		// hidden.add("Ask nicely");
+		// hidden.add("Threaten with sword");
+		
+		MinigameController controller = new MinigameController(net, targets);
+		controller.setGameMode(1);
+		controller.setHiddenNodes(hidden);
+		controller.startGame(5, new Object[]{""});
 		
 		
 		

@@ -3,6 +3,7 @@ package bayesGame.minigame;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.levelcontrollers.Controller;
+import bayesGame.ui.DialogMenu;
 import bayesGame.ui.GameInterface;
 import bayesGame.ui.GraphPanel;
 import bayesGame.ui.verbs.InteractingVerb;
@@ -11,13 +12,13 @@ import bayesGame.ui.verbs.Verb;
 public class MinigameViewController extends Controller {
 	
 	private final MinigameController owner;
-	private final BayesNet gameNet;
+	private final DiscussionNet gameNet;
 	private final GameInterface gameInterface;
 	private GraphPanel graphPanel;
 
 	
 	public MinigameViewController(MinigameController minigameController,
-			BayesNet gameNet) {
+			DiscussionNet gameNet) {
 		this.owner = minigameController;
 		this.gameNet = gameNet;
 		this.gameInterface = new GameInterface();
@@ -76,6 +77,11 @@ public class MinigameViewController extends Controller {
 	public void genericMessage(Object o) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void displayOptions(Object node) {
+		DialogMenu menu = new DialogMenu(gameInterface.getFrame(), gameNet.getOptions(node));
+		menu.setVisible(true);
 	}
 
 	

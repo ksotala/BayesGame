@@ -31,7 +31,7 @@ public class BayesNet {
 		nodes = new ArrayList<BayesNode>();
 	}
 	
-	private boolean addNode(BayesNode node){
+	public boolean addNode(BayesNode node){
 		boolean added = graph.addVertex(node);
 		if (added){
 			nodes.add(node);

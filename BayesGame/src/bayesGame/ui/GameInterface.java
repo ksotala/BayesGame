@@ -3,6 +3,7 @@ package bayesGame.ui;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
@@ -187,6 +188,11 @@ public class GameInterface implements InterfaceView, KeyController {
 			processEventQueue();
 		}
 		
+	}
+
+	public JFrame getFrame() {
+		// TODO Auto-generated method stub
+		return frame;
 	}
 	
 	

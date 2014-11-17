@@ -16,7 +16,7 @@ public class MinigameController {
 	private MinigameViewController viewController;
 	
 	private Map<Object,String[]> discussions;
-	private BayesNet gameNet;
+	private DiscussionNet gameNet;
 	private int timeLimit;
 	private Set<Object> hiddenNodes;
 	private Set<Object> targetNodes;
@@ -27,7 +27,7 @@ public class MinigameController {
 	private boolean ready = false;
 	private int turnsTaken;
 	
-	public MinigameController(BayesNet gameNet, Set<Object> targetNodes) {
+	public MinigameController(DiscussionNet gameNet, Set<Object> targetNodes) {
 		this.gameNet = gameNet;
 		this.targetNodes = targetNodes;
 		this.gameMode = 0;
@@ -95,20 +95,13 @@ public class MinigameController {
 	public void observeNode(Object node){
 		if (ready){
 			if (!hiddenNodes.contains(node)){
-				String[] question = discussions.get(node);
-				if (question != null){
-					viewController.addText(question[0]);
-				}
+				viewController.displayOptions(node);
 				gameNet.observe(node);
 				gameNet.updateBeliefs();
 				viewController.addRefreshDisplay();
 				viewController.processEventQueue();
 				if (gameMode == 1 && targetNodes.contains(node)){
 					decisionMade(node);
-				} else {
-					if (question != null){
-						viewController.addText(question[1]);
-					}
 				}
 				this.endOfTurn();
 				
