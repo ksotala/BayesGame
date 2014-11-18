@@ -13,18 +13,25 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import bayesGame.bayesbayes.OptionNodeOption;
+import bayesGame.levelcontrollers.Controller;
 
 public class DialogMenu extends JDialog {
 	
+	private Controller owner;
 	private List<OptionNodeOption> options;
-	private List<JButton> buttons;
+	private List<OptionButton> buttons;
+	private Object node;
 
-	public DialogMenu(JFrame frame, List<OptionNodeOption> options) {
-		super(frame);
+	public DialogMenu(Controller owner, JFrame frame, Object node, List<OptionNodeOption> options) {
+		super(frame, true);
 		this.options = options;
+		this.owner = owner;
+		this.node = node;
 		
 		if (options != null){
 			setupMenu();
+		} else {
+			this.sendMessage(1);
 		}
 	}
 	
@@ -32,11 +39,12 @@ public class DialogMenu extends JDialog {
 		Container container = getContentPane();
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 		
-		buttons = new ArrayList<JButton>();
+		buttons = new ArrayList<OptionButton>();
 		for (OptionNodeOption o : options){
-			JButton button = new JButton();
 			String buttonText = o.getDescription();
-			button.setText(buttonText);
+			int timeTaken = o.getTimeSpent();
+			OptionButton button = new OptionButton(buttonText, timeTaken);
+			
 			button.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent evt) {
 	                buttonPressed(evt);
@@ -46,14 +54,32 @@ public class DialogMenu extends JDialog {
 			container.add(button);
 		}
 		
-		
-		
-		
+		JButton cancelButton = new JButton("Never mind");
+		cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelButtonActionPerformed(evt);
+            }
+        });
+		cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		container.add(cancelButton);
+	}
+
+	protected void CancelButtonActionPerformed(ActionEvent evt) {
+		this.dispose();
 	}
 
 	protected void buttonPressed(ActionEvent evt) {
-		// TODO Auto-generated method stub
+		OptionButton source = (OptionButton)evt.getSource();
+		this.sendMessage(source.timeTaken);
+		this.dispose();
+	}
+	
+	private void sendMessage(int timeTaken){
+		Object[] message = new Object[2];
+		message[0] = node;
+		message[1] = timeTaken;
 		
+		owner.genericMessage(message);
 	}
 	
 	

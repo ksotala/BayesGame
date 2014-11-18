@@ -10,12 +10,13 @@ public class OptionNodeOption {
 	private String negativeResponse;
 	private Set<String> requirements;
 	
-	private boolean noTimeSpent;
+	private int timeSpent;
 	
 
 	public OptionNodeOption(String description) {
 		this.description = description;
 		this.requirements = new HashSet<String>();
+		this.setTimeSpent(1);
 	}
 
 
@@ -44,18 +45,21 @@ public class OptionNodeOption {
 	}
 
 
-	public boolean isNoTimeSpent() {
-		return noTimeSpent;
-	}
 
-
-	public void setNoTimeSpent(boolean noTimeSpent) {
-		this.noTimeSpent = noTimeSpent;
-	}
 
 
 	public String getDescription() {
 		return description;
+	}
+
+
+	public int getTimeSpent() {
+		return timeSpent;
+	}
+
+
+	public void setTimeSpent(int timeSpent) {
+		this.timeSpent = timeSpent;
 	}
 
 

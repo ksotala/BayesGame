@@ -157,7 +157,7 @@ public class BayesGame {
 		eyes.setPositiveResponse("His pupils become slightly widened as he looks at your face. He seems to think you're pretty.");
 		eyes.setNegativeResponse("He looks at you indifferently. He doesn't seem to be particularly attracted to you.");
 		eyes.addRequirement("Empathy 1");
-		eyes.setNoTimeSpent(true);
+		eyes.setTimeSpent(0);
 		girls.addOption(eyes);
 		
 		net.addNode(girls);
@@ -174,7 +174,7 @@ public class BayesGame {
 		eyes.setPositiveResponse("He looks at you politely, but he's kind of fidgeting and keeps glancing above your shoulder.");
 		eyes.setNegativeResponse("He appears calm and relaxed.");
 		eyes.addRequirement("Empathy 1");
-		eyes.setNoTimeSpent(true);
+		eyes.setTimeSpent(0);
 		time.addOption(body);
 		
 		net.addNode(time);

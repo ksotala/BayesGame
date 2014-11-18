@@ -92,26 +92,16 @@ public class MinigameController {
 		ready = true;
 	}
 	
-	public void observeNode(Object node){
+	public void chooseNode(Object node){
 		if (ready){
 			if (!hiddenNodes.contains(node)){
 				viewController.displayOptions(node);
-				gameNet.observe(node);
-				gameNet.updateBeliefs();
-				viewController.addRefreshDisplay();
-				viewController.processEventQueue();
-				if (gameMode == 1 && targetNodes.contains(node)){
-					decisionMade(node);
-				}
-				this.endOfTurn();
-				
 			}
 		}
-		
 	}
 	
-	private void endOfTurn(){
-		turnsTaken++;
+	private void endOfTurn(int timeTaken){
+		turnsTaken = turnsTaken + timeTaken;
 		
 		boolean allTargetNodesKnown = true;
 		for (Object o : targetNodes){
@@ -156,6 +146,22 @@ public class MinigameController {
 		
 		for (Object t : targetNodes){
 			gameNet.removeProperty(t, "target");
+		}
+		
+	}
+
+	public void observeNode(Object type, int timeTaken) {
+		if (ready){
+			if (!hiddenNodes.contains(type)){
+				gameNet.observe(type);
+				gameNet.updateBeliefs();
+				viewController.addRefreshDisplay();
+				viewController.processEventQueue();
+				if (gameMode == 1 && targetNodes.contains(type)){
+					decisionMade(type);
+				}
+				this.endOfTurn(timeTaken);
+			}
 		}
 		
 	}
