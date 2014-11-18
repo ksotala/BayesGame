@@ -119,32 +119,8 @@ public class BayesGame {
 		*/
 		
 		
-		/*
 		
-		net.addNode("Likes girls");
-		net.addNode("Has time");
-		net.addNode("Kind");
 		
-		net.addNode("M: Willing to help", new MajorityVote(), "Likes girls", "Has time", "Kind");
-		
-		net.addNode("OR: Ask nicely", new DeterministicOR(), "M: Willing to help");
-		net.addNode("NOT: Threaten with sword", new DeterministicNot(), "M: Willing to help");
-		
-		Set<Object> targets = new HashSet<Object>();
-		targets.add("OR: Ask nicely");
-		targets.add("NOT: Threaten with sword");
-		
-		Set<Object> hidden = new HashSet<Object>();
-		hidden.add("M: Willing to help");
-		// hidden.add("Ask nicely");
-		// hidden.add("Threaten with sword");
-		
-		MinigameController controller = new MinigameController(net, targets);
-		controller.setGameMode(1);
-		controller.setHiddenNodes(hidden);
-		controller.startGame(5, new Object[]{""});
-		
-		*/
 		
 		OptionNode girls = new OptionNode("Likes girls");
 		
@@ -208,6 +184,8 @@ public class BayesGame {
 		controller.setGameMode(1);
 		controller.setHiddenNodes(hidden);
 		controller.startGame(5, new Object[]{""});
+		
+		
 		
 		
 		

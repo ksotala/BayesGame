@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -100,7 +101,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	    c = new GridBagConstraints();
 	    
 	    textPane.setEditable(false);
-	    textPane.setPreferredSize(new Dimension(400,200));
+	    textPane.setPreferredSize(new Dimension(400,150));
 	    textPane.putClientProperty("IgnoreCharsetDirective", Boolean.TRUE);
 	    
 	    scroll = new JScrollPane (textPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -153,8 +154,21 @@ public class GameInterface implements InterfaceView, KeyController {
 		if (text.equals("$$REFRESHDISPLAY")){
 			bigPanel.repaint();
 		} else {
+			deletePreviousNextIndicatorFromPane();
 			writeToTextPane(text);
 		}
+	}
+	
+	private void deletePreviousNextIndicatorFromPane(){
+		try {
+			String text = textPane.getText(textPane.getDocument().getLength()-3, 1);
+			if (text.equals(">")){
+				textPane.getDocument().remove(textPane.getDocument().getLength()-3, 1);
+			}
+		} catch (BadLocationException e) { }
+		
+		
+		// textPane.getDocument().remove(textPane., arg1);
 	}
 	
 	private void writeToTextPane(String text){
