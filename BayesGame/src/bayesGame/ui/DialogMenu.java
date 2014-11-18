@@ -51,6 +51,11 @@ public class DialogMenu extends JDialog {
 	            }
 	        });
 			button.setAlignmentX(Component.CENTER_ALIGNMENT);
+			if (!this.requirementsMet(o)){
+				button.setEnabled(false);
+			}
+			
+			
 			container.add(button);
 		}
 		
@@ -80,6 +85,10 @@ public class DialogMenu extends JDialog {
 		message[1] = timeTaken;
 		
 		owner.genericMessage(message);
+	}
+	
+	private boolean requirementsMet(OptionNodeOption option){
+		return !option.hasRequirements();
 	}
 	
 	

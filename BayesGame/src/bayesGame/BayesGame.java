@@ -171,10 +171,10 @@ public class BayesGame {
 		time.addOption(askrush);
 
 		OptionNodeOption body = new OptionNodeOption("Read his body language");
-		eyes.setPositiveResponse("He looks at you politely, but he's kind of fidgeting and keeps glancing above your shoulder.");
-		eyes.setNegativeResponse("He appears calm and relaxed.");
-		eyes.addRequirement("Empathy 1");
-		eyes.setTimeSpent(0);
+		body.setPositiveResponse("He looks at you politely, but he's kind of fidgeting and keeps glancing above your shoulder.");
+		body.setNegativeResponse("He appears calm and relaxed.");
+		body.addRequirement("Empathy 1");
+		body.setTimeSpent(0);
 		time.addOption(body);
 		
 		net.addNode(time);

@@ -43,10 +43,10 @@ public class OptionNodeOption {
 	public void addRequirement(String requirement) {
 		requirements.add(requirement);
 	}
-
-
-
-
+	
+	public boolean hasRequirements(){
+		return !requirements.isEmpty();
+	}
 
 	public String getDescription() {
 		return description;
