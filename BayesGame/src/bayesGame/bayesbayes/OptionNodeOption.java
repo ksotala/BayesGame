@@ -62,6 +62,17 @@ public class OptionNodeOption {
 		this.timeSpent = timeSpent;
 	}
 
+	public String getRequirementString() {
+		String requirementString = "";
+		if (this.hasRequirements()){
+			// TODO: multiple requirements
+			for (Object o : requirements){
+				requirementString = o.toString();
+			}
+		}
+		return requirementString;
+	}
+
 
 	
 	

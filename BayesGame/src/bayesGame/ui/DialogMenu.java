@@ -31,7 +31,7 @@ public class DialogMenu extends JDialog {
 		if (options != null){
 			setupMenu();
 		} else {
-			this.sendMessage(1);
+			this.sendMessage(null);
 		}
 	}
 	
@@ -41,20 +41,23 @@ public class DialogMenu extends JDialog {
 		
 		buttons = new ArrayList<OptionButton>();
 		for (OptionNodeOption o : options){
-			String buttonText = o.getDescription();
-			int timeTaken = o.getTimeSpent();
-			OptionButton button = new OptionButton(buttonText, timeTaken);
+			String requirementText = "<html>";
+			if (o.hasRequirements()){
+				requirementText = requirementText + "<b>(" + o.getRequirementString() + ")</b> ";
+			}
+			String buttonText = requirementText + o.getDescription() + " (" + o.getTimeSpent() + " turns)</html>";
 			
+			OptionButton button = new OptionButton(buttonText, o);
+			button.setAlignmentX(Component.CENTER_ALIGNMENT);
 			button.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent evt) {
 	                buttonPressed(evt);
 	            }
 	        });
-			button.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
 			if (!this.requirementsMet(o)){
 				button.setEnabled(false);
 			}
-			
 			
 			container.add(button);
 		}
@@ -67,6 +70,7 @@ public class DialogMenu extends JDialog {
         });
 		cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		container.add(cancelButton);
+		this.pack();
 	}
 
 	protected void CancelButtonActionPerformed(ActionEvent evt) {
@@ -75,14 +79,14 @@ public class DialogMenu extends JDialog {
 
 	protected void buttonPressed(ActionEvent evt) {
 		OptionButton source = (OptionButton)evt.getSource();
-		this.sendMessage(source.timeTaken);
+		this.sendMessage(source.option);
 		this.dispose();
 	}
 	
-	private void sendMessage(int timeTaken){
+	private void sendMessage(OptionNodeOption option){
 		Object[] message = new Object[2];
 		message[0] = node;
-		message[1] = timeTaken;
+		message[1] = option;
 		
 		owner.genericMessage(message);
 	}

@@ -27,7 +27,11 @@ public class DiscussionNet extends BayesNet {
 	
 	public List<OptionNodeOption> getOptions(Object object) {
 		OptionNode optionNode = optionNodes.get(object);
-		return optionNode.getOptions();
+		if (optionNode != null){
+			return optionNode.getOptions();
+		} else {
+			return null;
+		}		
 	}
 
 	

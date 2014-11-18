@@ -94,7 +94,7 @@ public class MinigameController {
 	
 	public void chooseNode(Object node){
 		if (ready){
-			if (!hiddenNodes.contains(node)){
+			if (!hiddenNodes.contains(node) && !gameNet.isObserved(node)){
 				viewController.displayOptions(node);
 			}
 		}
@@ -111,15 +111,14 @@ public class MinigameController {
 			}
 		}
 		
-		viewController.addText("Turn " + turnsTaken + "/" + timeLimit);
-		viewController.processEventQueue();
+		viewController.showText("Turn " + turnsTaken + "/" + timeLimit);
 		
 		if (allTargetNodesKnown && gameMode == 0){
-			viewController.addText("Success!");
-			viewController.addText("Clearing this level with " + (timeLimit - turnsTaken) + " turns to spare confers " + (timeLimit - turnsTaken) + "fame.");
+			viewController.showText("Success!");
+			viewController.showText("Clearing this level with " + (timeLimit - turnsTaken) + " turns to spare confers " + (timeLimit - turnsTaken) + "fame.");
 			clear();
 		} else if (turnsTaken == timeLimit){
-			viewController.addText("Failure!");
+			viewController.showText("Failure!");
 			clear();
 		}
 	}
@@ -150,17 +149,32 @@ public class MinigameController {
 		
 	}
 
-	public void observeNode(Object type, int timeTaken) {
+	public void observeNode(Object type, OptionNodeOption option) {
 		if (ready){
 			if (!hiddenNodes.contains(type)){
-				gameNet.observe(type);
+				boolean nodeTrue = gameNet.observe(type);
+				int timeSpent = 1;
+				
+				if (option != null){
+					timeSpent = option.getTimeSpent();
+					viewController.showText(option.getDescription());
+					String response;
+					if (nodeTrue){
+						response = option.getPositiveResponse();
+					} else {
+						response = option.getNegativeResponse();
+					}
+					viewController.showText(response);
+					// viewController.displayPopup(option.getDescription(), response);
+				}
+				
 				gameNet.updateBeliefs();
 				viewController.addRefreshDisplay();
 				viewController.processEventQueue();
 				if (gameMode == 1 && targetNodes.contains(type)){
 					decisionMade(type);
 				}
-				this.endOfTurn(timeTaken);
+				this.endOfTurn(timeSpent);
 			}
 		}
 		

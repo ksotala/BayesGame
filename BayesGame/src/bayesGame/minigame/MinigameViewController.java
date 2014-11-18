@@ -1,7 +1,10 @@
 package bayesGame.minigame;
 
+import javax.swing.JOptionPane;
+
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
+import bayesGame.bayesbayes.OptionNodeOption;
 import bayesGame.levelcontrollers.Controller;
 import bayesGame.ui.DialogMenu;
 import bayesGame.ui.GameInterface;
@@ -37,6 +40,11 @@ public class MinigameViewController extends Controller {
 	
 	public void addText(String text){
 		gameInterface.addText(text);
+	}
+	
+	public void showText(String text){
+		this.addText(text);
+		this.processEventQueue();
 	}
 	
 	public void addRefreshDisplay(){
@@ -77,13 +85,23 @@ public class MinigameViewController extends Controller {
 	public void genericMessage(Object o) {
 		Object[] message = (Object[])o;
 		Object type = message[0];
-		int timeTaken = (int)message[1];
-		owner.observeNode(type, timeTaken);
+		
+		OptionNodeOption option = (OptionNodeOption)message[1];
+		owner.observeNode(type, option);
 	}
 
 	public void displayOptions(Object node) {
-		DialogMenu menu = new DialogMenu(this, gameInterface.getFrame(), node, gameNet.getOptions(node));
-		menu.setVisible(true);
+		if (gameNet.getOptions(node) != null){
+			DialogMenu menu = new DialogMenu(this, gameInterface.getFrame(), node, gameNet.getOptions(node));
+			menu.setVisible(true);
+		} else {
+			owner.observeNode(node, null);
+		}
+	}
+
+	public void displayPopup(String description, String response) {
+		String message = description + "\n\n" + response;
+		JOptionPane.showMessageDialog(gameInterface.getFrame(), message, "", JOptionPane.PLAIN_MESSAGE);
 	}
 	
 

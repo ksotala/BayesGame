@@ -301,14 +301,21 @@ public class BayesNet {
 		return assignments;
 	}
 	
-	public void observe(Object object){
+	public boolean observe(Object object){
 		BayesNode node = getNode(object);
 		node.observe();
+		Fraction probability = node.getProbability();
+		return (probability.intValue() == 1);
 	}
 	
 	public void observe(Object object, boolean value){
 		BayesNode node = getNode(object);
 		node.observe(value);
+	}
+	
+	public boolean isObserved(Object object){
+		BayesNode node = getNodeIffPresent(object);
+		return node.isObserved();
 	}
 	
 	public void assume(Object object, boolean value){

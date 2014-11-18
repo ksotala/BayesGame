@@ -4,13 +4,15 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
+import bayesGame.bayesbayes.OptionNodeOption;
+
 public class OptionButton extends JButton {
 
-	public int timeTaken;
+	public OptionNodeOption option;
 	
-	public OptionButton(String arg0, int timeTaken) {
+	public OptionButton(String arg0, OptionNodeOption option) {
 		super(arg0);
-		this.timeTaken = timeTaken;
+		this.option = option;
 	}
 
 

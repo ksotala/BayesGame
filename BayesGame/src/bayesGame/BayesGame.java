@@ -166,8 +166,8 @@ public class BayesGame {
 		OptionNode time = new OptionNode("Has time");
 		
 		OptionNodeOption askrush = new OptionNodeOption("Are you in a rush?");
-		flirty.setPositiveResponse("Kind of, yeah.");
-		flirty.setNegativeResponse("No, I'm not in a hurry anywhere.");
+		askrush.setPositiveResponse("Kind of, yeah.");
+		askrush.setNegativeResponse("No, I'm not in a hurry anywhere.");
 		time.addOption(askrush);
 
 		OptionNodeOption body = new OptionNodeOption("Read his body language");
