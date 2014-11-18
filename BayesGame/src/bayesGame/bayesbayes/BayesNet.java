@@ -20,7 +20,7 @@ import edu.uci.ics.jung.graph.DirectedSparseGraph;
 public class BayesNet {
 
 	private int edgeCounter = 0;
-	private ArrayList<BayesNode> nodes;
+	private Map<Object,BayesNode> nodes;
 	private NetGraph graph;
 	
 	private HashSet<BayesNode> visitedDownstreamNodes;
@@ -28,19 +28,19 @@ public class BayesNet {
 	
 	public BayesNet() {
 		graph = new NetGraph(this);
-		nodes = new ArrayList<BayesNode>();
+		nodes = new HashMap<Object,BayesNode>();
 	}
 	
 	public boolean addNode(BayesNode node){
 		boolean added = graph.addVertex(node);
 		if (added){
-			nodes.add(node);
+			nodes.put(node.type, node);
 		}
 		return added;
 	}
 	
 	public boolean addNode(Object object){
-		BayesNode node = getNode(object);
+		BayesNode node = new BayesNode(object);
 		return addNode(node);
 	}
 	
@@ -80,17 +80,13 @@ public class BayesNet {
 	}
 	
 	public boolean isPresent(Object o){
-		for (BayesNode existingNode : nodes){
-			if (existingNode.type.equals(o)){
-				return true;
-			}
-		}
-		return false;
+		return nodes.containsKey(o);
 	}
 	
 	public boolean isFullyAssumed(){
 		boolean fullyAssumed = true;
-		for (BayesNode existingNode : nodes){
+		Collection<BayesNode> nodeValues = nodes.values();
+		for (BayesNode existingNode : nodeValues){
 			if (!existingNode.isObserved() && !existingNode.isAssumed()){
 				fullyAssumed = false;
 				break;
@@ -100,12 +96,7 @@ public class BayesNet {
 	}
 	
 	private BayesNode getNodeIffPresent(Object o){
-		for (BayesNode existingNode : nodes){
-			if (existingNode.type.equals(o) && existingNode instanceof BayesNode){
-				return (BayesNode)existingNode;
-			}
-		}
-		return null;
+		return nodes.get(o);
 	}
 		
 	public boolean removeBayesNode(Object object){
@@ -292,7 +283,8 @@ public class BayesNet {
 	
 	public Map<Object,Boolean> getCurrentAssignments(){
 		Map<Object,Boolean> assignments = new HashMap<Object,Boolean>(nodes.size());
-		for (BayesNode node : nodes){
+		Collection<BayesNode> nodeValues = nodes.values();
+		for (BayesNode node : nodeValues){
 			if (node.isObserved() || node.isAssumed()){
 				boolean truthValue = node.getProbability().equals(Fraction.ONE);
 				assignments.put(node.type, truthValue);
@@ -362,19 +354,22 @@ public class BayesNet {
 	}
 	
 	public void clearAssumptions(){
-		for (BayesNode node : nodes){
+		Collection<BayesNode> nodeValues = nodes.values();
+		for (BayesNode node : nodeValues){
 			node.clearAssumedValue();
 		}
 	}
 	
 	public void resetNetworkBeliefs(){
-		for (BayesNode node : nodes){
+		Collection<BayesNode> nodeValues = nodes.values();
+		for (BayesNode node : nodeValues){
 			node.resetPotential();
 		}
 	}
 	
 	public void resetNetworkBeliefsObservations(){
-		for (BayesNode node : nodes){
+		Collection<BayesNode> nodeValues = nodes.values();
+		for (BayesNode node : nodeValues){
 			node.resetNode();
 		}
 	}	
@@ -384,7 +379,8 @@ public class BayesNet {
 	public void updateBeliefs(){
 		if (nodes.size() > 1){
 			HashMap<BayesNode,Fraction> calculatedProbabilities = new HashMap<BayesNode,Fraction>();
-			for (BayesNode root : nodes){
+			Collection<BayesNode> nodeValues = nodes.values();
+			for (BayesNode root : nodeValues){
 				resetNetworkBeliefs();
 				visitedDownstreamNodes = new HashSet<BayesNode>();
 				downstreamMessagePaths = new Stack<Pair<BayesNode,BayesNode>>();
@@ -398,7 +394,7 @@ public class BayesNet {
 				calculatedProbabilities.put(root, rootProbability);
 				System.out.println("Probability of " + root.toString() + " calculated as " + rootProbability.toString());
 			}
-			for (BayesNode node : nodes){
+			for (BayesNode node : nodeValues){
 				Fraction calculatedProbability = calculatedProbabilities.get(node);
 				node.setProbability(calculatedProbability);
 			}
