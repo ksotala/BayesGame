@@ -1,6 +1,7 @@
 package bayesGame.viewcontrollers;
 
 import bayesGame.bayesbayes.BayesNet;
+import bayesGame.levelcontrollers.LevelController;
 import bayesGame.minigame.DiscussionNet;
 import bayesGame.ui.GameInterface;
 import bayesGame.ui.GraphPanel;
@@ -10,9 +11,14 @@ public class DefaultViewController implements ViewController {
 	private BayesNet gameNet;
 	private GameInterface gameInterface;
 	private GraphPanel graphPanel;
+	private LevelController owner;
 
 	public DefaultViewController() {
-		this.gameInterface = new GameInterface();	
+		this.gameInterface = new GameInterface();
+	}
+	
+	public void display(){
+		gameInterface.setOwner(this);
 		gameInterface.display();
 	}
 	
@@ -43,6 +49,27 @@ public class DefaultViewController implements ViewController {
 
 	public void dispose() {
 		gameInterface.dispose();
+	}
+	
+	@Override
+	public void giveControlTo(ViewController viewController) {
+		viewController.receiveControl(gameInterface);
+	}
+	
+	@Override
+	public void receiveControl(Object control){
+		gameInterface = (GameInterface)control;
+		gameInterface.setOwner(this);
+	}
+
+	@Override
+	public void setOwner(LevelController owner) {
+		this.owner = owner;
+	}
+	
+	@Override
+	public void processingDone(){
+		owner.processedQueue();
 	}
 
 }

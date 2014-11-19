@@ -8,8 +8,10 @@ import java.util.Set;
 
 import org.apache.commons.math3.fraction.Fraction;
 
+import bayesGame.levelcontrollers.LevelController;
 import bayesGame.ui.InterfaceView;
 import bayesGame.viewcontrollers.MinigameViewController;
+import bayesGame.viewcontrollers.ViewController;
 import bayesGame.bayesbayes.*;
 
 public class MinigameController {
@@ -28,6 +30,8 @@ public class MinigameController {
 	private boolean ready = false;
 	private int turnsTaken;
 	
+	private LevelController owner;
+	
 	public MinigameController(DiscussionNet gameNet, Set<Object> targetNodes) {
 		this.gameNet = gameNet;
 		this.targetNodes = targetNodes;
@@ -42,6 +46,8 @@ public class MinigameController {
 		
 		this.hiddenNodes = new HashSet<Object>();
 		this.discussions = new HashMap<Object,String[]>();
+		
+		this.viewController = new MinigameViewController(this, gameNet);
 	}
 	
 	public void setHiddenNodes(Set<Object> hiddenNodes){
@@ -76,7 +82,6 @@ public class MinigameController {
 			gameNet.observe(o);
 		}
 		
-		// need to refactor these into their own class...
 		for (Object h : hiddenNodes){
 			gameNet.addProperty(h, "hidden");
 		}
@@ -85,12 +90,8 @@ public class MinigameController {
 			gameNet.addProperty(t, "target");
 		}
 		
-		// initialize interface
-		viewController = new MinigameViewController(this, gameNet);
-		// viewController.addText("Target nodes: " + targetNodes.toString());
-		// viewController.processEventQueue();
-		
 		ready = true;
+		viewController.display();
 	}
 	
 	public void chooseNode(Object node){
@@ -151,6 +152,7 @@ public class MinigameController {
 			gameNet.removeProperty(t, "target");
 		}
 		
+		owner.minigameCompleted(viewController);
 	}
 
 	public void observeNode(Object type, OptionNodeOption option) {
@@ -182,6 +184,14 @@ public class MinigameController {
 			}
 		}
 		
+	}
+
+	public void setOwner(LevelController levelController) {
+		this.owner = levelController;
+	}
+
+	public void offerViewController(ViewController viewController) {
+		viewController.giveControlTo(this.viewController);
 	}
 	
 	

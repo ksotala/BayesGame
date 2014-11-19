@@ -15,7 +15,7 @@ import bayesGame.bayesbayes.OptionNodeOption;
 import bayesGame.bayesbayes.nodeCPD.DeterministicNot;
 import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
 import bayesGame.bayesbayes.nodeCPD.MajorityVote;
-import bayesGame.levelcontrollers.ExamLevel;
+import bayesGame.levelcontrollers.ExamLevelScript;
 import bayesGame.levelcontrollers.TutorialController;
 import bayesGame.levelcontrollers.TutorialLevel2Controller;
 import bayesGame.minigame.DiscussionNet;
@@ -187,7 +187,7 @@ public class BayesGame {
 		controller.startGame(5, new Object[]{""});
 		*/
 		
-		ExamLevel exam = new ExamLevel();
+		ExamLevelScript exam = new ExamLevelScript();
 		
 		
 		

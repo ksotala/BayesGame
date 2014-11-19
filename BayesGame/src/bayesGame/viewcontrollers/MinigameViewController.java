@@ -21,6 +21,7 @@ import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.bayesbayes.OptionNodeOption;
 import bayesGame.levelcontrollers.Controller;
+import bayesGame.levelcontrollers.LevelController;
 import bayesGame.minigame.DiscussionNet;
 import bayesGame.minigame.MinigameController;
 import bayesGame.ui.DialogMenu;
@@ -33,7 +34,7 @@ public class MinigameViewController implements Controller, ViewController {
 	
 	private final MinigameController owner;
 	private final DiscussionNet gameNet;
-	private final GameInterface gameInterface;
+	private GameInterface gameInterface;
 	private GraphPanel graphPanel;
 	private JPanel infoPanel;
 	private JLabel infoPanelText;
@@ -44,8 +45,11 @@ public class MinigameViewController implements Controller, ViewController {
 		this.owner = minigameController;
 		this.gameNet = gameNet;
 		this.gameInterface = new GameInterface();
-		
+	}
+	
+	public void display(){
 		initializeView();
+		gameInterface.display();
 	}
 	
 	private void initializeView(){
@@ -59,8 +63,6 @@ public class MinigameViewController implements Controller, ViewController {
 		
 	    infoPanel = new JPanel();
 	    gameInterface.setSmallPanel(infoPanel);
-		
-		gameInterface.display();
 	}
 	
 	public void addText(String text){
@@ -149,7 +151,29 @@ public class MinigameViewController implements Controller, ViewController {
 		String message = description + "\n\n" + response;
 		JOptionPane.showMessageDialog(gameInterface.getFrame(), message, "", JOptionPane.PLAIN_MESSAGE);
 	}
+
+	@Override
+	public void giveControlTo(ViewController viewController) {
+		viewController.receiveControl(gameInterface);
+	}
 	
+	@Override
+	public void receiveControl(Object control){
+		gameInterface = (GameInterface)control;
+		gameInterface.setOwner(this);
+	}
+
+	@Override
+	public void setOwner(LevelController owner) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void processingDone() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 	

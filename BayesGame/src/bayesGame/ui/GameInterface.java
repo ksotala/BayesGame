@@ -23,6 +23,7 @@ import javax.swing.text.StyledDocument;
 
 import bayesGame.ui.swinglisteners.AnyKeyListener;
 import bayesGame.ui.swinglisteners.KeyController;
+import bayesGame.viewcontrollers.ViewController;
 
 public class GameInterface implements InterfaceView, KeyController {
 
@@ -32,6 +33,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	private JTextPane textPane;
 	private JScrollPane scroll;
 	
+	private ViewController owner;
 	private boolean waitingForInput;
 	
 	private List<String> events;
@@ -48,54 +50,50 @@ public class GameInterface implements InterfaceView, KeyController {
 		
 		waitingForInput = false;
 		textPane.addKeyListener(new AnyKeyListener(this));
+		
+		addComponentsToPane(frame.getContentPane());
 	}
 	
 	public void setBigPanel(JPanel bigPanel) {
+		frame.getContentPane().remove(this.bigPanel);
+		
+	    bigPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		bigPanel.setMinimumSize(new Dimension(500,500));
+		frame.getContentPane().add(bigPanel, getBigPanelConstraints());
+		
 		this.bigPanel = bigPanel;
 	}
 
 	public void setSmallPanel(JPanel smallPanel) {
+		frame.getContentPane().remove(this.smallPanel);
+		
+	    smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+	    smallPanel.setMinimumSize(new Dimension(250,500));
+		frame.getContentPane().add(smallPanel, getSmallPanelConstraints());
+		
 		this.smallPanel = smallPanel;
 	}
 	
 	public void display(){
-		addComponentsToPane(frame.getContentPane());
-		
 		frame.pack();
 		frame.setVisible(true);
 	}
 		
 	private void addComponentsToPane(Container pane){
-		GridBagConstraints c;
-		
 		pane.setLayout(new GridBagLayout());
 	    
-		c = new GridBagConstraints();
+		GridBagConstraints c = getBigPanelConstraints();
 		
 	    bigPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		bigPanel.setMinimumSize(new Dimension(500,500));
 	    
-	    c.gridx = 0;
-	    c.gridy = 0;
-	    c.weightx = 1;
-	    c.weighty = 1;
-	    c.ipady = 0;
-	    c.ipadx = 0;
-	    c.fill = GridBagConstraints.BOTH;
 	    pane.add(bigPanel, c);
 	    
-	    c = new GridBagConstraints();
+	    c = getSmallPanelConstraints();
 	    
 	    smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 	    smallPanel.setMinimumSize(new Dimension(250,500));
 	    
-	    c.gridx = 1;
-	    c.gridy = 0;
-	    c.weightx = 1;
-	    c.weighty = 1;
-	    c.ipady = 0;
-	    c.ipadx = 0;
-	    c.fill = GridBagConstraints.BOTH;
 	    pane.add(smallPanel, c);
 	    
 	    c = new GridBagConstraints();
@@ -116,6 +114,33 @@ public class GameInterface implements InterfaceView, KeyController {
 	    pane.add(scroll, c);
 	}
 	
+	private GridBagConstraints getBigPanelConstraints(){
+		GridBagConstraints c = new GridBagConstraints();
+		
+	    c.gridx = 0;
+	    c.gridy = 0;
+	    c.weightx = 1;
+	    c.weighty = 1;
+	    c.ipady = 0;
+	    c.ipadx = 0;
+	    c.fill = GridBagConstraints.BOTH;
+	    
+	    return c;
+	}
+	
+	private GridBagConstraints getSmallPanelConstraints(){
+		GridBagConstraints c = new GridBagConstraints();
+		
+	    c.gridx = 1;
+	    c.gridy = 0;
+	    c.weightx = 1;
+	    c.weighty = 1;
+	    c.ipady = 0;
+	    c.ipadx = 0;
+	    c.fill = GridBagConstraints.BOTH;
+	    
+	    return c;
+	}
 
 	@Override
 	public void addText(String text) {
@@ -145,6 +170,8 @@ public class GameInterface implements InterfaceView, KeyController {
 		if (events.size() > 0){
 			processFirstEvent();
 			waitForInput();
+		} else {
+			owner.processingDone();
 		}
 	}
 	
@@ -212,6 +239,10 @@ public class GameInterface implements InterfaceView, KeyController {
 	
 	public void dispose(){
 		frame.dispose();
+	}
+
+	public void setOwner(ViewController viewController) {
+		this.owner = viewController;
 	}
 	
 	
