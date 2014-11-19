@@ -101,8 +101,9 @@ public class MinigameViewController implements Controller, ViewController {
 	    	text = text + "<p><p>It is an <b>observable variable</b>, meaning that you can try<br>to discover its value by right-clicking on it.</html>";
 	    }
 	    
-	    
 	    System.out.println(text);
+	    
+	    infoPanel.removeAll();
 	    
 	    infoPanelText = new JLabel();
 		infoPanelText.setText(text);
