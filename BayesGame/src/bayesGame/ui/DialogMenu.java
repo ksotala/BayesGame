@@ -42,10 +42,14 @@ public class DialogMenu extends JDialog {
 		buttons = new ArrayList<OptionButton>();
 		for (OptionNodeOption o : options){
 			String requirementText = "<html>";
+			
 			if (o.hasRequirements()){
 				requirementText = requirementText + "<b>(" + o.getRequirementString() + ")</b> ";
 			}
-			String buttonText = requirementText + o.getDescription() + " (" + o.getTimeSpent() + " turns)</html>";
+			String buttonText = requirementText + o.getDescription();
+			if (o.getTimeSpent() > 0){
+				buttonText = buttonText + " (" + o.getTimeSpent() + " turns)";
+			}
 			
 			OptionButton button = new OptionButton(buttonText, o);
 			button.setAlignmentX(Component.CENTER_ALIGNMENT);
