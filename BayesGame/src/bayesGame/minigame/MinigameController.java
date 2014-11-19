@@ -125,6 +125,8 @@ public class MinigameController {
 		} else if (turnsTaken == timeLimit && timeLimit > 0){
 			viewController.showText("Failure!");
 			clear();
+		} else if (allTargetNodesKnown && gameMode == 0){
+			clear();
 		}
 	}
 	
