@@ -4,7 +4,7 @@ import bayesGame.bayesbayes.BayesNet;
 import bayesGame.ui.TutorialInterfaceView;
 import bayesGame.ui.swinglisteners.AnyKeyTutorialListener;
 
-public class TutorialLevel2Controller extends Controller {
+public class TutorialLevel2Controller implements Controller {
 	
 	private TutorialInterfaceView UI;
 	private int level = 0;

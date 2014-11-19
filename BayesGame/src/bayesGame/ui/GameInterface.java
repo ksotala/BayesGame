@@ -182,10 +182,11 @@ public class GameInterface implements InterfaceView, KeyController {
 		try { doc.insertString(doc.getLength(), text, style); }
         catch (BadLocationException e){}
 		
-		frame.pack();
+		
 		
 		textPane.setCaretPosition(textPane.getDocument().getLength());
 		scroll.revalidate();
+		// frame.pack();
 	}
 	
 	private void waitForInput(){
@@ -207,6 +208,10 @@ public class GameInterface implements InterfaceView, KeyController {
 	public JFrame getFrame() {
 		// TODO Auto-generated method stub
 		return frame;
+	}
+	
+	public void dispose(){
+		frame.dispose();
 	}
 	
 	

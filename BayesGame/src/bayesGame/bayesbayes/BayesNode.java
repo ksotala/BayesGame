@@ -1,8 +1,8 @@
 /**
  * This code is terrible and probably contains multiple exponential blowups and I apologize to anyone reading this.
  * 
- * Note that some of the seeming unnecessary complexity is in preparation for the possibility of implementing
- * junction trees.
+ * Note that some of the seeming unnecessary complexity in this class is in preparation for the possibility of 
+ * implementing junction trees. Since this comment was originally written, I've forgotten which parts, however.
  */
 
 package bayesGame.bayesbayes;
@@ -28,6 +28,7 @@ public class BayesNode {
 	
 	private Fraction[] cpt;
 	private Fraction[] potential;
+	public String cptDescription;
 	
 	// getProbability returns the contents of this variable, but it isn't actually used for anything
 	// inside the node: it's just a cache.
@@ -69,6 +70,12 @@ public class BayesNode {
 		}
 		
 		this.scope = scope;
+		
+		if (scope.length == 1){
+			this.cptDescription = "<html>This is a <b>prior variable</b>. The truth values of any of its child variables are derived from it, as well as from any other parent variables.</html>";
+		} else {
+			this.cptDescription = "<html>This is a <b>conditional probability variable</b> of type <b>custom distribution</b>.</html>";			
+		}
 		
 		if (strides != null){
 			this.strides = strides;

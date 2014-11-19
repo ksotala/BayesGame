@@ -19,7 +19,7 @@ import bayesGame.ui.verbs.InteractingVerb;
 import bayesGame.ui.verbs.TutorialVerb;
 import bayesGame.ui.verbs.Verb;
 
-public class TutorialController extends Controller {
+public class TutorialController implements Controller {
 	
 	TutorialInterfaceView UI;
 	int level = 0;

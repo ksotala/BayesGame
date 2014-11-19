@@ -1,4 +1,4 @@
-package bayesGame.minigame;
+package bayesGame.viewcontrollers;
 
 import javax.swing.JOptionPane;
 
@@ -6,13 +6,15 @@ import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.bayesbayes.OptionNodeOption;
 import bayesGame.levelcontrollers.Controller;
+import bayesGame.minigame.DiscussionNet;
+import bayesGame.minigame.MinigameController;
 import bayesGame.ui.DialogMenu;
 import bayesGame.ui.GameInterface;
 import bayesGame.ui.GraphPanel;
 import bayesGame.ui.verbs.InteractingVerb;
 import bayesGame.ui.verbs.Verb;
 
-public class MinigameViewController extends Controller {
+public class MinigameViewController implements Controller, ViewController {
 	
 	private final MinigameController owner;
 	private final DiscussionNet gameNet;
@@ -57,6 +59,10 @@ public class MinigameViewController extends Controller {
 	
 	public void processEventQueue(){
 		gameInterface.processEventQueue();
+	}
+	
+	public void dispose() {
+		gameInterface.dispose();
 	}
 
 	@Override

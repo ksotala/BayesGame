@@ -44,6 +44,12 @@ public class BayesNet {
 		return addNode(node);
 	}
 	
+	public boolean addNode(Object object, boolean value){
+		BayesNode node = new BayesNode(object);
+		node.setTrueValue(value);
+		return addNode(node);
+	}
+	
 	public boolean addNode(Object object, Object[] scope){
 		BayesNode node = getNode(object, scope);
 		return addNode(node);

@@ -9,6 +9,7 @@ import java.util.Set;
 import org.apache.commons.math3.fraction.Fraction;
 
 import bayesGame.ui.InterfaceView;
+import bayesGame.viewcontrollers.MinigameViewController;
 import bayesGame.bayesbayes.*;
 
 public class MinigameController {
@@ -86,8 +87,8 @@ public class MinigameController {
 		
 		// initialize interface
 		viewController = new MinigameViewController(this, gameNet);
-		viewController.addText("Target nodes: " + targetNodes.toString());
-		viewController.processEventQueue();
+		// viewController.addText("Target nodes: " + targetNodes.toString());
+		// viewController.processEventQueue();
 		
 		ready = true;
 	}
@@ -111,13 +112,16 @@ public class MinigameController {
 			}
 		}
 		
-		viewController.showText("Turn " + turnsTaken + "/" + timeLimit);
+		if (timeLimit > 0){
+			viewController.showText("Turn " + turnsTaken + "/" + timeLimit);
+		}
 		
-		if (allTargetNodesKnown && gameMode == 0){
+		
+		if (allTargetNodesKnown && gameMode == 0 && timeLimit > 0){
 			viewController.showText("Success!");
 			viewController.showText("Clearing this level with " + (timeLimit - turnsTaken) + " turns to spare confers " + (timeLimit - turnsTaken) + "fame.");
 			clear();
-		} else if (turnsTaken == timeLimit){
+		} else if (turnsTaken == timeLimit && timeLimit > 0){
 			viewController.showText("Failure!");
 			clear();
 		}

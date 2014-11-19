@@ -15,6 +15,7 @@ import bayesGame.bayesbayes.OptionNodeOption;
 import bayesGame.bayesbayes.nodeCPD.DeterministicNot;
 import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
 import bayesGame.bayesbayes.nodeCPD.MajorityVote;
+import bayesGame.levelcontrollers.ExamLevel;
 import bayesGame.levelcontrollers.TutorialController;
 import bayesGame.levelcontrollers.TutorialLevel2Controller;
 import bayesGame.minigame.DiscussionNet;
@@ -121,7 +122,7 @@ public class BayesGame {
 		
 		
 		
-		
+		/*
 		OptionNode girls = new OptionNode("Likes girls");
 		
 		OptionNodeOption flirty = new OptionNodeOption("Be flirty");
@@ -184,7 +185,9 @@ public class BayesGame {
 		controller.setGameMode(1);
 		controller.setHiddenNodes(hidden);
 		controller.startGame(5, new Object[]{""});
+		*/
 		
+		ExamLevel exam = new ExamLevel();
 		
 		
 		

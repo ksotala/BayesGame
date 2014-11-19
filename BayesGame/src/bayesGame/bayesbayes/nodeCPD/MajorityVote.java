@@ -75,6 +75,9 @@ public class MajorityVote implements NodeCPD {
             }
         }
         
+        String description = "<html>This is a <b>conditional probability variable</b> of type <b>majority vote</b>. It is true if the majority of its parents are true, and false if the majority of its parents are false. If an equal number of parents are true and false, it has a 50% chance of being true.</html>";
+        sourceBayesNode.cptDescription = description;
+        
 		return sourceBayesNode;
 	}
 

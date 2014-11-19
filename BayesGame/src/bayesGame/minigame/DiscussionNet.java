@@ -10,6 +10,7 @@ import java.util.Set;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.OptionNode;
 import bayesGame.bayesbayes.OptionNodeOption;
+import bayesGame.bayesbayes.nodeCPD.NodeCPD;
 
 public class DiscussionNet extends BayesNet {
 
@@ -21,8 +22,16 @@ public class DiscussionNet extends BayesNet {
 	}
 
 	public void addNode (OptionNode node){
-		super.addNode(node.type);
-		optionNodes.put(node.type, node);
+		if (super.addNode(node.type)){
+			optionNodes.put(node.type, node);
+		}
+	}
+	
+	public void addNode(OptionNode node, NodeCPD cpd, Object... parents){
+		// gahh this is gonna blow up at some point, fix
+		if (super.addNodeWithParents(node.type, cpd, parents)){
+			optionNodes.put(node.type, node);
+		}
 	}
 	
 	public List<OptionNodeOption> getOptions(Object object) {
