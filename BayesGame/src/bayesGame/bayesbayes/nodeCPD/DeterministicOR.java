@@ -70,9 +70,9 @@ public class DeterministicOR implements NodeCPD {
         String description = "<html>'" + orBayesNode.type + "' is a <b>conditional probability variable</b><br> of type <b>deterministic";
         String typename;
         if (parents.length > 1){
-        	typename = " or</b>.<p>It is true of any of its parent variables are true.</html>";
+        	typename = " or</b>.<p>It is true of any of its parent variables are true.";
         } else {
-        	typename = " is</b>.<p><p>It is true if its parent variable is true.</html>";
+        	typename = " is</b>.<p><p>It is true if its parent variable is true.";
         }
         description = description + typename;
         

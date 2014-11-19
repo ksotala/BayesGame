@@ -175,9 +175,9 @@ public class BayesNode {
 	
 	private String createCPTDescription(Object[] scope) {
 		if (scope.length == 1){
-			return "<html>'" + this.type + "' is a <b>prior variable</b>.<br>The truth values of any of its child variables are derived from it, <br>as well as from any other parent variables.</html>";
+			return "<html>'" + this.type + "' is a <b>prior variable</b>.<br>The truth values of any of its child variables are derived from it, <br>as well as from any other parent variables.";
 		} else {
-			return "<html>'" + this.type + "' is a <b>conditional probability variable</b><br>of type <b>custom distribution</b>.</html>";			
+			return "<html>'" + this.type + "' is a <b>conditional probability variable</b><br>of type <b>custom distribution</b>.";			
 		}
 	}
 	

@@ -92,6 +92,14 @@ public class MinigameViewController implements Controller, ViewController {
 	public void keyMessage(Object o) {
 	    BayesNode node = (BayesNode)o;
 	    String text = gameNet.getCPTDescription(node.type);
+	    
+	    if (node.hasProperty("hidden")){
+	    	text = text + "<p><p>It is a <b>hidden variable</b>, meaning that you cannot observe it directly.<br>You need to discover its value through the other variables it is<br>connected to.</html>";
+	    } else {
+	    	text = text + "<p><p>It is an <b>observable variable</b>, meaning that you can try<br>to discover its value by right-clicking on it.</html>";
+	    }
+	    
+	    
 	    System.out.println(text);
 	    
 	    infoPanelText = new JLabel();
