@@ -49,6 +49,8 @@ public class BayesNode {
 		this.cpt = this.createRawFractionArray(this.scope);
 		this.strides = this.createStridesFromScope(this.scope);
 		
+		this.cptDescription = this.createCPTDescription(this.scope);
+		
 		this.potential = this.cpt.clone();
 	}
 	
@@ -70,12 +72,6 @@ public class BayesNode {
 		}
 		
 		this.scope = scope;
-		
-		if (scope.length == 1){
-			this.cptDescription = "<html>This is a <b>prior variable</b>. The truth values of any of its child variables are derived from it, as well as from any other parent variables.</html>";
-		} else {
-			this.cptDescription = "<html>This is a <b>conditional probability variable</b> of type <b>custom distribution</b>.</html>";			
-		}
 		
 		if (strides != null){
 			this.strides = strides;
@@ -175,6 +171,14 @@ public class BayesNode {
 			i = i * 2;
 		}		
 		return stride;
+	}
+	
+	private String createCPTDescription(Object[] scope) {
+		if (scope.length == 1){
+			return "<html>'" + this.type + "' is a <b>prior variable</b>.<br>The truth values of any of its child variables are derived from it, <br>as well as from any other parent variables.</html>";
+		} else {
+			return "<html>'" + this.type + "' is a <b>conditional probability variable</b><br>of type <b>custom distribution</b>.</html>";			
+		}
 	}
 	
 	public void setTrueValue(boolean value){
@@ -402,25 +406,19 @@ public class BayesNode {
 			for (int i = 0; i < potential.length; i++){
 				Fraction f = potential[i];
 				potential[i] = f.divide(total);
-				System.out.println("After dividing with " + total.doubleValue() + ": " + potential[i].doubleValue());
 			}
 		}
 		
-		System.out.print("Normalized potentials of " + type + ":");
 		for (Fraction f : potential){
-			System.out.print(", " + f.doubleValue());
 		}
-		System.out.println("");
 	}
 	
 	protected void receiveUpstreamMessage(Message message){
 		upstreamMessages.add(message);
-		System.out.println("Upstream message of " + message.scope[0] + " to " + type + " from " + message.sender + ", reported true probability of " + message.message[0].doubleValue() + " and false probability of " + message.message[1].doubleValue());
 	}
 	
 	protected void receiveDownstreamMessage(Message message){
 		downstreamMessages.add(message);
-		System.out.println("Downstream message of " + message.scope[0] + " to " + type + " from " + message.sender + ", reported true probability of " + message.message[0].doubleValue() + " and false probability of " + message.message[1].doubleValue());
 	}
 	
 	protected boolean receivedMessageFrom(BayesNode source, boolean upstream){
@@ -503,25 +501,20 @@ public class BayesNode {
 	}
 	
 	protected void multiplyPotentialWithMessages(){
-		
-		System.out.println("------------" + type + "----------------");
-		
+				
 		probability = null;
-		System.out.println(type + " original probability " + this.getProbability());
 		
 		if (!upstreamMessages.isEmpty()){
 			potential = multiplyPotentialWithMessages(potential, upstreamMessages);
 		}
 		
 		probability = null;
-		System.out.println(type + " upstream probability " + this.getProbability());
 		
 		if (!downstreamMessages.isEmpty()){
 			potential = multiplyPotentialWithMessages(potential, downstreamMessages);
 		}
 		
 		probability = null;
-		System.out.println(type + " downstream probability " + this.getProbability());
 		
 		clearMessages();
 		probability = null;
@@ -538,7 +531,6 @@ public class BayesNode {
 				ArrayList<Integer> arrayReferencesToWantedObjectBeingUntrueInOwnPotential = selfChooser.getAllIndexes();
 				Fraction trueMultiplier = m.message[0];
 				Fraction untrueMultiplier = m.message[1];
-				System.out.println("Message from " + m.sender.toString() + " to " + this.toString() + ", potential before applying message: " + currentPotential.toString());
 				for (int i = 0; i < currentPotential.length; i++){
 					if (arrayReferencesToWantedObjectBeingUntrueInOwnPotential.contains(i)){
 						newPotential[i] = newPotential[i].multiply(untrueMultiplier);
@@ -546,7 +538,6 @@ public class BayesNode {
 						newPotential[i] = newPotential[i].multiply(trueMultiplier);
 					}
 				}
-				System.out.println("Message from " + m.sender.toString() + " to " + this.toString() + ", potential after applying message: " + currentPotential.toString());
 			} else {
 				throw new IllegalStateException("Message contained truth values for multiple variables, not yet implemented");
 				//TODO: implement the case where the message contains the truth values for multiple variables!

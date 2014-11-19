@@ -104,6 +104,15 @@ public class BayesNet {
 	private BayesNode getNodeIffPresent(Object o){
 		return nodes.get(o);
 	}
+	
+	public String getCPTDescription(Object o){
+		BayesNode node = getNodeIffPresent(o);
+		if (node != null){
+			return node.cptDescription;
+		} else {
+			return "";
+		}
+	}
 		
 	public boolean removeBayesNode(Object object){
 		BayesNode node = new BayesNode(object);
@@ -398,7 +407,6 @@ public class BayesNet {
 				
 				Fraction rootProbability = root.getProbability();
 				calculatedProbabilities.put(root, rootProbability);
-				System.out.println("Probability of " + root.toString() + " calculated as " + rootProbability.toString());
 			}
 			for (BayesNode node : nodeValues){
 				Fraction calculatedProbability = calculatedProbabilities.get(node);

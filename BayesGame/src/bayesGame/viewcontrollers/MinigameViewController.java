@@ -1,8 +1,21 @@
 package bayesGame.viewcontrollers;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
@@ -22,6 +35,8 @@ public class MinigameViewController implements Controller, ViewController {
 	private final DiscussionNet gameNet;
 	private final GameInterface gameInterface;
 	private GraphPanel graphPanel;
+	private JPanel infoPanel;
+	private JLabel infoPanelText;
 
 	
 	public MinigameViewController(MinigameController minigameController,
@@ -36,9 +51,15 @@ public class MinigameViewController implements Controller, ViewController {
 	private void initializeView(){
 		graphPanel = new GraphPanel(gameNet);
 		Verb interactingVerb = new InteractingVerb(this, Verb.returnCall.MouseMessage, MouseEvent.BUTTON3);
+		Verb textVerb = new InteractingVerb(this, Verb.returnCall.KeyMessage, MouseEvent.BUTTON1);
 		graphPanel.addVerb(interactingVerb);
+		graphPanel.addVerb(textVerb);
 
 		gameInterface.setBigPanel(graphPanel);
+		
+	    infoPanel = new JPanel();
+	    gameInterface.setSmallPanel(infoPanel);
+		
 		gameInterface.display();
 	}
 	
@@ -69,8 +90,18 @@ public class MinigameViewController implements Controller, ViewController {
 
 	@Override
 	public void keyMessage(Object o) {
-		// TODO Auto-generated method stub
+	    BayesNode node = (BayesNode)o;
+	    String text = gameNet.getCPTDescription(node.type);
+	    System.out.println(text);
+	    
+	    infoPanelText = new JLabel();
+		infoPanelText.setText(text);
+		infoPanelText.setAlignmentX(Component.CENTER_ALIGNMENT);
+		infoPanelText.setFont(new Font("Serif", Font.PLAIN, 20));
 		
+		infoPanel.add(infoPanelText);
+		
+		gameInterface.getFrame().pack();
 	}
 
 	@Override
@@ -79,7 +110,6 @@ public class MinigameViewController implements Controller, ViewController {
 			BayesNode node = (BayesNode)o;
 			Object type = node.type;
 			owner.chooseNode(type);
-			System.out.println("Observed " + node.toString());
 		}
 	}
 

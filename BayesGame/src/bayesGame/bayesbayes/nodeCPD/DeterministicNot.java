@@ -18,7 +18,7 @@ public class DeterministicNot implements NodeCPD {
 		sourceBayesNode.setProbabilityOfUntrueVariables(Fraction.ONE, parents[0]);
 		sourceBayesNode.setProbabilityOfUntrueVariables(Fraction.ZERO, nodeType, parents[0]);
 		
-        String description = "<html>This is a <b>conditional probability variable</b> of type <b>not</b>. It is true if its parent is false, and vice versa.</html>";
+        String description = "<html>This is a <b>conditional probability variable</b> of type <b>not</b>.<br>It is true if its parent is false, and vice versa.</html>";
         sourceBayesNode.cptDescription = description;
 		
 		return sourceBayesNode;

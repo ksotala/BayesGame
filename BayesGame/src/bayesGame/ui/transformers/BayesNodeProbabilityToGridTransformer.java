@@ -23,7 +23,6 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 	public Icon transform(BayesNode node) {
 		Fraction probability = node.getProbability();
 		double cells = probability.percentageValue();
-		System.out.println(cells);
 
 		Image grid;
 		int squaresize;

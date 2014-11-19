@@ -22,14 +22,14 @@ public class DiscussionNet extends BayesNet {
 	}
 
 	public void addNode (OptionNode node){
-		if (addNode(node.type)){
+		if (super.addNode(node.type)){
 			optionNodes.put(node.type, node);
 		}
 	}
 	
 	public void addNode(OptionNode node, NodeCPD cpd, Object... parents){
 		// gahh this is gonna blow up at some point, fix
-		if (addNodeWithParents(node.type, cpd, parents)){
+		if (super.addNodeWithParents(node.type, cpd, parents)){
 			optionNodes.put(node.type, node);
 		}
 	}
