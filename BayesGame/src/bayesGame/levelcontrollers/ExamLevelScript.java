@@ -56,7 +56,46 @@ public class ExamLevelScript {
 		controller.addText("...I feel like I’m overthinking things now.");
 		controller.addText("...he’s looking at me.");
 		controller.addText("I’m guessing he’s either waiting for me to respond, or there’s something to see behind me, and he’s actually looking past me. If there isn’t anything behind me, then I know that he must be waiting for me to respond!");
+		controller.addText("Maybe there's a monster behind me, and he's paralyzed with fear! I should check that possibility before it eats me!");
 		controller.addProcessEventQueue();
+		
+		DiscussionNet responseNet = new DiscussionNet();
+		
+		responseNet.addNode("Waiting for you", true);
+		
+		OptionNode monster = new OptionNode("Attacking monster");
+		OptionNodeOption behindYou = new OptionNodeOption("Look behind you");
+		behindYou.setNegativeResponse("You see nothing there. Besides trees, that is.");
+		behindYou.setPositiveResponse("You see nothing there. Besides trees, that is.");
+		monster.addOption(behindYou);
+		responseNet.addNode(monster);
+		responseNet.setTrueValue("Attacking monster", false);
+		
+		responseNet.addDeterministicOr("Looks at you", "Waiting for you", "Attacking monster");
+		responseNet.observe("Looks at you", true);
+		
+		Set<Object> responseTargets = new HashSet<Object>();
+		responseTargets.add("Waiting for you");
+		
+		minigameController = new MinigameController(responseNet, responseTargets);
+		minigameController.setHiddenNodes(responseTargets);
+		
+		controller.addMinigame(minigameController, 0, new Object[]{""});
+		
+		controller.addText("Boy: 'Umm, are you okay?'");
+		controller.addText("'Yeah, sorry. I just… you were looking in my direction, and I wasn’t sure of whether you were expecting me to reply, or whether there was a monster behind me.'");
+		controller.addText("He blinks.");
+		controller.addText("'You thought that there was a reasonable chance for a monster to be behind you?'");
+		controller.addText("'Yeah...'");
+		controller.addText("I’m embarrassed to admit it, but I’m not really sure of what the probability of a monster having snuck up behind me really should have been.");
+		controller.addText("y studies have entirely focused on getting into this school, and Monsterology isn’t one of the subjects on the entrance exam!");
+		controller.addText("I just went with a 50-50 chance since I didn’t know any better.");
+		controller.addText("'Okay, look. Monsterology is my favorite subject. Monsters avoid the Academy, since it’s surrounded by a mystical protective field. There’s no chance of them getting even near! 0 percent chance.'");
+		controller.addText("'Oh. Okay.'");
+		controller.addText("[Your model of the world has been updated! The prior of the variable 'Monster Near The Academy' is now 0%.]");
+		
+		
+		
 		
 		controller.run();
 		

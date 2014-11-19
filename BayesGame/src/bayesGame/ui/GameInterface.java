@@ -41,6 +41,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	public GameInterface() {
 		frame = new JFrame("Academy Game");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+		frame.setUndecorated(true);
 		
 		bigPanel = new JPanel();
 		smallPanel = new JPanel();
@@ -60,6 +61,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	    bigPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		bigPanel.setMinimumSize(new Dimension(500,500));
 		frame.getContentPane().add(bigPanel, getBigPanelConstraints());
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
 		this.bigPanel = bigPanel;
 	}
@@ -70,12 +72,14 @@ public class GameInterface implements InterfaceView, KeyController {
 	    smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 	    smallPanel.setMinimumSize(new Dimension(250,500));
 		frame.getContentPane().add(smallPanel, getSmallPanelConstraints());
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
 		this.smallPanel = smallPanel;
 	}
 	
 	public void display(){
 		frame.pack();
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
 	}
 		

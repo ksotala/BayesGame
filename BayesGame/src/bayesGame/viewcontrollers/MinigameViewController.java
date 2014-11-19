@@ -107,12 +107,14 @@ public class MinigameViewController implements Controller, ViewController {
 	    
 	    infoPanelText = new JLabel();
 		infoPanelText.setText(text);
-		infoPanelText.setAlignmentX(Component.CENTER_ALIGNMENT);
+		infoPanelText.setAlignmentY(Component.CENTER_ALIGNMENT);
 		infoPanelText.setFont(new Font("Serif", Font.PLAIN, 20));
 		
 		infoPanel.add(infoPanelText);
 		
-		gameInterface.getFrame().pack();
+		gameInterface.getFrame().revalidate();
+		
+		// gameInterface.getFrame().pack();
 	}
 
 	@Override
