@@ -369,7 +369,7 @@ public class TutorialController implements Controller {
 		UI.addGraphMouse(pgm); */
 		
 		UI.addVerb(new AssumeVerb(this, Verb.returnCall.GenericMessage));
-		UI.addVerb(new InteractingVerb(this, Verb.returnCall.GenericMessageObject));
+		UI.addVerb(new InteractingVerb(this, Verb.returnCall.GenericMessageObject, MouseEvent.BUTTON3));
 	}
 	
 	private void beginWaitingPlayerActions(){

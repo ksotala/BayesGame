@@ -40,9 +40,12 @@ public class ExamLevel {
 		lookHim.setPositiveResponse("Short for an adult, face has boyish look, teenagerish clothes... yeah, he looks young!");
 		youngLooking.addOption(lookHim);
 		net.addNode(youngLooking, new DeterministicOR(), "Student");
+		net.setTrueValue("Young-looking", true);
 		
 		Set<Object> targets = new HashSet<Object>();
 		targets.add("Student");
+		
+		net.updateBeliefs();
 		
 		MinigameController controller = new MinigameController(net, targets);
 		controller.setHiddenNodes(targets);

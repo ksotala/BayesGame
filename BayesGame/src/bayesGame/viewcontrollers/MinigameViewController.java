@@ -1,5 +1,7 @@
 package bayesGame.viewcontrollers;
 
+import java.awt.event.MouseEvent;
+
 import javax.swing.JOptionPane;
 
 import bayesGame.bayesbayes.BayesNet;
@@ -33,7 +35,7 @@ public class MinigameViewController implements Controller, ViewController {
 	
 	private void initializeView(){
 		graphPanel = new GraphPanel(gameNet);
-		Verb interactingVerb = new InteractingVerb(this, Verb.returnCall.MouseMessage);
+		Verb interactingVerb = new InteractingVerb(this, Verb.returnCall.MouseMessage, MouseEvent.BUTTON3);
 		graphPanel.addVerb(interactingVerb);
 
 		gameInterface.setBigPanel(graphPanel);

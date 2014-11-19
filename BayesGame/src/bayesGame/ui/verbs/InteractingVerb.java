@@ -15,11 +15,10 @@ public class InteractingVerb extends Verb {
 	
 	private PluggableGraphMouse pgm;
 
-	public InteractingVerb(Controller controller, returnCall returnType) {
+	public InteractingVerb(Controller controller, returnCall returnType, int button) {
 		super(controller, returnType);
 		pgm = new PluggableGraphMouse();
-		pgm.add(new InteractingMousePlugin(this, MouseEvent.BUTTON3));
-		pgm.add(new TranslatingGraphMousePlugin());
+		pgm.add(new InteractingMousePlugin(this, button));
 	}
 
 	@Override
