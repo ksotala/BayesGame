@@ -2,6 +2,7 @@ package bayesGame.ui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class DialogMenu extends JDialog {
 			}
 			
 			OptionButton button = new OptionButton(buttonText, o);
+			button.setFont(new Font("Serif", Font.PLAIN, 30));
 			button.setAlignmentX(Component.CENTER_ALIGNMENT);
 			button.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent evt) {
@@ -67,6 +69,7 @@ public class DialogMenu extends JDialog {
 		}
 		
 		JButton cancelButton = new JButton("Never mind");
+		cancelButton.setFont(new Font("Serif", Font.PLAIN, 30));
 		cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelButtonActionPerformed(evt);

@@ -89,14 +89,14 @@ public class GameInterface implements InterfaceView, KeyController {
 		GridBagConstraints c = getBigPanelConstraints();
 		
 	    bigPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		bigPanel.setMinimumSize(new Dimension(500,500));
+		bigPanel.setMinimumSize(new Dimension(400,400));
 	    
 	    pane.add(bigPanel, c);
 	    
 	    c = getSmallPanelConstraints();
 	    
 	    smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-	    smallPanel.setMinimumSize(new Dimension(250,500));
+	    smallPanel.setMinimumSize(new Dimension(250,400));
 	    
 	    pane.add(smallPanel, c);
 	    
@@ -204,7 +204,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	
 	private void writeToTextPane(String text){
 		SimpleAttributeSet style = new SimpleAttributeSet();
-		StyleConstants.setFontSize(style, 16);
+		StyleConstants.setFontSize(style, 30);
 		
 		text = text + System.getProperty("line.separator");
 		
