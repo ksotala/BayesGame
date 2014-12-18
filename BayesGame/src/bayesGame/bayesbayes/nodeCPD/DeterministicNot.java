@@ -20,6 +20,7 @@ public class DeterministicNot implements NodeCPD {
 		
         String description = "<html>This is a <b>conditional probability variable</b> of type <b>not</b>.<br>It is true if its parent is false, and vice versa.";
         sourceBayesNode.cptDescription = description;
+        sourceBayesNode.cptName = "DetNOT";
 		
 		return sourceBayesNode;
 	}

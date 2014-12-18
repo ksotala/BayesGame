@@ -146,14 +146,6 @@ public class MinigameController {
 		ready = false;
 		viewController.processEventQueue();
 		
-		for (Object h : hiddenNodes){
-			gameNet.removeProperty(h, "hidden");
-		}
-		
-		for (Object t : targetNodes){
-			gameNet.removeProperty(t, "target");
-		}
-		
 		owner.minigameCompleted(viewController);
 	}
 

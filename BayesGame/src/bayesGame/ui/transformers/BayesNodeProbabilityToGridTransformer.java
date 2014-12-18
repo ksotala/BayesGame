@@ -1,7 +1,24 @@
+/**
+ *    Copyright 2014 Kaj Sotala
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
 package bayesGame.ui.transformers;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -11,10 +28,19 @@ import org.apache.commons.math3.fraction.Fraction;
 
 import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNode;
-import bayesGame.ui.GridPainter;
+import bayesGame.ui.painter.GridPainter;
+import bayesGame.ui.painter.IsNodePainter;
+import bayesGame.ui.painter.NodePainter;
+import bayesGame.ui.painter.NotNodePainter;
+import bayesGame.ui.painter.OrNodePainter;
+import bayesGame.ui.painter.PriorPainter;
 
 public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesNode,Icon> {
-
+	
+	private final int squaresize = 10;
+	private final int columns = 10;
+	private final int rows = 2;
+	
 	public BayesNodeProbabilityToGridTransformer() {
 		// TODO Auto-generated constructor stub
 	}
@@ -25,29 +51,37 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 		double cells = probability.percentageValue();
 
 		Image grid;
-		int squaresize;
-		Color trueColor;
-		Color falseColor;
+		Color trueColor = BayesGame.trueColor;
+		Color falseColor = BayesGame.falseColor;
 		
-		
-		boolean blackwhite = node.hasProperty("hidden");
+		boolean hiddennode = node.hasProperty("hidden");
 		boolean targetnode = node.hasProperty("target");
 		
-		if (blackwhite){
-			trueColor = Color.WHITE;
-			falseColor = Color.BLACK;
-		} else {
-			trueColor = BayesGame.trueColor;
-			falseColor = BayesGame.falseColor;
+		// TODO: indicate target nodes somehow
+				
+		if (node.cptName == null){
+			node.cptName = "";
 		}
 		
-		if (targetnode){
-			squaresize = 12;
-		} else {
-			squaresize = 8;
+		if (node.cptName.equals("DetIS")){
+			grid = new IsNodePainter().paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize);
+		} else if (node.cptName.equals("DetNOT")){
+			grid = new NotNodePainter().paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize);
+		} else if (node.cptName.equals("Prior")){
+			grid = PriorPainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize);
+		} else if (node.cptName.equals("DetOR")){
+			grid = OrNodePainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize);
 		}
 		
-		grid = GridPainter.paintPercentageGrid(cells, trueColor, falseColor, 2, 5, squaresize, true);	
+		else {
+			grid = GridPainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize);
+		}
+		
+		if (hiddennode){
+			grid = NodePainter.getBorders((BufferedImage) grid, Color.BLACK);
+		} else if (!node.isObserved()){
+			grid = NodePainter.getBorders((BufferedImage) grid, Color.GRAY);
+		}
 		
 		ImageIcon icon = new ImageIcon(grid);
 		

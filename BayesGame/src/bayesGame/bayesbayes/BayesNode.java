@@ -28,7 +28,9 @@ public class BayesNode {
 	
 	private Fraction[] cpt;
 	private Fraction[] potential;
+	
 	public String cptDescription;
+	public String cptName;
 	
 	// getProbability returns the contents of this variable, but it isn't actually used for anything
 	// inside the node: it's just a cache.
@@ -50,6 +52,7 @@ public class BayesNode {
 		this.strides = this.createStridesFromScope(this.scope);
 		
 		this.cptDescription = this.createCPTDescription(this.scope);
+		this.cptName = this.createCPTType(this.scope);
 		
 		this.potential = this.cpt.clone();
 	}
@@ -178,6 +181,14 @@ public class BayesNode {
 			return "<html>'" + this.type + "' is a <b>prior variable</b>.<br>The truth values of any of its child variables are derived from it, <br>as well as from any other parent variables.";
 		} else {
 			return "<html>'" + this.type + "' is a <b>conditional probability variable</b><br>of type <b>custom distribution</b>.";			
+		}
+	}
+	
+	private String createCPTType(Object[] scope){
+		if (scope.length == 1){
+			return "Prior";
+		} else {
+			return "Custom";			
 		}
 	}
 	
