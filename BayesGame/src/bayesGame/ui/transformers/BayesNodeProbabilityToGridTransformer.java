@@ -70,7 +70,7 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 		} else if (node.cptName.equals("Prior")){
 			grid = PriorPainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize);
 		} else if (node.cptName.equals("DetOR")){
-			grid = OrNodePainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize);
+			grid = OrNodePainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
 		}
 		
 		else {

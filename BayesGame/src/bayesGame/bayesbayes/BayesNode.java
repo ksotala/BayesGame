@@ -134,7 +134,7 @@ public class BayesNode {
 		this.probability = probability;
 	}
 	
-	protected ArrayList<Map<Object,Boolean>> getNonZeroProbabilities(){
+	public ArrayList<Map<Object,Boolean>> getNonZeroProbabilities(){
 		indexChooser chooser = new indexChooser();
 		ArrayList<Map<Object,Boolean>> truthValues = new ArrayList<Map<Object,Boolean>>();
 		
