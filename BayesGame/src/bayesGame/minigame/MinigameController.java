@@ -9,6 +9,7 @@ import java.util.Set;
 import org.apache.commons.math3.fraction.Fraction;
 
 import bayesGame.levelcontrollers.LevelController;
+import bayesGame.levelcontrollers.Script;
 import bayesGame.ui.InterfaceView;
 import bayesGame.viewcontrollers.MinigameViewController;
 import bayesGame.viewcontrollers.ViewController;
@@ -27,6 +28,9 @@ public class MinigameController {
 	private int gameMode;
 	private int reaction;
 	
+	private Object successResult;
+	private Object failureResult;
+	
 	private boolean ready = false;
 	private int turnsTaken;
 	
@@ -37,6 +41,9 @@ public class MinigameController {
 		this.targetNodes = targetNodes;
 		this.gameMode = 0;
 		this.reaction = 0;
+		
+		this.successResult = "";
+		this.failureResult = "Restart";
 		
 		if (targetNodes.size() == 0){
 			for (BayesNode n : gameNet.getGraph().getVertices().toArray(new BayesNode[gameNet.getGraph().getVertexCount()])){
@@ -103,50 +110,70 @@ public class MinigameController {
 	}
 	
 	private void endOfTurn(int timeTaken){
-		turnsTaken = turnsTaken + timeTaken;
-		
-		boolean allTargetNodesKnown = true;
-		for (Object o : targetNodes){
-			if (gameNet.getProbability(o).doubleValue() > 0.0d && gameNet.getProbability(o).doubleValue() < 1.0d){
-				allTargetNodesKnown = false;
-				break;
+		if (ready){
+			turnsTaken = turnsTaken + timeTaken;
+			
+			boolean allTargetNodesKnown = true;
+			for (Object o : targetNodes){
+				if (gameNet.getProbability(o).doubleValue() > 0.0d && gameNet.getProbability(o).doubleValue() < 1.0d){
+					allTargetNodesKnown = false;
+					break;
+				}
+			}
+			
+			if (timeLimit > 0){
+				viewController.showText("Turn " + turnsTaken + "/" + timeLimit);
+			}
+			
+			
+			if (allTargetNodesKnown && gameMode == 0 && timeLimit > 0){
+				viewController.showText("Success!");
+				viewController.showText("Clearing this level with " + (timeLimit - turnsTaken) + " turns to spare confers " + (timeLimit - turnsTaken) + "fame.");
+				clear(true);
+			} else if (turnsTaken == timeLimit && timeLimit > 0){
+				viewController.showText("Failure!");
+				clear(false);
+			} else if (allTargetNodesKnown && gameMode == 0){
+				clear(true);
 			}
 		}
 		
-		if (timeLimit > 0){
-			viewController.showText("Turn " + turnsTaken + "/" + timeLimit);
-		}
-		
-		
-		if (allTargetNodesKnown && gameMode == 0 && timeLimit > 0){
-			viewController.showText("Success!");
-			viewController.showText("Clearing this level with " + (timeLimit - turnsTaken) + " turns to spare confers " + (timeLimit - turnsTaken) + "fame.");
-			clear();
-		} else if (turnsTaken == timeLimit && timeLimit > 0){
-			viewController.showText("Failure!");
-			clear();
-		} else if (allTargetNodesKnown && gameMode == 0){
-			clear();
-		}
 	}
 	
 	private void decisionMade(Object node){
 		Fraction probability = gameNet.getProbability(node);
 		if (probability.doubleValue() > 0.5d){
 			reaction++;
-			viewController.addText("Positive reaction! Current reaction " + reaction);
+			clear(true);
+			// viewController.addText("Positive reaction! Current reaction " + reaction);
 		} else {
 			reaction--;
-			viewController.addText("Negative reaction! Current reaction " + reaction);
+			clear(false);
+			// viewController.addText("Negative reaction! Current reaction " + reaction);
 		}
-		clear();
 	}
 	
-	private void clear(){
+	private void clear(boolean success){
 		ready = false;
 		viewController.processEventQueue();
 		
-		owner.minigameCompleted(viewController);
+		if (success){
+			processGameEnd(successResult);
+		} else {
+			processGameEnd(failureResult);
+		}
+	}
+
+	private void processGameEnd(Object resultType) {
+		if (resultType.equals("Restart")){
+			// TODO: Restart
+		} else if (resultType instanceof Script){
+			Script script = (Script)resultType;
+			script.MinigameCompleted("");
+		} else {
+			owner.minigameCompleted(viewController);
+		}
+		
 	}
 
 	public void observeNode(Object type, OptionNodeOption option) {
@@ -186,6 +213,14 @@ public class MinigameController {
 
 	public void offerViewController(ViewController viewController) {
 		viewController.giveControlTo(this.viewController);
+	}
+
+	public void setFailureResult(String string) {
+		this.failureResult = string;
+	}
+
+	public void setSuccessResult(Script script) {
+		this.successResult = script;
 	}
 	
 	

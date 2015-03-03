@@ -30,7 +30,7 @@ import bayesGame.minigame.MinigameController;
 import bayesGame.viewcontrollers.DefaultViewController;
 import bayesGame.viewcontrollers.ViewController;
 
-public class ExamLevelScript {
+public class ExamLevelScript implements Script {
 
 	private LevelController controller;
 	
@@ -194,6 +194,7 @@ public class ExamLevelScript {
 		MinigameController battleController = new MinigameController(battleNet, battleTargets);
 		battleController.setGameMode(1);
 		battleController.setHiddenNodes(hidden);
+		battleController.setFailureResult("Restart");
 		
 		controller.addMinigame(battleController, 3, new Object[]{""});
 		
@@ -208,12 +209,18 @@ public class ExamLevelScript {
 		
 		controller.addText("[Your model of the world has been updated! The prior of the variable 'Monster Near The Academy' is now 50%.]");
 		controller.addText("[Your model of the world has been updated! You have a new conditional probability variable: 'True Given That The Boy Say It's True', 25%]");
-
 		controller.run();
 		
-		// controller.addText("");
-		// controller.addText("???: 'Um, are you okay?'");
 		
+		
+
+		
+		
+	}
+
+	@Override
+	public void MinigameCompleted(String message) {
+
 	}
 	
 	

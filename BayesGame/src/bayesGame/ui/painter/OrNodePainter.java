@@ -51,7 +51,6 @@ public class OrNodePainter {
 		double cells = rows * columns;
 		double coloredCells = percentage * cells;
 		
-		
 		// get non-zero truth table entries from the node
 		List<Map<Object,Boolean>> nonZeroEntries = node.getNonZeroProbabilities();
 		
@@ -91,14 +90,6 @@ public class OrNodePainter {
 		}
 		
 		Color whiteColor = Color.WHITE;
-		
-		/*
-		if (percentage == 0.0){
-			box1color = Color.WHITE;
-		} else if (percentage == 1.0){
-			box2color = Color.WHITE;
-		}
-		*/
 
 		if (p1true_p2false){
 			NodePainter.twoBoxPainter(g, gridColor, falseColor, gridColor, 1, 0, box_size, size_y / 2, false);
