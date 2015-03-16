@@ -9,6 +9,7 @@ import org.apache.commons.math3.fraction.Fraction;
 public class OptionNode extends BayesNode {
 
 	private List<OptionNodeOption> options;
+	private List<String> skills;
 	
 	public OptionNode(Object type) {
 		super(type);
@@ -28,6 +29,7 @@ public class OptionNode extends BayesNode {
 	
 	private void nodeInit(){
 		options = new ArrayList<OptionNodeOption>();
+		skills = new ArrayList<String>();
 	}
 
 	public void addOption(OptionNodeOption body) {
@@ -36,6 +38,16 @@ public class OptionNode extends BayesNode {
 
 	public List<OptionNodeOption> getOptions() {
 		return options;
+	}
+	
+	public void addSkill(String... skill){
+		for (String string : skill){
+			skills.add(string);
+		}
+	}
+	
+	public List<String> getSkills(){
+		return skills;
 	}
 	
 	

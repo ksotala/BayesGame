@@ -29,10 +29,11 @@ public class DialogMenu extends JDialog {
 		this.owner = owner;
 		this.node = node;
 		
-		if (options != null){
+		if (options != null && options.size() > 0){
 			setupMenu();
 		} else {
 			this.sendMessage(null);
+			this.CancelButtonActionPerformed(null);
 		}
 	}
 	

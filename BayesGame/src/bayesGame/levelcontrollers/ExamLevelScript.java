@@ -39,7 +39,7 @@ public class ExamLevelScript implements Script {
 		run();
 	}
 
-	private void run() {
+	public void run() {
 		controller.addText("I am nervous.");
 		controller.addText("I’m standing at the gates of the Academy, the school where my brother Opin was studying when he disappeared. When we asked the school to investigate, they were oddly reluctant, and told us to drop the issue.");
 		controller.addText("The police were more helpful at first, until they got in contact with the school. Then they actually started threatening us, and told us that we would get thrown in prison if we didn’t forget about Opin.");
@@ -195,6 +195,7 @@ public class ExamLevelScript implements Script {
 		battleController.setGameMode(1);
 		battleController.setHiddenNodes(hidden);
 		battleController.setFailureResult("Restart");
+		// battleController.setSuccessResult(new LectureScript());
 		
 		controller.addMinigame(battleController, 3, new Object[]{""});
 		
@@ -211,16 +212,20 @@ public class ExamLevelScript implements Script {
 		controller.addText("[Your model of the world has been updated! You have a new conditional probability variable: 'True Given That The Boy Say It's True', 25%]");
 		controller.run();
 		
-		
-		
 
-		
+
 		
 	}
 
 	@Override
 	public void MinigameCompleted(String message) {
 
+	}
+
+	@Override
+	public void QueueEmpty() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

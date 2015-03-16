@@ -20,6 +20,7 @@ import javax.swing.text.StyledDocument;
 import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.bayesbayes.OptionNodeOption;
+import bayesGame.levelcontrollers.ChoiceMenu;
 import bayesGame.levelcontrollers.Controller;
 import bayesGame.levelcontrollers.LevelController;
 import bayesGame.minigame.DiscussionNet;
@@ -176,6 +177,11 @@ public class MinigameViewController implements Controller, ViewController {
 	public void processingDone() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void showMenu(ChoiceMenu choice) {
+		// TODO Auto-generated method stub
 	}
 
 	

@@ -12,6 +12,7 @@ public class LevelController {
 	private ViewController viewController;
 	private List<String> eventQueue;
 	private List<Object[]> minigameQueue; 
+	private List<ChoiceMenu> choiceMenuQueue;
 	private boolean waiting = false;
 	
 	public LevelController() {
@@ -19,6 +20,7 @@ public class LevelController {
 		this.viewController.setOwner(this);
 		this.eventQueue = new ArrayList<String>();
 		this.minigameQueue = new ArrayList<Object[]>();
+		this.choiceMenuQueue = new ArrayList<ChoiceMenu>();
 	}
 	
 	public LevelController(ViewController viewController){
@@ -52,6 +54,9 @@ public class LevelController {
 		case "$$MINIGAME":
 			miniGame();
 			break;
+		case "$$CHOICEMENU":
+			choiceMenu();
+			break;
 		default:
 			viewController.addText(event);
 			run();
@@ -62,6 +67,11 @@ public class LevelController {
 	private void processQueue(){
 		viewController.processEventQueue();
 		waiting = true;
+	}
+	
+	private void choiceMenu(){
+		ChoiceMenu choice = choiceMenuQueue.remove(0);
+		viewController.showMenu(choice);
 	}
 	
 	private void miniGame(){
@@ -90,6 +100,12 @@ public class LevelController {
 	public void minigameCompleted(ViewController minigameViewController){
 		minigameViewController.giveControlTo(viewController);
 		run();
+	}
+
+	public void addChoiceMenu(ChoiceMenu choice) {
+		eventQueue.add("$$CHOICEMENU");
+		choiceMenuQueue.add(choice);
+		
 	}
 	
 }

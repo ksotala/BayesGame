@@ -43,6 +43,12 @@ public class DiscussionNet extends BayesNet {
 		}		
 	}
 
+	public void addSkillNode(String name, String... skill) {
+		OptionNode node = new OptionNode(name);
+		node.addSkill(skill);
+		this.addNode(node);
+	}
+
 	
 
 }

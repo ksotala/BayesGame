@@ -1,6 +1,8 @@
 package bayesGame.viewcontrollers;
 
 import bayesGame.bayesbayes.BayesNet;
+import bayesGame.levelcontrollers.ChoiceMenu;
+import bayesGame.levelcontrollers.Controller;
 import bayesGame.levelcontrollers.LevelController;
 import bayesGame.minigame.DiscussionNet;
 import bayesGame.ui.GameInterface;
@@ -70,6 +72,12 @@ public class DefaultViewController implements ViewController {
 	@Override
 	public void processingDone(){
 		owner.processedQueue();
+	}
+
+	@Override
+	public void showMenu(ChoiceMenu choice) {
+		gameInterface.showMenu(choice);
+		
 	}
 
 }

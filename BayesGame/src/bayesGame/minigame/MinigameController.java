@@ -65,6 +65,10 @@ public class MinigameController {
 		this.gameMode = gameMode;
 	}
 	
+	public void hideTargetNodes(){
+		hiddenNodes.addAll(targetNodes);
+	}
+	
 	public void randomizeHiddenNodes(int amount){
 		Random random = new Random();
 		BayesNode[] nodes = gameNet.getGraph().getVertices().toArray(new BayesNode[gameNet.getGraph().getVertexCount()]);
@@ -75,8 +79,24 @@ public class MinigameController {
 		}
 	}
 	
+	public void randomizeTargetNodes(int amount){
+		Random random = new Random();
+		BayesNode[] nodes = gameNet.getGraph().getVertices().toArray(new BayesNode[gameNet.getGraph().getVertexCount()]);
+		
+		targetNodes.clear();
+		
+		for(int i = 0; i < amount; i++){
+			int item = random.nextInt(nodes.length);
+			targetNodes.add(nodes[item].type);
+		}
+	}
+	
 	public void setDiscussions(Map<Object,String[]> discussions){
 		this.discussions = discussions;
+	}
+	
+	public void startGame(){
+		startGame(0, new Object[0]);
 	}
 	
 	// game mode 1 = figure out the contents of target nodes
@@ -169,7 +189,7 @@ public class MinigameController {
 			// TODO: Restart
 		} else if (resultType instanceof Script){
 			Script script = (Script)resultType;
-			script.MinigameCompleted("");
+			script.run();
 		} else {
 			owner.minigameCompleted(viewController);
 		}
