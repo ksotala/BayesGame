@@ -28,6 +28,7 @@ import org.apache.commons.math3.fraction.Fraction;
 
 import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNode;
+import bayesGame.ui.painter.AndNodePainter;
 import bayesGame.ui.painter.GridPainter;
 import bayesGame.ui.painter.IsNodePainter;
 import bayesGame.ui.painter.NodePainter;
@@ -71,6 +72,8 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 			grid = PriorPainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize);
 		} else if (node.cptName.equals("DetOR")){
 			grid = OrNodePainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
+		} else if (node.cptName.equals("DetAND")){
+			grid = AndNodePainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
 		}
 		
 		else {
