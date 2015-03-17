@@ -195,7 +195,7 @@ public class ExamLevelScript implements Script {
 		battleController.setGameMode(1);
 		battleController.setHiddenNodes(hidden);
 		battleController.setFailureResult("Restart");
-		// battleController.setSuccessResult(new LectureScript());
+		battleController.setSuccessResult(new LectureScript(controller));
 		
 		controller.addMinigame(battleController, 3, new Object[]{""});
 		

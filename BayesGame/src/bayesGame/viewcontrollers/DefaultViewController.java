@@ -75,8 +75,8 @@ public class DefaultViewController implements ViewController {
 	}
 
 	@Override
-	public void showMenu(ChoiceMenu choice) {
-		gameInterface.showMenu(choice);
+	public void showMenu(ChoiceMenu choice, LevelController controller) {
+		gameInterface.showMenu(choice, controller);
 		
 	}
 

@@ -16,15 +16,18 @@ import javax.swing.JFrame;
 import bayesGame.levelcontrollers.ChoiceMenu;
 import bayesGame.levelcontrollers.ChoiceMenuChoice;
 import bayesGame.levelcontrollers.Controller;
+import bayesGame.levelcontrollers.LevelController;
 import bayesGame.minigame.MinigameController;
 
 public class ChoiceMenuUI extends JDialog {
 	
 	private ChoiceMenu choiceMenu;
+	private LevelController owner;
 
-	public ChoiceMenuUI(JFrame frame, ChoiceMenu choiceMenu) {
+	public ChoiceMenuUI(JFrame frame, LevelController owner, ChoiceMenu choiceMenu) {
 		super(frame, true);
 		this.choiceMenu = choiceMenu;
+		this.owner = owner;
 		setupMenu();
 	}
 	
@@ -51,7 +54,7 @@ public class ChoiceMenuUI extends JDialog {
 	private void buttonPressed(ActionEvent evt){
 		ChoiceButton button = (ChoiceButton)evt.getSource();
 		MinigameController gameController = button.choice.getGameController();
-		gameController.startGame();
+		owner.menuChoiceMade(gameController);
 		this.dispose();
 	}
 

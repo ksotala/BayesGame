@@ -180,9 +180,11 @@ public class MinigameViewController implements Controller, ViewController {
 	}
 
 	@Override
-	public void showMenu(ChoiceMenu choice) {
+	public void showMenu(ChoiceMenu choice, LevelController levelController) {
 		// TODO Auto-generated method stub
+		
 	}
+
 
 	
 	

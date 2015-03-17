@@ -17,11 +17,14 @@ public class LectureScript implements Script {
 	private LevelController controller;
 
 	public LectureScript() {
+		controller = new LevelController();
 	}
 	
+	public LectureScript(LevelController controller) {
+		this.controller = controller;
+	}
+
 	public void run() {
-		controller = new LevelController();
-		
 		ChoiceMenu choice = new ChoiceMenu();
 		choice.setDescription("Choose psychology lecture");
 		
@@ -135,8 +138,6 @@ public class LectureScript implements Script {
 		
 		controller.addChoiceMenu(choice);
 		controller.run();
-
-		
 	}
 
 

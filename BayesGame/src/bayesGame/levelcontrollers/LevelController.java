@@ -71,18 +71,27 @@ public class LevelController {
 	
 	private void choiceMenu(){
 		ChoiceMenu choice = choiceMenuQueue.remove(0);
-		viewController.showMenu(choice);
+		viewController.showMenu(choice, this);
 	}
 	
 	private void miniGame(){
 		Object[] minigame = minigameQueue.remove(0);
 		MinigameController controller = (MinigameController)minigame[0];
-		controller.setOwner(this);
 		
 		int timeLimit = (int)minigame[1];
 		Object[] knowledges = (Object[])minigame[2];
+		
+		startMiniGame(controller, timeLimit, knowledges);
+	}
+	
+	private void startMiniGame(MinigameController controller, int timeLimit, Object[] knowledges){
+		controller.setOwner(this);
 		controller.offerViewController(viewController);
-		controller.startGame(timeLimit, knowledges);
+		if (timeLimit > 0 || knowledges != null){
+			controller.startGame(timeLimit, knowledges);
+		} else {
+			controller.startGame();
+		}
 	}
 	
 	public void addMinigame(MinigameController controller, Object... parameters){
@@ -106,6 +115,10 @@ public class LevelController {
 		eventQueue.add("$$CHOICEMENU");
 		choiceMenuQueue.add(choice);
 		
+	}
+	
+	public void menuChoiceMade(MinigameController controller){
+		startMiniGame(controller, 0, null);
 	}
 	
 }

@@ -22,6 +22,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import bayesGame.levelcontrollers.ChoiceMenu;
+import bayesGame.levelcontrollers.LevelController;
 import bayesGame.ui.swinglisteners.AnyKeyListener;
 import bayesGame.ui.swinglisteners.KeyController;
 import bayesGame.viewcontrollers.ViewController;
@@ -250,8 +251,8 @@ public class GameInterface implements InterfaceView, KeyController {
 		this.owner = viewController;
 	}
 
-	public void showMenu(ChoiceMenu choice) {
-		ChoiceMenuUI choiceMenuUI = new ChoiceMenuUI(frame, choice);
+	public void showMenu(ChoiceMenu choice, LevelController owner) {
+		ChoiceMenuUI choiceMenuUI = new ChoiceMenuUI(frame, owner, choice);
 		choiceMenuUI.setVisible(true);
 	}
 	

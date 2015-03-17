@@ -14,7 +14,7 @@ public interface ViewController {
 	public abstract void giveControlTo(ViewController viewController);
 	public abstract void display();
 	public abstract void setOwner(LevelController owner);
-	public abstract void showMenu(ChoiceMenu choice);
+	public abstract void showMenu(ChoiceMenu choice, LevelController levelController);
 	
 	abstract void receiveControl(Object control);
 	abstract void processingDone();
