@@ -57,8 +57,8 @@ public class GraphPanel extends JPanel {
 		DirectedSparseGraph<BayesNode, Pair<Integer,Integer>> graph = bayesNet.getGraph();
 		
 		Layout<BayesNode, Pair<Integer,Integer>> layout = new DAGLayout<BayesNode, Pair<Integer, Integer>>(graph);
-        layout.setSize(new Dimension(700,700));
-        
+        layout.setSize(new Dimension(650,700));
+
         vv = new VisualizationViewer<BayesNode, Pair<Integer,Integer>>(layout);
         
         Transformer<BayesNode,Paint> vertexPaint = new Transformer<BayesNode,Paint>() {
@@ -102,7 +102,7 @@ public class GraphPanel extends JPanel {
         
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller()); 
 
-        vv.setPreferredSize(new Dimension(800,800)); //Sets the viewing area size
+        vv.setPreferredSize(new Dimension(750,750)); //Sets the viewing area size
         
         vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).rotate(-Math.PI, 350, 350);
         

@@ -29,6 +29,7 @@ import org.apache.commons.math3.fraction.Fraction;
 import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.ui.painter.AndNodePainter;
+import bayesGame.ui.painter.DetNOTAnd;
 import bayesGame.ui.painter.GridPainter;
 import bayesGame.ui.painter.IsNodePainter;
 import bayesGame.ui.painter.NodePainter;
@@ -74,6 +75,8 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 			grid = OrNodePainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
 		} else if (node.cptName.equals("DetAND")){
 			grid = AndNodePainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
+		} else if (node.cptName.equals("DetNOTAnd")){
+			grid = DetNOTAnd.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
 		}
 		
 		else {
@@ -86,7 +89,14 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 			grid = NodePainter.getBorders((BufferedImage) grid, Color.GRAY);
 		}
 		
-		ImageIcon icon = new ImageIcon(grid);
+		int x_size = grid.getHeight(null);
+		double size_multiplier = 0.70;
+		int new_x_size = (int)(x_size * size_multiplier);
+		
+		ImageIcon icon = new ImageIcon(grid.getScaledInstance(-1, new_x_size, Image.SCALE_SMOOTH));
+		
+		// ImageIcon icon = new ImageIcon(grid);
+
 		
 		return icon;
 	}

@@ -41,12 +41,12 @@ import bayesGame.ui.LanguageChooser;
 public class BayesGame {
 	
 	public static String falseColorName = "red";
-	public static String trueColorName = "green";
+	public static String trueColorName = "blue";
 	public static String unknownColorName = "white";
 	public static String falseColorDisplayedName = "red";
-	public static String trueColorDisplayedName = "green";
+	public static String trueColorDisplayedName = "blue";
 	public static Color falseColor = Color.RED;
-	public static Color trueColor = Color.GREEN;
+	public static Color trueColor = Color.BLUE;
 	public static Color unknownColor = Color.WHITE;
 	
 	public static Locale currentLocale;
