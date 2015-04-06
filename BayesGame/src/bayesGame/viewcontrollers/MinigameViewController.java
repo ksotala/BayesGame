@@ -51,6 +51,7 @@ public class MinigameViewController implements Controller, ViewController {
 	public void display(){
 		initializeView();
 		gameInterface.display();
+		gameInterface.refreshScrollbar();
 	}
 	
 	private void initializeView(){

@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -61,7 +62,8 @@ public class GameInterface implements InterfaceView, KeyController {
 		frame.getContentPane().remove(this.bigPanel);
 		
 	    bigPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		bigPanel.setMinimumSize(new Dimension(500,500));
+		bigPanel.setMinimumSize(new Dimension(750,750));
+		bigPanel.setPreferredSize(new Dimension(750,750));
 		frame.getContentPane().add(bigPanel, getBigPanelConstraints());
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
@@ -91,7 +93,8 @@ public class GameInterface implements InterfaceView, KeyController {
 		GridBagConstraints c = getBigPanelConstraints();
 		
 	    bigPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		bigPanel.setMinimumSize(new Dimension(400,400));
+		bigPanel.setMinimumSize(new Dimension(750,750));
+		bigPanel.setPreferredSize(new Dimension(750,750));
 	    
 	    pane.add(bigPanel, c);
 	    
@@ -105,7 +108,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	    c = new GridBagConstraints();
 	    
 	    textPane.setEditable(false);
-	    textPane.setPreferredSize(new Dimension(400,150));
+	    textPane.setPreferredSize(new Dimension(300,150));
 	    textPane.putClientProperty("IgnoreCharsetDirective", Boolean.TRUE);
 	    
 	    scroll = new JScrollPane (textPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -188,8 +191,9 @@ public class GameInterface implements InterfaceView, KeyController {
 			bigPanel.repaint();
 		} else {
 			deletePreviousNextIndicatorFromPane();
-			writeToTextPane(text);
+			writeToTextPane(text);			
 		}
+		refreshScrollbar();
 	}
 	
 	private void deletePreviousNextIndicatorFromPane(){
@@ -216,7 +220,7 @@ public class GameInterface implements InterfaceView, KeyController {
         catch (BadLocationException e){}
 		
 		
-		
+		textPane.revalidate();
 		textPane.setCaretPosition(textPane.getDocument().getLength());
 		scroll.revalidate();
 		// frame.pack();
@@ -254,6 +258,13 @@ public class GameInterface implements InterfaceView, KeyController {
 	public void showMenu(ChoiceMenu choice, LevelController owner) {
 		ChoiceMenuUI choiceMenuUI = new ChoiceMenuUI(frame, owner, choice);
 		choiceMenuUI.setVisible(true);
+	}
+	
+	public void refreshScrollbar(){
+		textPane.revalidate();
+		scroll.revalidate();
+		JScrollBar vertical = scroll.getVerticalScrollBar();
+		vertical.setValue( vertical.getMaximum() );
 	}
 	
 	
