@@ -90,7 +90,7 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 		}
 		
 		int x_size = grid.getHeight(null);
-		double size_multiplier = 0.70;
+		double size_multiplier = 0.7;
 		int new_x_size = (int)(x_size * size_multiplier);
 		
 		ImageIcon icon = new ImageIcon(grid.getScaledInstance(-1, new_x_size, Image.SCALE_SMOOTH));
