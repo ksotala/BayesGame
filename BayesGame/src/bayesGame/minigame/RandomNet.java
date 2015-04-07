@@ -9,12 +9,14 @@ import bayesGame.bayesbayes.nodeCPD.BayesCPD;
 import bayesGame.bayesbayes.nodeCPD.DeterministicAND;
 import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
 import bayesGame.bayesbayes.nodeCPD.RandomCPD;
+import bayesGame.fluff.RandomSubjectVariable;
 
 public class RandomNet {
 
-	private static char nextNode;
-	private static char nodePointer;
+	private static String nextNode;
+	private static String nodePointer;
 	private static DiscussionNet net;
+	private static RandomSubjectVariable randomVariable;
 	
 	public RandomNet() {
 		// TODO Auto-generated constructor stub
@@ -22,16 +24,18 @@ public class RandomNet {
 	
 	public static DiscussionNet generateNet(int components){
 		net = new DiscussionNet();
-		nodePointer = 'A';
-		nextNode = 'A';
+		randomVariable = new RandomSubjectVariable();
+		
+		nextNode = randomVariable.getNewRandomTerm();
+		nodePointer = nextNode;
 		addSingleNode();
-		nextNode++;
+		nextNode = randomVariable.getNewRandomTerm();
 		
 		Random rn = new Random();
 
 		for (int x = 0; x < components; x++){
 			if ((x > 0) && (x % 3 == 0)){
-				nodePointer = (char) (rn.nextInt(x) + 'A');
+				nodePointer = randomVariable.getOldRandomTerm();
 			}
 			int structure = rn.nextInt(3);
 			switch (structure){
@@ -54,29 +58,28 @@ public class RandomNet {
 
 	private static void indirectEffect() {
 		addSingleNodeWithParents();
-		nextNode++;
-		nodePointer++;
+		nodePointer = nextNode;
+		nextNode = randomVariable.getNewRandomTerm();
 		
 		addSingleNodeWithParents();
-		nextNode++;
-		nodePointer++;
+		nodePointer = nextNode;
+		nextNode = randomVariable.getNewRandomTerm();
 	}
 	
 	private static void commonCause() {
 		addSingleNodeWithParents();
-		nextNode++;
+		nextNode = randomVariable.getNewRandomTerm();
 		
 		addSingleNodeWithParents();
-		nextNode++;
-		
-		nodePointer++;
+		nodePointer = nextNode;
+		nextNode = randomVariable.getNewRandomTerm();
 	}
 	
 	private static void commonEffect(){
 		
 		addSingleNode();
-		char justAddedNode = nextNode;
-		nextNode++;
+		String justAddedNode = nextNode;
+		nextNode = randomVariable.getNewRandomTerm();
 		
 		DeterministicAND AndCPDOption = new DeterministicAND();
 		DeterministicOR OrCPDOption = new DeterministicOR();
@@ -84,7 +87,7 @@ public class RandomNet {
 		
 		net.addNodeWithParents(nextNode, RandomNode, nodePointer, justAddedNode);
 		nodePointer = nextNode;
-		nextNode++;
+		nextNode = randomVariable.getNewRandomTerm();
 	}
 	
 	private static void addSingleNode(){
