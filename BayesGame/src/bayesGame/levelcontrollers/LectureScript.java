@@ -11,6 +11,7 @@ import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
 import bayesGame.bayesbayes.nodeCPD.RandomCPD;
 import bayesGame.minigame.DiscussionNet;
 import bayesGame.minigame.LearningController;
+import bayesGame.minigame.RandomNet;
 
 public class LectureScript implements Script {
 	
@@ -28,6 +29,9 @@ public class LectureScript implements Script {
 		ChoiceMenu choice = new ChoiceMenu();
 		choice.setDescription("Choose psychology lecture");
 		
+		DiscussionNet easy = RandomNet.generateNet(2);
+		
+		/*
 		DiscussionNet easy = new DiscussionNet();
 		easy.addSkillNode("X", "Psychology1");
 		easy.addSkillNode("Y", "Psychology1");
@@ -36,10 +40,13 @@ public class LectureScript implements Script {
 		easy.forceConnectNodes("X", "Y");
 		easy.forceConnectNodes("Y", "Z");
 		
-		Random rn = new Random();
+		
 		easy.changeNodeCPD("Y", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
 		easy.changeNodeCPD("Z", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
 		easy.updateBeliefs();
+		*/
+				
+		Random rn = new Random();
 
 		LearningController easyController = new LearningController(easy);
 		
@@ -49,6 +56,7 @@ public class LectureScript implements Script {
 		
 		choice.addChoice(easyChoice);
 		
+		/*
 		DiscussionNet medium = new DiscussionNet();
 		medium.addSkillNode("A", "Psychology2");
 		medium.addSkillNode("B", "Psychology2");
@@ -74,6 +82,9 @@ public class LectureScript implements Script {
 		medium.changeNodeCPD("E", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));		
 		
 		medium.updateBeliefs();
+		*/
+		
+		DiscussionNet medium = RandomNet.generateNet(4);
 
 		
 		LearningController mediumController = new LearningController(medium);
@@ -84,6 +95,7 @@ public class LectureScript implements Script {
 		
 		choice.addChoice(mediumChoice);
 		
+		/*
 		DiscussionNet hard = new DiscussionNet();
 		hard.addSkillNode("A", "Psychology3");
 		hard.addSkillNode("B", "Psychology3");
@@ -127,6 +139,9 @@ public class LectureScript implements Script {
 		hard.changeNodeCPD("Z", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
 		
 		hard.updateBeliefs();
+		*/
+		
+		DiscussionNet hard = RandomNet.generateNet(6);
 
 		LearningController hardController = new LearningController(hard);
 		
