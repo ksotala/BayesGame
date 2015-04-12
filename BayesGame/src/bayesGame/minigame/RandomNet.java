@@ -13,22 +13,23 @@ import bayesGame.fluff.RandomSubjectVariable;
 
 public class RandomNet {
 
-	private static String nextNode;
-	private static String nodePointer;
-	private static DiscussionNet net;
-	private static RandomSubjectVariable randomVariable;
+	private String nextNode;
+	private String nodePointer;
+	private DiscussionNet net;
+	private RandomSubjectVariable randomVariable;
+	private int priorNodeDenominatorMaxvalue = 3;
 	
 	public RandomNet() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static DiscussionNet generateNet(int components){
+	public DiscussionNet generateNet(int components){
 		net = new DiscussionNet();
 		randomVariable = new RandomSubjectVariable();
 		
 		nextNode = randomVariable.getNewRandomTerm();
 		nodePointer = nextNode;
-		addSingleNode();
+		addPriorNode();
 		nextNode = randomVariable.getNewRandomTerm();
 		
 		Random rn = new Random();
@@ -55,8 +56,14 @@ public class RandomNet {
 		
 		return net;
 	}
+	
+	public void setPriorNodeDenominatorMaxvalue(int max_value){
+		if (max_value > 0){
+			priorNodeDenominatorMaxvalue = max_value;
+		}
+	}
 
-	private static void indirectEffect() {
+	private void indirectEffect() {
 		addSingleNodeWithParents();
 		nodePointer = nextNode;
 		nextNode = randomVariable.getNewRandomTerm();
@@ -66,7 +73,7 @@ public class RandomNet {
 		nextNode = randomVariable.getNewRandomTerm();
 	}
 	
-	private static void commonCause() {
+	private void commonCause() {
 		addSingleNodeWithParents();
 		nextNode = randomVariable.getNewRandomTerm();
 		
@@ -75,9 +82,8 @@ public class RandomNet {
 		nextNode = randomVariable.getNewRandomTerm();
 	}
 	
-	private static void commonEffect(){
-		
-		addSingleNode();
+	private void commonEffect(){
+		addPriorNode();
 		String justAddedNode = nextNode;
 		nextNode = randomVariable.getNewRandomTerm();
 		
@@ -90,9 +96,9 @@ public class RandomNet {
 		nextNode = randomVariable.getNewRandomTerm();
 	}
 	
-	private static void addSingleNode(){
+	private void addPriorNode(){
 		Random rn = new Random();
-		int oneOf = rn.nextInt(3) + 2;
+		int oneOf = rn.nextInt(priorNodeDenominatorMaxvalue-1) + 2;
 		net.addNode(nextNode);
 		Fraction probability = Fraction.getReducedFraction(1, oneOf);
 		net.setProbabilityOfUntrue(nextNode, probability);
@@ -100,7 +106,7 @@ public class RandomNet {
 	}
 	
 	
-	private static void addSingleNodeWithParents(){
+	private void addSingleNodeWithParents(){
 		Random rn = new Random();
 		
 		BayesCPD bayesCPDOption = new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1));
