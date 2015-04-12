@@ -36,7 +36,7 @@ public class RandomNet {
 
 		for (int x = 0; x < components; x++){
 			if ((x > 0) && (x % 3 == 0)){
-				nodePointer = randomVariable.getOldRandomTerm();
+				randomizePointerLocation();
 			}
 			int structure = rn.nextInt(3);
 			switch (structure){
@@ -91,6 +91,10 @@ public class RandomNet {
 		DeterministicOR OrCPDOption = new DeterministicOR();
 		RandomCPD RandomNode = new RandomCPD(AndCPDOption, OrCPDOption);
 		
+		while (justAddedNode.equals(nodePointer)){
+			randomizePointerLocation();
+		}
+		
 		net.addNodeWithParents(nextNode, RandomNode, nodePointer, justAddedNode);
 		nodePointer = nextNode;
 		nextNode = randomVariable.getNewRandomTerm();
@@ -116,5 +120,12 @@ public class RandomNet {
 		
 		net.addNodeWithParents(nextNode, randomNode, nodePointer);
 	}
-
+	
+	private void randomizePointerLocation(){
+		do{
+			nodePointer = randomVariable.getOldRandomTerm();
+		}
+		while (nodePointer.equals(nextNode));
+	}
+	
 }

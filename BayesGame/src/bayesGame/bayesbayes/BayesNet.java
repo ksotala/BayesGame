@@ -179,6 +179,9 @@ public class BayesNet {
 			return false;
 		}
 		
+		// remove any duplicate parents
+		parents = new HashSet<Object>(Arrays.asList(parents)).toArray(new Object[0]);
+		
 	    for (Object o : parents){
 	    	if (!isPresent(o)){
 	    		return false;
