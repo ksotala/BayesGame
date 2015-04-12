@@ -261,6 +261,32 @@ public class BayesNet {
 		return true;	
 	}
 	
+	public List<Object> getFamily(Object object){
+		ArrayList<Object> family = new ArrayList<Object>();
+		
+		BayesNode node = getNodeIffPresent(object);
+		
+		// the node has to already exist for us to do anything
+		if (node == null){
+			return family;
+		}
+		
+		ArrayList<BayesNode> parentNodes = new ArrayList<BayesNode>(graph.getPredecessors(node));
+		ArrayList<BayesNode> childNodes = new ArrayList<BayesNode>(graph.getSuccessors(node));
+		
+		for (BayesNode b : parentNodes){
+			family.add(b.type);
+		}
+		
+		for (BayesNode b : childNodes){
+			family.add(b.type);
+		}
+		
+		return family;
+	}
+	
+	
+	
 	private boolean scopesCompatible(BayesNode node1, BayesNode node2){
 		ArrayList<Object> difference = getScopeDifference(node1, node2);
 		if (difference.isEmpty()){

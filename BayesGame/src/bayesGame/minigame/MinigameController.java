@@ -1,7 +1,9 @@
 package bayesGame.minigame;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -69,12 +71,23 @@ public class MinigameController {
 		hiddenNodes.addAll(targetNodes);
 	}
 	
+	public void hideTargetNodeFamily(){
+		for (Object o : targetNodes){
+			List<Object> targetNodeFamily = gameNet.getFamily(o);
+			hiddenNodes.addAll(targetNodeFamily);
+		}
+	}
+	
 	public void randomizeHiddenNodes(int amount){
 		Random random = new Random();
 		BayesNode[] nodes = gameNet.getGraph().getVertices().toArray(new BayesNode[gameNet.getGraph().getVertexCount()]);
 		
 		for(int i = 0; i < amount; i++){
-			int item = random.nextInt(nodes.length);
+			// pick a random node which is not already in the set of hidden nodes
+			int item;
+			do{
+				item = random.nextInt(nodes.length);
+			} while (!hiddenNodes.contains(nodes[item]));
 			hiddenNodes.add(nodes[item].type);
 		}
 	}
