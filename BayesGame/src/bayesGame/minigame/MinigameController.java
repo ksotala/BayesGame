@@ -78,6 +78,29 @@ public class MinigameController {
 		}
 	}
 	
+	public void randomizeHiddenNodes(double percentage){
+		if (percentage > 1){
+			percentage = 1;
+		} else if (percentage < 0){
+			percentage = 0;
+		}
+		
+		int nodecount = gameNet.getGraph().getVertexCount();
+		int hidden_node_count = (int)(percentage * nodecount);
+		if (hidden_node_count == 0){
+			hidden_node_count = 1;
+		}
+		if (hidden_node_count == nodecount){
+			hidden_node_count--;
+		}
+		
+		int nodes_hidden_already = hiddenNodes.size();
+		int nodes_to_hide = hidden_node_count - nodes_hidden_already;
+		if (nodes_to_hide > 0){
+			randomizeHiddenNodes(nodes_to_hide);
+		}
+	}
+	
 	public void randomizeHiddenNodes(int amount){
 		Random random = new Random();
 		BayesNode[] nodes = gameNet.getGraph().getVertices().toArray(new BayesNode[gameNet.getGraph().getVertexCount()]);
@@ -87,7 +110,7 @@ public class MinigameController {
 			int item;
 			do{
 				item = random.nextInt(nodes.length);
-			} while (!hiddenNodes.contains(nodes[item]));
+			} while (!hiddenNodes.contains(nodes[item].type));
 			hiddenNodes.add(nodes[item].type);
 		}
 	}
@@ -102,6 +125,16 @@ public class MinigameController {
 			int item = random.nextInt(nodes.length);
 			targetNodes.add(nodes[item].type);
 		}
+	}
+	
+	public void randomizeTargetNode(){
+		List<Object> nodefamily;
+		do {
+			randomizeTargetNodes(1);
+			Object[] nodearray = targetNodes.toArray();
+			Object node = nodearray[0];
+			nodefamily = gameNet.getFamily(node);
+		} while (nodefamily.size() < 2);
 	}
 	
 	public void setDiscussions(Map<Object,String[]> discussions){

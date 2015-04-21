@@ -17,6 +17,7 @@ import bayesGame.levelcontrollers.ChoiceMenu;
 import bayesGame.levelcontrollers.ChoiceMenuChoice;
 import bayesGame.levelcontrollers.Controller;
 import bayesGame.levelcontrollers.LevelController;
+import bayesGame.levelcontrollers.Script;
 import bayesGame.minigame.MinigameController;
 
 public class ChoiceMenuUI extends JDialog {
@@ -46,6 +47,7 @@ public class ChoiceMenuUI extends JDialog {
 	                buttonPressed(evt);
 	            }
 	        });
+			button.setEnabled(choice.enabled);
 			container.add(button);
 		}
 		this.pack();
@@ -54,7 +56,13 @@ public class ChoiceMenuUI extends JDialog {
 	private void buttonPressed(ActionEvent evt){
 		ChoiceButton button = (ChoiceButton)evt.getSource();
 		MinigameController gameController = button.choice.getGameController();
-		owner.menuChoiceMade(gameController);
+		Script script = button.choice.getScript();
+		if (gameController != null){
+			owner.menuChoiceMade(gameController);
+		} else if (script != null){
+			script.run();
+		}
+		
 		this.dispose();
 	}
 

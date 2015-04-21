@@ -29,5 +29,11 @@ public class ChoiceMenu implements Iterable<ChoiceMenuChoice> {
 	public Iterator<ChoiceMenuChoice> iterator() {
 		return choices.iterator();
 	}
+	
+	public void setController(LevelController controller){
+		for (ChoiceMenuChoice c : this){
+			c.updateScriptController(controller);
+		}
+	}
 
 }

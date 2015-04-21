@@ -227,6 +227,8 @@ public class BayesNode {
 		probability = null;
 	}
 	
+	
+	
 	public boolean isObserved(){
 
 		return observed;

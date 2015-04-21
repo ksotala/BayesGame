@@ -16,12 +16,17 @@ import bayesGame.bayesbayes.nodeCPD.DeterministicNot;
 import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
 import bayesGame.bayesbayes.nodeCPD.MajorityVote;
 import bayesGame.levelcontrollers.ExamLevelScript;
+import bayesGame.levelcontrollers.LevelController;
+import bayesGame.levelcontrollers.Script;
 import bayesGame.levelcontrollers.TutorialController;
 import bayesGame.levelcontrollers.TutorialLevel2Controller;
+import bayesGame.levelcontrollers.WelcomeToSchoolScript;
 import bayesGame.minigame.DiscussionNet;
 import bayesGame.minigame.MinigameController;
 import bayesGame.ui.ColorSelection;
 import bayesGame.ui.LanguageChooser;
+import bayesGame.world.GameCharacters;
+import bayesGame.world.World;
 
 /**
  *    Copyright 2014 Kaj Sotala
@@ -40,6 +45,7 @@ import bayesGame.ui.LanguageChooser;
  */
 public class BayesGame {
 	
+	/*
 	public static String falseColorName = "red";
 	public static String trueColorName = "blue";
 	public static String unknownColorName = "white";
@@ -47,17 +53,37 @@ public class BayesGame {
 	public static String trueColorDisplayedName = "blue";
 	public static Color falseColor = Color.RED;
 	public static Color trueColor = Color.BLUE;
+	*/
+	
+	public static String falseColorName = "red";
+	public static String trueColorName = "green";
+	public static String unknownColorName = "white";
+	public static String falseColorDisplayedName = "red";
+	public static String trueColorDisplayedName = "green";
+	public static Color falseColor = Color.RED;
+	public static Color trueColor = Color.GREEN;
+	
 	public static Color unknownColor = Color.WHITE;
 	
 	public static Locale currentLocale;
 	
+	public static World world;
+	public static GameCharacters gameCharacters;
+	
 	private static JFrame frame;
 
 	public static void main(String[] args) {
+		world = new World();
+		gameCharacters = new GameCharacters();
 		
 	    // showLanguageSelector();
 	    // showColorSelector();
-		beginTutorial(1);
+		// beginTutorial(1);
+		
+		
+		LevelController controller = new LevelController();
+		Script firstScript = new WelcomeToSchoolScript(controller);
+		firstScript.run();
 	}
 	
 	public static void showLanguageSelector(){

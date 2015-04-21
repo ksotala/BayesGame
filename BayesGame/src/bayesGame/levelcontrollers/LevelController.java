@@ -14,6 +14,7 @@ public class LevelController {
 	private List<Object[]> minigameQueue; 
 	private List<ChoiceMenu> choiceMenuQueue;
 	private boolean waiting = false;
+	private Script nextScript;
 	
 	public LevelController() {
 		this.viewController = new DefaultViewController();
@@ -43,6 +44,9 @@ public class LevelController {
 		if (eventQueue.size() > 0){
 			String event = eventQueue.remove(0);
 			executeEvent(event);
+		}
+		if (nextScript != null){
+			nextScript.run();
 		}
 	}
 	
@@ -103,7 +107,7 @@ public class LevelController {
 		if (waiting){
 			waiting = false;
 			run();
-		}
+		} 
 	}
 	
 	public void minigameCompleted(ViewController minigameViewController){
@@ -119,6 +123,10 @@ public class LevelController {
 	
 	public void menuChoiceMade(MinigameController controller){
 		startMiniGame(controller, 0, null);
+	}
+
+	public void setNextScript(Script nextScript) {
+		this.nextScript = nextScript;
 	}
 	
 }

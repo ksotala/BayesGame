@@ -22,6 +22,7 @@ import java.util.Set;
 
 import bayesGame.bayesbayes.OptionNode;
 import bayesGame.bayesbayes.OptionNodeOption;
+import bayesGame.bayesbayes.nodeCPD.DeterministicAND;
 import bayesGame.bayesbayes.nodeCPD.DeterministicNot;
 import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
 import bayesGame.bayesbayes.nodeCPD.MajorityVote;
@@ -40,6 +41,42 @@ public class ExamLevelScript implements Script {
 	}
 
 	public void run() {
+		
+		/*
+		DiscussionNet net = new DiscussionNet();
+	
+		net.addNode("Good mood");
+		net.addNode("Kind");
+		net.addNode("Busy");
+		net.addNode("Has extra time", new DeterministicNot(), "Busy");
+		net.addNode("Helpful", new DeterministicOR(), "Kind", "Good mood");
+		net.addNode("Do you have a chance to help me out?", new DeterministicAND(), "Helpful", "Has extra time");
+		
+		net.addNode("Proud");
+		net.addNode("Receptive to help", new DeterministicNot(), "Proud");
+		net.addNode("You seem busy, can I help you?", new DeterministicAND(), "Busy", "Receptive to help");
+		
+		Set<Object> responseTargets = new HashSet<Object>();
+		responseTargets.add("Do you have a chance to help me out?");
+		responseTargets.add("You seem busy, can I help you?");
+		
+		MinigameController responseMinigameController = new MinigameController(net, responseTargets);
+		responseMinigameController.setHiddenNodes(responseTargets);
+		
+		net.updateBeliefs();
+		
+		controller.addMinigame(responseMinigameController, 0, new Object[]{""});
+		controller.run();
+
+		
+		*/
+		
+
+		
+		
+		
+		
+		
 		controller.addText("I am nervous.");
 		controller.addText("I’m standing at the gates of the Academy, the school where my brother Opin was studying when he disappeared. When we asked the school to investigate, they were oddly reluctant, and told us to drop the issue.");
 		controller.addText("The police were more helpful at first, until they got in contact with the school. Then they actually started threatening us, and told us that we would get thrown in prison if we didn’t forget about Opin.");
@@ -195,26 +232,11 @@ public class ExamLevelScript implements Script {
 		battleController.setGameMode(1);
 		battleController.setHiddenNodes(hidden);
 		battleController.setFailureResult("Restart");
-		battleController.setSuccessResult(new LectureScript(controller));
+		battleController.setSuccessResult(new WelcomeToSchoolScript(controller));
 		
 		controller.addMinigame(battleController, 3, new Object[]{""});
 		
-		controller.addText("'Phew! Defeated it!'");
-		controller.addText("Boy: 'Wow! That was some impressive work!'");
-		controller.addText("'Thanks. But hey! You told me there was a 0% chance of a monster near the academy!'");
-		controller.addText("Boy: 'Ehh… yeah. I guess I misremembered. I only read like half of our course book anyway, it was really boring.'");
-		controller.addText("'Didn’t you say that Monsterology was your favorite subject?'");
-		controller.addText("Boy: 'Hey, that only means that all the other subjects were even more boring!'");
-		controller.addText("'. . .'");
-		controller.addText("I guess I shouldn’t put too much faith on what he says.");
-		
-		controller.addText("[Your model of the world has been updated! The prior of the variable 'Monster Near The Academy' is now 50%.]");
-		controller.addText("[Your model of the world has been updated! You have a new conditional probability variable: 'True Given That The Boy Say It's True', 25%]");
 		controller.run();
-		
-
-
-		
 	}
 
 	@Override
@@ -225,6 +247,12 @@ public class ExamLevelScript implements Script {
 	@Override
 	public void QueueEmpty() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setController(LevelController controller) {
+		this.controller = controller;
 		
 	}
 	

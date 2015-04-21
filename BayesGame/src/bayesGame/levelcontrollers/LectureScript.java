@@ -29,26 +29,13 @@ public class LectureScript implements Script {
 		ChoiceMenu choice = new ChoiceMenu();
 		choice.setDescription("Choose psychology lecture");
 		
-		DiscussionNet easy = RandomNet.generateNet(2);
-		
-		/*
-		DiscussionNet easy = new DiscussionNet();
-		easy.addSkillNode("X", "Psychology1");
-		easy.addSkillNode("Y", "Psychology1");
-		easy.addSkillNode("Z", "Psychology1");
-		
-		easy.forceConnectNodes("X", "Y");
-		easy.forceConnectNodes("Y", "Z");
-		
-		
-		easy.changeNodeCPD("Y", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		easy.changeNodeCPD("Z", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		easy.updateBeliefs();
-		*/
+		DiscussionNet easy = new RandomNet().generateNet(2);
 				
 		Random rn = new Random();
 
 		LearningController easyController = new LearningController(easy);
+		easyController.randomizeTargetNode();
+		easyController.hideTargetNodes();
 		
 		ChoiceMenuChoice easyChoice = new ChoiceMenuChoice();
 		easyChoice.setDescription("Introductory psychology");
@@ -56,95 +43,26 @@ public class LectureScript implements Script {
 		
 		choice.addChoice(easyChoice);
 		
-		/*
-		DiscussionNet medium = new DiscussionNet();
-		medium.addSkillNode("A", "Psychology2");
-		medium.addSkillNode("B", "Psychology2");
-		medium.addSkillNode("C", "Psychology2");
-		medium.addSkillNode("D", "Psychology2");
-		medium.addSkillNode("E", "Psychology2");
-		medium.addSkillNode("X", "Psychology1");
-		medium.addSkillNode("Y", "Psychology1");
-		medium.addSkillNode("Z", "Psychology1");
-		
-		medium.forceConnectNodes("A", "C");
-		medium.forceConnectNodes("B", "C");
-		medium.forceConnectNodes("B", "D");
-		medium.forceConnectNodes("C", "E");
-		medium.forceConnectNodes("X", "Y");
-		medium.forceConnectNodes("Y", "Z");
-		medium.forceConnectNodes("Z", "D");
-		
-		medium.changeNodeCPD("Y", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		medium.changeNodeCPD("Z", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		medium.changeNodeCPD("C", new RandomCPD(new DeterministicOR(), new DeterministicAND()));
-		medium.changeNodeCPD("D", new RandomCPD(new DeterministicOR(), new DeterministicAND()));
-		medium.changeNodeCPD("E", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));		
-		
-		medium.updateBeliefs();
-		*/
-		
-		DiscussionNet medium = RandomNet.generateNet(4);
+		DiscussionNet medium = new RandomNet().generateNet(4);
 
-		
 		LearningController mediumController = new LearningController(medium);
-		
+		mediumController.randomizeTargetNode();
+		mediumController.hideTargetNodes();
+		mediumController.hideTargetNodeFamily();
+	
 		ChoiceMenuChoice mediumChoice = new ChoiceMenuChoice();
 		mediumChoice.setDescription("Intermediate psychology");
 		mediumChoice.setGameController(mediumController);
 		
 		choice.addChoice(mediumChoice);
 		
-		/*
-		DiscussionNet hard = new DiscussionNet();
-		hard.addSkillNode("A", "Psychology3");
-		hard.addSkillNode("B", "Psychology3");
-		hard.addSkillNode("C", "Psychology3");
-		hard.addSkillNode("D", "Psychology3");
-		hard.addSkillNode("E", "Psychology2");
-		hard.addSkillNode("F", "Psychology3");
-		hard.addSkillNode("G", "Psychology3");
-		hard.addSkillNode("H", "Psychology2");
-		hard.addSkillNode("I", "Psychology2");
-		hard.addSkillNode("J", "Psychology2");
-		hard.addSkillNode("X", "Psychology1");
-		hard.addSkillNode("Y", "Psychology1");
-		hard.addSkillNode("Z", "Psychology1");
-		
-		hard.forceConnectNodes("A", "C");
-		hard.forceConnectNodes("B", "C");
-		hard.forceConnectNodes("B", "D");
-		hard.forceConnectNodes("C", "E");
-		hard.forceConnectNodes("C", "F");
-		hard.forceConnectNodes("D", "G");
-		hard.forceConnectNodes("E", "G");
-		hard.forceConnectNodes("F", "I");
-		hard.forceConnectNodes("F", "J");
-		hard.forceConnectNodes("G", "F");
-		hard.forceConnectNodes("H", "A");
-		hard.forceConnectNodes("X", "Y");
-		hard.forceConnectNodes("Y", "Z");
-		hard.forceConnectNodes("Z", "D");
-
-		hard.changeNodeCPD("A", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		hard.changeNodeCPD("C", new RandomCPD(new DeterministicOR(), new DeterministicAND()));
-		hard.changeNodeCPD("D", new RandomCPD(new DeterministicOR(), new DeterministicAND()));
-		hard.changeNodeCPD("E", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		hard.changeNodeCPD("F", new RandomCPD(new DeterministicOR(), new DeterministicAND()));
-		hard.changeNodeCPD("G", new RandomCPD(new DeterministicOR(), new DeterministicAND()));
-		hard.changeNodeCPD("H", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		hard.changeNodeCPD("I", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		hard.changeNodeCPD("J", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		hard.changeNodeCPD("Y", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		hard.changeNodeCPD("Z", new BayesCPD(Fraction.getReducedFraction(1, rn.nextInt(5)+1), Fraction.getReducedFraction(1, rn.nextInt(5)+1)));
-		
-		hard.updateBeliefs();
-		*/
-		
-		DiscussionNet hard = RandomNet.generateNet(6);
+		DiscussionNet hard = new RandomNet().generateNet(6);
 
 		LearningController hardController = new LearningController(hard);
-		
+		hardController.randomizeTargetNodes(2);
+		hardController.hideTargetNodes();
+		hardController.hideTargetNodeFamily();
+
 		ChoiceMenuChoice hardChoice = new ChoiceMenuChoice();
 		hardChoice.setDescription("Advanced psychology");
 		hardChoice.setGameController(hardController);
@@ -166,6 +84,12 @@ public class LectureScript implements Script {
 	@Override
 	public void QueueEmpty() {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setController(LevelController controller) {
+		this.controller = controller;
 		
 	}
 

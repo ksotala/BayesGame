@@ -17,8 +17,7 @@ public class RandomNet {
 	private String nodePointer;
 	private DiscussionNet net;
 	private RandomSubjectVariable randomVariable;
-	private int priorNodeDenominatorMaxvalue = 3;
-	
+
 	public RandomNet() {
 		// TODO Auto-generated constructor stub
 	}
@@ -55,12 +54,6 @@ public class RandomNet {
 		net.updateBeliefs();
 		
 		return net;
-	}
-	
-	public void setPriorNodeDenominatorMaxvalue(int max_value){
-		if (max_value > 0){
-			priorNodeDenominatorMaxvalue = max_value;
-		}
 	}
 
 	private void indirectEffect() {
@@ -102,9 +95,18 @@ public class RandomNet {
 	
 	private void addPriorNode(){
 		Random rn = new Random();
-		int oneOf = rn.nextInt(priorNodeDenominatorMaxvalue-1) + 2;
+		int prior = rn.nextInt(3);
 		net.addNode(nextNode);
-		Fraction probability = Fraction.getReducedFraction(1, oneOf);
+		Fraction probability;
+		
+		if (prior == 0){
+			probability = Fraction.ONE_THIRD;
+		} else if (prior == 1){
+			probability = Fraction.ONE_HALF;
+		} else {
+			probability = Fraction.TWO_THIRDS;
+		}
+		
 		net.setProbabilityOfUntrue(nextNode, probability);
 		net.setProbabilityOfUntrue(nextNode, Fraction.ONE.subtract(probability), nextNode);
 	}
