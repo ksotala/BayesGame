@@ -1,16 +1,18 @@
 package bayesGame.levelcontrollers;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class ChoiceMenu implements Iterable<ChoiceMenuChoice> {
 	
-	private Set<ChoiceMenuChoice> choices;
+	private List<ChoiceMenuChoice> choices;
 	private String description;
 	
 	public ChoiceMenu(){
-		choices = new HashSet<ChoiceMenuChoice>();
+		choices = new ArrayList<ChoiceMenuChoice>();
 	}
 
 	public String getDescription() {
