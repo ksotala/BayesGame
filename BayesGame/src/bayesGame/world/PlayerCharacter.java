@@ -2,11 +2,10 @@ package bayesGame.world;
 
 public class PlayerCharacter extends GameCharacter {
 
-	private final int STARTING_DEFAULT_ENERGY = 5;
+	private final int STARTING_DEFAULT_ENERGY = 25;
 		
 	private int energy;
 	private int base_energy;
-
 	
 	public PlayerCharacter() {
 		super("You");

@@ -29,7 +29,10 @@ public class LoopScript implements Script {
 	public void run() {
 		PlayerCharacter PC = GameCharacters.PC;
 		Day day = World.getDate();
-		PC.resetEnergy();
+		
+		if (day.justStarted()){
+			PC.resetEnergy();
+		}
 		
 		controller.addText("It is day " + day.date() + " of your studies.");
 		controller.addText("You have time to do " + day.timeLeft() + " things today, and there are classes on the first " + day.classesLeft() + " of them.");
@@ -37,7 +40,7 @@ public class LoopScript implements Script {
 		controller.addText("You have " + GameCharacters.listFriends());
 		controller.addText("Your available activities are:");
 		controller.addProcessEventQueue();
-		
+	
 		ChoiceMenu choices = day.getChoices();
 		controller.addChoiceMenu(choices);
 		

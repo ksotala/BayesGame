@@ -25,6 +25,9 @@ public class Day {
 	
 	public void advanceTimeOfDay(){
 		timeofday++;
+		if (timeofday == length){
+			nextDay();
+		}
 	}
 	
 	public int timeLeft(){
@@ -60,12 +63,21 @@ public class Day {
 	}
 	
 	
-	public Day nextDay(){
-		return new Day(number+1);
+	public void nextDay(){
+		number++;
+		timeofday = 0;
 	}
 
 	public int date() {
 		return number;
+	}
+
+	public boolean justStarted() {
+		if (timeofday == 0){
+			return true;
+		}
+		
+		return false;
 	}
 
 }
