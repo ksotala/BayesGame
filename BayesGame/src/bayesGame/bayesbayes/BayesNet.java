@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +18,7 @@ import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
 import bayesGame.bayesbayes.nodeCPD.NodeCPD;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 
-public class BayesNet {
+public class BayesNet implements Iterable<BayesNode> {
 
 	private int edgeCounter = 0;
 	private Map<Object,BayesNode> nodes;
@@ -475,6 +476,9 @@ public class BayesNet {
 		
 	}
 	
+	public Iterator iterator(){
+		return nodes.values().iterator();
+	}
 		
 
 

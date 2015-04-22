@@ -60,6 +60,7 @@ public class LectureScript implements Script {
 		hardChoice.setGameController(hardController);
 		
 		choice.addChoice(hardChoice);
+		choice.setReturnScript(new LoopScript(controller));
 		
 		controller.addChoiceMenu(choice);
 		controller.run();

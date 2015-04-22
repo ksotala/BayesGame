@@ -38,4 +38,11 @@ public class ChoiceMenu implements Iterable<ChoiceMenuChoice> {
 		}
 	}
 
+	public void setReturnScript(Script loopScript) {
+		for (ChoiceMenuChoice c : this){
+			c.updateReturnScript(loopScript);
+		}
+		
+	}
+
 }

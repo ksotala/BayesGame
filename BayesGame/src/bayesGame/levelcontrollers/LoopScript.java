@@ -34,6 +34,8 @@ public class LoopScript implements Script {
 			PC.resetEnergy();
 		}
 		
+		day.advanceTimeOfDay();
+		
 		controller.addText("It is day " + day.date() + " of your studies.");
 		controller.addText("You have time to do " + day.timeLeft() + " things today, and there are classes on the first " + day.classesLeft() + " of them.");
 		controller.addText("You have " + PC.getEnergy() + " points of energy to use.");

@@ -55,6 +55,12 @@ public class ChoiceMenuChoice {
 			script.setController(controller);
 		}
 	}
+
+	public void updateReturnScript(Script loopScript) {
+		if (gameController != null){
+			gameController.setSuccessResult(loopScript);
+		} 
+	}
 	
 
 }

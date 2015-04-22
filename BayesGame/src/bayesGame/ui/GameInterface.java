@@ -179,7 +179,7 @@ public class GameInterface implements InterfaceView, KeyController {
 		c.gridx = 1;
 		c.gridy = 1;
 		c.weightx = 1;
-		c.weighty = 1;
+		c.weighty = 0.2;
 	    c.ipady = 0;
 	    c.ipadx = 0;
 		c.fill = GridBagConstraints.BOTH;

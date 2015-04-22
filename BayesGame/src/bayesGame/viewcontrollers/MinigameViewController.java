@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
@@ -41,6 +43,8 @@ public class MinigameViewController implements Controller, ViewController {
 	private JPanel infoPanel;
 	private JLabel infoPanelText;
 	private JPanel buttonPanel;
+	
+	private boolean lectureMode;
 
 	
 	public MinigameViewController(MinigameController minigameController,
@@ -48,6 +52,11 @@ public class MinigameViewController implements Controller, ViewController {
 		this.owner = minigameController;
 		this.gameNet = gameNet;
 		this.gameInterface = new GameInterface();
+		this.lectureMode = false;
+	}
+	
+	public void setLectureMode(boolean bool){
+		lectureMode = bool;
 	}
 	
 	public void display(){
@@ -72,9 +81,22 @@ public class MinigameViewController implements Controller, ViewController {
 	    JButton helpButton = new JButton("Show help");
 	    buttonPanel.add(helpButton);
 	    
+	    if (lectureMode){
+	    	final JButton doneButton = new JButton("Done");
+	    	
+	        doneButton.addActionListener(new ActionListener() {
+	        	 
+	            public void actionPerformed(ActionEvent e)
+	            {
+	                owner.genericMessageReceived();
+	                doneButton.setEnabled(false);
+	            }
+	        });      
+
+	    	buttonPanel.add(doneButton);
+	    }
+	    
 	    gameInterface.setButtonPanel(buttonPanel);
-	    
-	    
 	}
 	
 	public void addText(String text){
@@ -147,7 +169,7 @@ public class MinigameViewController implements Controller, ViewController {
 
 	@Override
 	public void genericMessage() {
-		// TODO Auto-generated method stub
+		owner.genericMessageReceived();
 		
 	}
 

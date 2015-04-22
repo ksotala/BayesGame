@@ -290,6 +290,66 @@ public class MinigameController {
 	}
 	
 	
+	public void genericMessageReceived(){
+		finishedThinking();
+	}
+	
+	public void setLectureMode(boolean b) {
+		viewController.setLectureMode(b);
+	}
+	
+	public void finishedThinking(){
+		int correct = 0;
+		int score = 0;
+		
+		List<BayesNode> priorNodes = new ArrayList<BayesNode>();
+		List<BayesNode> otherNodes = new ArrayList<BayesNode>();
+		Map<BayesNode,Fraction> probabilities = new HashMap<BayesNode,Fraction>();
+		
+		for (BayesNode n : gameNet){
+			Fraction probability = n.getProbability();
+			probabilities.put(n, probability);
+			if (n.cptName.equals("Prior")){
+				priorNodes.add(n);
+			} else {
+				otherNodes.add(n);
+			}
+		}
+		
+		int scoreThreshold = probabilities.size() / 2;
+		if (probabilities.size() % 2 == 1){
+			scoreThreshold++;
+		}
+				
+		priorNodes.addAll(otherNodes);
+		
+		for (BayesNode n : priorNodes){
+			n.observe();
+			gameNet.updateBeliefs();
+			
+			Fraction oldProbability = probabilities.get(n);
+			boolean prediction = oldProbability.compareTo(Fraction.ONE_HALF) > 0;
+			
+			Fraction newProbability = n.getProbability();
+			boolean actualValue = newProbability.equals(Fraction.ONE);
+			
+			if (prediction == actualValue){
+				correct++;
+				if (correct > scoreThreshold){
+					score++;
+				}
+			}
+			
+			viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". Correct predictions: " + correct + ", score: " + score);
+			viewController.updateGraph();
+			
+		}
+		
+		clear(true);
+	}
+	
+	
+	
 	
 
 }

@@ -1,8 +1,12 @@
 package bayesGame.minigame;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.math3.fraction.Fraction;
 
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.bayesbayes.OptionNode;
@@ -14,6 +18,7 @@ public class LearningController extends MinigameController {
 
 	public LearningController(DiscussionNet gameNet){
 		super(gameNet, new HashSet<Object>());
+		super.setLectureMode(true);
 		this.gameNet = gameNet;
 	}
 	
@@ -33,5 +38,11 @@ public class LearningController extends MinigameController {
 		
 		super.startGame(0, knownNodes.toArray());
 	}
+
+	
+	
+
+	
+	
 
 }
