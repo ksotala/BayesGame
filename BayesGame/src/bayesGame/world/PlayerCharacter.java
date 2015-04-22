@@ -25,12 +25,12 @@ public class PlayerCharacter extends GameCharacter {
 		return energy;
 	}
 
-	public void useEnergy(int i) {
-		energy = energy - i;
-		if (energy < 0){
-			energy = 0;
+	public boolean useEnergy(int i) {
+		if (i > energy){
+			return false;
 		}
-		
+		energy = energy - i;
+		return true;
 	}
 
 }
