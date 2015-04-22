@@ -33,6 +33,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	private JFrame frame;
 	private JPanel bigPanel;
 	private JPanel smallPanel;
+	private JPanel buttonPanel;
 	private JTextPane textPane;
 	private JScrollPane scroll;
 	
@@ -48,6 +49,7 @@ public class GameInterface implements InterfaceView, KeyController {
 		
 		bigPanel = new JPanel();
 		smallPanel = new JPanel();
+		buttonPanel = new JPanel();
 		textPane = new JTextPane();
 		
 		events = new ArrayList<String>();
@@ -74,12 +76,14 @@ public class GameInterface implements InterfaceView, KeyController {
 		frame.getContentPane().remove(this.smallPanel);
 		
 	    smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-	    smallPanel.setMinimumSize(new Dimension(250,500));
+	    smallPanel.setMinimumSize(new Dimension(300,500));
 		frame.getContentPane().add(smallPanel, getSmallPanelConstraints());
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
 		this.smallPanel = smallPanel;
 	}
+	
+
 	
 	public void display(){
 		frame.pack();
@@ -101,9 +105,16 @@ public class GameInterface implements InterfaceView, KeyController {
 	    c = getSmallPanelConstraints();
 	    
 	    smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-	    smallPanel.setMinimumSize(new Dimension(250,400));
+	    smallPanel.setMinimumSize(new Dimension(300,400));
 	    
 	    pane.add(smallPanel, c);
+	    
+	    c = getButtonPanelConstraints();
+	    
+	    buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+	    buttonPanel.setMinimumSize(new Dimension(250,50));
+	    
+	    pane.add(buttonPanel, c);
 	    
 	    c = new GridBagConstraints();
 	    
@@ -114,8 +125,8 @@ public class GameInterface implements InterfaceView, KeyController {
 	    scroll = new JScrollPane (textPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	    
 	    c.gridx = 0;
-	    c.gridy = 1;
-	    c.gridwidth = 2;
+	    c.gridy = 2;
+	    c.gridwidth = GridBagConstraints.REMAINDER;
 	    c.ipady = 0;
 	    c.weightx = 1;
 	    c.weighty = 1;
@@ -128,6 +139,7 @@ public class GameInterface implements InterfaceView, KeyController {
 		
 	    c.gridx = 0;
 	    c.gridy = 0;
+	    c.gridheight = 2;
 	    c.weightx = 1;
 	    c.weighty = 1;
 	    c.ipady = 0;
@@ -149,6 +161,20 @@ public class GameInterface implements InterfaceView, KeyController {
 	    c.fill = GridBagConstraints.BOTH;
 	    
 	    return c;
+	}
+	
+	private GridBagConstraints getButtonPanelConstraints(){
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.gridx = 1;
+		c.gridy = 1;
+		c.weightx = 1;
+		c.weighty = 1;
+	    c.ipady = 0;
+	    c.ipadx = 0;
+		c.fill = GridBagConstraints.BOTH;
+		
+		return c;
 	}
 
 	@Override
@@ -210,7 +236,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	
 	private void writeToTextPane(String text){
 		SimpleAttributeSet style = new SimpleAttributeSet();
-		StyleConstants.setFontSize(style, 30);
+		StyleConstants.setFontSize(style, 26);
 		
 		text = text + System.getProperty("line.separator");
 		
