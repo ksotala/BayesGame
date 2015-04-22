@@ -2,7 +2,7 @@ package bayesGame.world;
 
 public class PlayerCharacter extends GameCharacter {
 
-	private final int STARTING_DEFAULT_ENERGY = 25;
+	private final int STARTING_DEFAULT_ENERGY = 5;
 		
 	private int energy;
 	private int base_energy;
@@ -23,6 +23,14 @@ public class PlayerCharacter extends GameCharacter {
 	
 	public int getEnergy(){
 		return energy;
+	}
+
+	public void useEnergy(int i) {
+		energy = energy - i;
+		if (energy < 0){
+			energy = 0;
+		}
+		
 	}
 
 }

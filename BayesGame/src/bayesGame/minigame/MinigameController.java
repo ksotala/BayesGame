@@ -15,6 +15,8 @@ import bayesGame.levelcontrollers.Script;
 import bayesGame.ui.InterfaceView;
 import bayesGame.viewcontrollers.MinigameViewController;
 import bayesGame.viewcontrollers.ViewController;
+import bayesGame.world.GameCharacters;
+import bayesGame.world.PlayerCharacter;
 import bayesGame.bayesbayes.*;
 
 public class MinigameController {
@@ -35,6 +37,9 @@ public class MinigameController {
 	
 	private boolean ready = false;
 	private int turnsTaken;
+	
+	private boolean energycost = false;
+	private PlayerCharacter PC;
 	
 	private LevelController owner;
 	
@@ -65,6 +70,11 @@ public class MinigameController {
 	
 	public void setGameMode(int gameMode){
 		this.gameMode = gameMode;
+	}
+	
+	public void enableEnergyCost(){
+		this.PC = GameCharacters.PC;
+		energycost = true;
 	}
 	
 	public void hideTargetNodes(){
@@ -245,29 +255,42 @@ public class MinigameController {
 	public void observeNode(Object type, OptionNodeOption option) {
 		if (ready){
 			if (!hiddenNodes.contains(type)){
-				boolean nodeTrue = gameNet.observe(type);
-				int timeSpent = 1;
-				
-				if (option != null){
-					timeSpent = option.getTimeSpent();
-					viewController.showText(option.getDescription());
-					String response;
-					if (nodeTrue){
-						response = option.getPositiveResponse();
-					} else {
-						response = option.getNegativeResponse();
+				if ((!energycost) || PC.getEnergy() > 0){
+					boolean nodeTrue = gameNet.observe(type);
+					int timeSpent = 1;
+					
+					if (option != null){
+						timeSpent = option.getTimeSpent();
+						viewController.showText(option.getDescription());
+						String response;
+						if (nodeTrue){
+							response = option.getPositiveResponse();
+						} else {
+							response = option.getNegativeResponse();
+						}
+						viewController.showText(response);
+						// viewController.displayPopup(option.getDescription(), response);
 					}
-					viewController.showText(response);
-					// viewController.displayPopup(option.getDescription(), response);
+					
+					gameNet.updateBeliefs();
+					viewController.addRefreshDisplay();
+					viewController.processEventQueue();
+					if (gameMode == 1 && targetNodes.contains(type)){
+						decisionMade(type);
+					}
+					if (energycost){
+						PC.useEnergy(1);
+						viewController.showText("Figuring this out costs you some mental energy. You have " + PC.getEnergy() + " points of energy left.");
+					}
+					
+					this.endOfTurn(timeSpent);
+				} else if (energycost && PC.getEnergy() <= 0){
+					viewController.showText("You're exhausted and can't think about this kind of thing anymore.");
 				}
 				
-				gameNet.updateBeliefs();
-				viewController.addRefreshDisplay();
-				viewController.processEventQueue();
-				if (gameMode == 1 && targetNodes.contains(type)){
-					decisionMade(type);
-				}
-				this.endOfTurn(timeSpent);
+				
+				
+
 			}
 		}
 		

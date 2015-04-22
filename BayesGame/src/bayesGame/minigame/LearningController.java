@@ -19,6 +19,7 @@ public class LearningController extends MinigameController {
 	public LearningController(DiscussionNet gameNet){
 		super(gameNet, new HashSet<Object>());
 		super.setLectureMode(true);
+		super.enableEnergyCost();
 		this.gameNet = gameNet;
 	}
 	
