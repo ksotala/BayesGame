@@ -34,8 +34,6 @@ public class LectureScript implements Script {
 		Random rn = new Random();
 
 		LearningController easyController = new LearningController(easy);
-		easyController.randomizeTargetNode();
-		easyController.hideTargetNodes();
 		
 		ChoiceMenuChoice easyChoice = new ChoiceMenuChoice();
 		easyChoice.setDescription("Introductory psychology");
@@ -46,9 +44,6 @@ public class LectureScript implements Script {
 		DiscussionNet medium = new RandomNet().generateNet(4);
 
 		LearningController mediumController = new LearningController(medium);
-		mediumController.randomizeTargetNode();
-		mediumController.hideTargetNodes();
-		mediumController.hideTargetNodeFamily();
 	
 		ChoiceMenuChoice mediumChoice = new ChoiceMenuChoice();
 		mediumChoice.setDescription("Intermediate psychology");
@@ -59,9 +54,6 @@ public class LectureScript implements Script {
 		DiscussionNet hard = new RandomNet().generateNet(6);
 
 		LearningController hardController = new LearningController(hard);
-		hardController.randomizeTargetNodes(2);
-		hardController.hideTargetNodes();
-		hardController.hideTargetNodeFamily();
 
 		ChoiceMenuChoice hardChoice = new ChoiceMenuChoice();
 		hardChoice.setDescription("Advanced psychology");
