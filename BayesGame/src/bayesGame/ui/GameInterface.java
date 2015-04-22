@@ -83,6 +83,16 @@ public class GameInterface implements InterfaceView, KeyController {
 		this.smallPanel = smallPanel;
 	}
 	
+	public void setButtonPanel(JPanel buttonPanel) {
+		frame.getContentPane().remove(this.buttonPanel);
+		
+	    buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+	    buttonPanel.setMinimumSize(new Dimension(250,50));
+	    frame.getContentPane().add(buttonPanel, getButtonPanelConstraints());
+
+		this.buttonPanel = buttonPanel;
+	}
+	
 
 	
 	public void display(){
@@ -292,6 +302,8 @@ public class GameInterface implements InterfaceView, KeyController {
 		JScrollBar vertical = scroll.getVerticalScrollBar();
 		vertical.setValue( vertical.getMaximum() );
 	}
+
+	
 	
 	
 

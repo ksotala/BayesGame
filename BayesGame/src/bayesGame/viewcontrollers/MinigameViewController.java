@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,6 +40,7 @@ public class MinigameViewController implements Controller, ViewController {
 	private GraphPanel graphPanel;
 	private JPanel infoPanel;
 	private JLabel infoPanelText;
+	private JPanel buttonPanel;
 
 	
 	public MinigameViewController(MinigameController minigameController,
@@ -65,6 +67,14 @@ public class MinigameViewController implements Controller, ViewController {
 		
 	    infoPanel = new JPanel();
 	    gameInterface.setSmallPanel(infoPanel);
+	    
+	    buttonPanel = new JPanel();
+	    JButton helpButton = new JButton("Show help");
+	    buttonPanel.add(helpButton);
+	    
+	    gameInterface.setButtonPanel(buttonPanel);
+	    
+	    
 	}
 	
 	public void addText(String text){
@@ -113,8 +123,7 @@ public class MinigameViewController implements Controller, ViewController {
 	    infoPanel.removeAll();
 	    infoPanel.revalidate();
 	    infoPanel.repaint();
-	    
-	    
+	    	    
 	    infoPanelText = new JLabel();
 		infoPanelText.setText(text);
 		infoPanelText.setAlignmentY(Component.LEFT_ALIGNMENT);
