@@ -42,6 +42,7 @@ public class LoopScript implements Script {
 		controller.addChoiceMenu(choices);
 		
 		controller.addProcessEventQueue();
+		controller.run();
 	}
 	
 	

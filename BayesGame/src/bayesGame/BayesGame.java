@@ -15,8 +15,11 @@ import bayesGame.bayesbayes.OptionNodeOption;
 import bayesGame.bayesbayes.nodeCPD.DeterministicNot;
 import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
 import bayesGame.bayesbayes.nodeCPD.MajorityVote;
+import bayesGame.levelcontrollers.ChoiceMenu;
+import bayesGame.levelcontrollers.ChoiceMenuChoice;
 import bayesGame.levelcontrollers.ExamLevelScript;
 import bayesGame.levelcontrollers.LevelController;
+import bayesGame.levelcontrollers.LoopScript;
 import bayesGame.levelcontrollers.Script;
 import bayesGame.levelcontrollers.TutorialController;
 import bayesGame.levelcontrollers.TutorialLevel2Controller;
@@ -76,14 +79,16 @@ public class BayesGame {
 		world = new World();
 		gameCharacters = new GameCharacters();
 		
-	    // showLanguageSelector();
-	    // showColorSelector();
-		// beginTutorial(1);
-		
-		
 		LevelController controller = new LevelController();
-		Script firstScript = new WelcomeToSchoolScript(controller);
-		firstScript.run();
+		ChoiceMenu mainMenu = new ChoiceMenu();
+		ChoiceMenuChoice intro = new ChoiceMenuChoice("Play introduction", new ExamLevelScript(controller));
+		ChoiceMenuChoice game = new ChoiceMenuChoice("Skip intro", new LoopScript(controller));
+		ChoiceMenuChoice loadGame = new ChoiceMenuChoice("Load game");
+		mainMenu.addChoice(intro);
+		mainMenu.addChoice(game);
+		mainMenu.addChoice(loadGame);
+		controller.addChoiceMenu(mainMenu);
+		controller.run();
 	}
 	
 	public static void showLanguageSelector(){

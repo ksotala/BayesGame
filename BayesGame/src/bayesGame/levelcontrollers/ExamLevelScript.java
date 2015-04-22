@@ -40,6 +40,10 @@ public class ExamLevelScript implements Script {
 		run();
 	}
 
+	public ExamLevelScript(LevelController controller) {
+		this.controller = controller;
+	}
+
 	public void run() {
 		
 		/*

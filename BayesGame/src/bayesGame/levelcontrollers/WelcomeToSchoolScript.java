@@ -57,10 +57,6 @@ public class WelcomeToSchoolScript implements Script {
 		controller.addText("Jace: 'It's Jace.'");
 		controller.addText("You have made friends with Jace!");
 		
-		GameCharacter Jace = new GameCharacter("Jace");
-		Jace.befriend();
-		GameCharacters.add(Jace);
-		
 		controller.setNextScript(new LoopScript(controller));
 		controller.addProcessEventQueue();
 		controller.run();

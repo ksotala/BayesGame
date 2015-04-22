@@ -10,9 +10,18 @@ public class ChoiceMenuChoice {
 	public boolean enabled;
 	
 	public ChoiceMenuChoice(){
-		enabled = true;
 	}
 	
+	public ChoiceMenuChoice(String description, Script script){
+		enabled = true;
+		this.description = description;
+		this.script = script;
+	}
+	
+	public ChoiceMenuChoice(String description) {
+		this.description = description;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -28,11 +37,13 @@ public class ChoiceMenuChoice {
 	public void setGameController(MinigameController gameController) {
 		this.gameController = gameController;
 		this.script = null;
+		this.enabled = true;
 	}
 	
 	public void setScript(Script script) {
 		this.script = script;
 		this.gameController = null;
+		this.enabled = true;
 	}
 	
 	public Script getScript() {

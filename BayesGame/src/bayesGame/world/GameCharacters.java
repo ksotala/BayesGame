@@ -13,6 +13,10 @@ public class GameCharacters {
 	public GameCharacters(){
 		PC = new PlayerCharacter();
 		characters = new HashSet<GameCharacter>();
+		
+		GameCharacter Jace = new GameCharacter("Jace");
+		Jace.befriend();
+		add(Jace);
 	}
 	
 	public static void add(GameCharacter character){
