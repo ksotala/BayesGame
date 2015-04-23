@@ -71,7 +71,7 @@ public class RandomNet {
 
 	private String getFillerSentence() {
 		String sentence = "";
-		int sentenceInt = rn.nextInt(8);
+		int sentenceInt = rn.nextInt(11);
 		switch(sentenceInt){
 		case 0:
 			sentence = "This reminds me of my work on " + subjectTerm.getNewRandomTerm() + ". Anyway... ";
@@ -96,6 +96,15 @@ public class RandomNet {
 			break;
 		case 7:
 			sentence = "Now where was I going with this, again? Oh yes, " + subjectTerm.getNewRandomTerm() + ". ";
+			break;
+		case 8:
+			sentence = "To think, we once spent a whole year figuring out how this relates to " + subjectTerm.getNewRandomTerm() + ", and now you younglings find out about it in five minutes, just by listening to me. ";
+			break;
+		case 9:
+			sentence = "There are many things I could connect this with, but I'm going to connect it with " + subjectTerm.getNewRandomTerm() + ". I'm sure you see why. ";
+			break;
+		case 10:
+			sentence = "(someone desperately tries to raise and wave their hand, but the professor doesn't notice) ";
 			break;
 		}
 
