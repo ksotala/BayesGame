@@ -45,8 +45,8 @@ public class RandomNet {
 				randomizePointerLocation();
 			}
 			int structure = rn.nextInt(3);
-			if (components <= 4){
-				structure = this.getRandomWithinRange(1, 2);
+			if (components <= 4 && (x < (components-1))){
+				structure = 2;
 			}
 			switch (structure){
 			case 0: 
