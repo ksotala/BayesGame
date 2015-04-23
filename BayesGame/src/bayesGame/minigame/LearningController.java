@@ -40,6 +40,8 @@ public class LearningController extends MinigameController {
 		super.startGame(0, knownNodes.toArray());
 	}
 
+
+
 	
 	
 

@@ -33,6 +33,7 @@ import bayesGame.ui.GameInterface;
 import bayesGame.ui.GraphPanel;
 import bayesGame.ui.verbs.InteractingVerb;
 import bayesGame.ui.verbs.Verb;
+import bayesGame.world.TutorialMessages;
 
 public class MinigameViewController implements Controller, ViewController {
 	
@@ -45,6 +46,7 @@ public class MinigameViewController implements Controller, ViewController {
 	private JPanel buttonPanel;
 	
 	private boolean lectureMode;
+	private String helpReference;
 
 	
 	public MinigameViewController(MinigameController minigameController,
@@ -78,16 +80,25 @@ public class MinigameViewController implements Controller, ViewController {
 	    gameInterface.setSmallPanel(infoPanel);
 	    
 	    buttonPanel = new JPanel();
-	    JButton helpButton = new JButton("Show help");
-	    buttonPanel.add(helpButton);
+	    
+	    if (helpReference != null){
+		    JButton helpButton = new JButton("Show help");
+		    helpButton.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                String helpText = TutorialMessages.get(helpReference);
+	            	gameInterface.addText(helpText);
+	            	gameInterface.processEventQueue();
+	            }
+	        });
+		    
+		    buttonPanel.add(helpButton);
+	    }
 	    
 	    if (lectureMode){
 	    	final JButton doneButton = new JButton("Done");
 	    	
 	        doneButton.addActionListener(new ActionListener() {
-	        	 
-	            public void actionPerformed(ActionEvent e)
-	            {
+	            public void actionPerformed(ActionEvent e) {
 	                owner.genericMessageReceived();
 	                doneButton.setEnabled(false);
 	            }
@@ -222,6 +233,11 @@ public class MinigameViewController implements Controller, ViewController {
 	@Override
 	public void showMenu(ChoiceMenu choice, LevelController levelController) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	public void setHelpReference(String helpReference) {
+		this.helpReference = helpReference;
 		
 	}
 

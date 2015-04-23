@@ -42,6 +42,8 @@ public class MinigameController {
 	private PlayerCharacter PC;
 	
 	private LevelController owner;
+
+	private String helpReference;
 	
 	public MinigameController(DiscussionNet gameNet, Set<Object> targetNodes) {
 		this.gameNet = gameNet;
@@ -151,6 +153,10 @@ public class MinigameController {
 		this.discussions = discussions;
 	}
 	
+	public void setHelpReference(String string) {
+		this.helpReference = string;
+	}
+	
 	public void startGame(){
 		startGame(0, new Object[0]);
 	}
@@ -159,6 +165,7 @@ public class MinigameController {
 	public void startGame(int timeLimit, Object[] knowledges){
 		this.timeLimit = timeLimit;
 		turnsTaken = 0;
+		viewController.setHelpReference(helpReference);
 		
 		// mark known nodes as known
 		for (Object o : knowledges){

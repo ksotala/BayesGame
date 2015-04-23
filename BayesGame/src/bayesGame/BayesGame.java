@@ -29,6 +29,7 @@ import bayesGame.minigame.MinigameController;
 import bayesGame.ui.ColorSelection;
 import bayesGame.ui.LanguageChooser;
 import bayesGame.world.GameCharacters;
+import bayesGame.world.TutorialMessages;
 import bayesGame.world.World;
 
 /**
@@ -72,12 +73,14 @@ public class BayesGame {
 	
 	public static World world;
 	public static GameCharacters gameCharacters;
+	public static TutorialMessages tutorialMessages;
 	
 	private static JFrame frame;
 
 	public static void main(String[] args) {
 		world = new World();
 		gameCharacters = new GameCharacters();
+		tutorialMessages = new TutorialMessages();
 		
 		LevelController controller = new LevelController();
 		ChoiceMenu mainMenu = new ChoiceMenu();
