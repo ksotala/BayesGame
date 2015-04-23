@@ -59,6 +59,11 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 		boolean hiddennode = node.hasProperty("hidden");
 		boolean targetnode = node.hasProperty("target");
 		
+		if (node.hasProperty("misguessed")){
+			trueColor = Color.GRAY;
+			falseColor = Color.BLACK;
+		}
+		
 		// TODO: indicate target nodes somehow
 				
 		if (node.cptName == null){

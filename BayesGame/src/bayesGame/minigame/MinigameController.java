@@ -364,6 +364,8 @@ public class MinigameController {
 					score++;
 					adjective = adjective + "SCORE! ";
 				}
+			} else {
+				n.addProperty("misguessed");
 			}
 
 			viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + ", score: " + score);
