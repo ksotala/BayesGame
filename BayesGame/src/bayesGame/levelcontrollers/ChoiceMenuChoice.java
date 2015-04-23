@@ -7,6 +7,7 @@ public class ChoiceMenuChoice {
 	private String description;
 	private MinigameController gameController;
 	private Script script;
+	private String[] preamble;
 	public boolean enabled;
 	
 	public ChoiceMenuChoice(){
@@ -60,6 +61,14 @@ public class ChoiceMenuChoice {
 		if (gameController != null){
 			gameController.setSuccessResult(loopScript);
 		} 
+	}
+
+	public String[] getPreamble() {
+		return preamble;
+	}
+
+	public void setPreamble(String... preamble) {
+		this.preamble = preamble;
 	}
 	
 

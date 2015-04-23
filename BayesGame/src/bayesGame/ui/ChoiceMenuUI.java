@@ -55,6 +55,16 @@ public class ChoiceMenuUI extends JDialog {
 	
 	private void buttonPressed(ActionEvent evt){
 		ChoiceButton button = (ChoiceButton)evt.getSource();
+		String[] preamble = button.choice.getPreamble();
+		if (preamble != null){
+			for (String s : preamble){
+				owner.addText(s);
+			}
+			owner.addProcessEventQueue();
+			this.setVisible(false);
+			owner.run();
+		}
+		
 		MinigameController gameController = button.choice.getGameController();
 		Script script = button.choice.getScript();
 		if (gameController != null){

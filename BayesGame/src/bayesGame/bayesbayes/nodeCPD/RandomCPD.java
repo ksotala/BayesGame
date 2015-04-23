@@ -14,6 +14,10 @@ public class RandomCPD implements NodeCPD {
 		chosenCPD = candidates[chosenCandidatePosition];
 	}
 	
+	public NodeCPD getChosenCPD(){
+		return chosenCPD;
+	}
+	
 	@Override
 	public BayesNode getNode(BayesNode sourceBayesNode, Object[] parents) {
 		return chosenCPD.getNode(sourceBayesNode, parents);

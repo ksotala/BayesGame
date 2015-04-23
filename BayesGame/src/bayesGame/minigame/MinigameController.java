@@ -356,16 +356,25 @@ public class MinigameController {
 			Fraction newProbability = n.getProbability();
 			boolean actualValue = newProbability.equals(Fraction.ONE);
 			
+			String adjective ="";
 			if (prediction == actualValue){
 				correct++;
+				adjective = " YAY! ";
 				if (correct > scoreThreshold){
 					score++;
+					adjective = adjective + "SCORE! ";
 				}
 			}
-			
-			viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". Correct predictions: " + correct + ", score: " + score);
+
+			viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + ", score: " + score);
 			viewController.updateGraph();
 			
+		}
+		
+		if (correct == probabilities.size()){
+			int scorebonus  = probabilities.size() / 2;
+			score = score + scorebonus;
+			viewController.showText("All predictions correct! Bonus score: " + scorebonus + ", total score: " + score);
 		}
 		
 		clear(true);
