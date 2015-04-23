@@ -107,7 +107,7 @@ public class RandomNet {
 			sentence = "There are many things I could connect this with, but I'm going to connect it with " + subjectTerm.getNewRandomTerm() + ". I'm sure you see why. ";
 			break;
 		case 10:
-			sentence = "(someone desperately tries to raise and wave their hand, but the professor doesn't notice) ";
+			sentence = "(someone desperately tries to wave their hand) ";
 			break;
 		}
 
