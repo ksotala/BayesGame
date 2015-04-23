@@ -210,6 +210,9 @@ public class MinigameController {
 				viewController.showText("Failure!");
 				clear(false);
 			} else if (allTargetNodesKnown && gameMode == 0){
+				if (energycost){
+					finishedThinking();
+				}
 				clear(true);
 			}
 		}
