@@ -74,6 +74,7 @@ public class BayesGame {
 	public static World world;
 	public static GameCharacters gameCharacters;
 	public static TutorialMessages tutorialMessages;
+	public static LevelController controller;
 	
 	private static JFrame frame;
 
@@ -82,7 +83,7 @@ public class BayesGame {
 		gameCharacters = new GameCharacters();
 		tutorialMessages = new TutorialMessages();
 		
-		LevelController controller = new LevelController();
+		controller = new LevelController();
 		ChoiceMenu mainMenu = new ChoiceMenu();
 		ChoiceMenuChoice intro = new ChoiceMenuChoice("Play introduction", new ExamLevelScript(controller));
 		ChoiceMenuChoice game = new ChoiceMenuChoice("Skip intro", new LoopScript(controller));

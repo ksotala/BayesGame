@@ -90,7 +90,7 @@ public class LectureScript implements Script {
 		}
 		
 		choice.addChoice(hardChoice);
-		choice.setReturnScript(new LoopScript(controller));
+		choice.setReturnScript(new MeetingCherylScript());
 		
 		if (!TutorialMessages.contains("LectureTutorial")){
 			TutorialMessages.put("LectureTutorial", s4);

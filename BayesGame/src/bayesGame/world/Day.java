@@ -27,6 +27,9 @@ public class Day {
 		timeofday++;
 		if (timeofday == length){
 			nextDay();
+			World.timeAdvanced(true);
+		} else {
+			World.timeAdvanced(false);
 		}
 	}
 	

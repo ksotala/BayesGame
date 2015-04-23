@@ -1,5 +1,6 @@
 package bayesGame.levelcontrollers;
 
+import bayesGame.BayesGame;
 import bayesGame.world.Day;
 import bayesGame.world.GameCharacters;
 import bayesGame.world.PlayerCharacter;
@@ -11,6 +12,10 @@ public class LoopScript implements Script {
 	
 	public LoopScript(LevelController controller){
 		this.controller = controller;
+	}
+
+	public LoopScript() {
+		this.controller = BayesGame.controller;
 	}
 
 	@Override
