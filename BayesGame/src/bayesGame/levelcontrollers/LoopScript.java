@@ -6,7 +6,7 @@ import bayesGame.world.GameCharacters;
 import bayesGame.world.PlayerCharacter;
 import bayesGame.world.World;
 
-public class LoopScript implements Script {
+public class LoopScript extends Script {
 	
 	private LevelController controller;
 	
@@ -18,17 +18,6 @@ public class LoopScript implements Script {
 		this.controller = BayesGame.controller;
 	}
 
-	@Override
-	public void MinigameCompleted(String message) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void QueueEmpty() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void run() {

@@ -1,10 +1,17 @@
 package bayesGame.levelcontrollers;
 
-public interface Script {
+import bayesGame.BayesGame;
+
+public abstract class Script {
 	
-	public void MinigameCompleted(String message);
-	public void QueueEmpty();
-	public void run();
-	public void setController(LevelController controller);
+	protected LevelController controller = BayesGame.controller;
+	
+	public abstract void run();
+
+	public void setController(LevelController controller){
+		this.controller = controller;
+	}
+	
+
 	
 }

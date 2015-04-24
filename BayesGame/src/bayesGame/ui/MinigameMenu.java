@@ -16,14 +16,14 @@ import javax.swing.JFrame;
 import bayesGame.bayesbayes.OptionNodeOption;
 import bayesGame.levelcontrollers.Controller;
 
-public class DialogMenu extends JDialog {
+public class MinigameMenu extends JDialog {
 	
 	private Controller owner;
 	private List<OptionNodeOption> options;
 	private List<OptionButton> buttons;
 	private Object node;
 
-	public DialogMenu(Controller owner, JFrame frame, Object node, List<OptionNodeOption> options) {
+	public MinigameMenu(Controller owner, JFrame frame, Object node, List<OptionNodeOption> options) {
 		super(frame, true);
 		this.options = options;
 		this.owner = owner;

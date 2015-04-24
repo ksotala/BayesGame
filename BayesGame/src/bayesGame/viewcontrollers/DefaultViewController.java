@@ -4,6 +4,7 @@ import bayesGame.bayesbayes.BayesNet;
 import bayesGame.levelcontrollers.ChoiceMenu;
 import bayesGame.levelcontrollers.Controller;
 import bayesGame.levelcontrollers.LevelController;
+import bayesGame.levelcontrollers.MiniScript;
 import bayesGame.minigame.DiscussionNet;
 import bayesGame.ui.GameInterface;
 import bayesGame.ui.GraphPanel;
@@ -79,5 +80,20 @@ public class DefaultViewController implements ViewController {
 		gameInterface.showMenu(choice, controller);
 		
 	}
+
+	@Override
+	public void addDialog(String title, String[] options) {
+		gameInterface.addDialog(title, options);
+		
+	}
+
+	@Override
+	public void addDialog(String string, MiniScript[] scripts) {
+		gameInterface.addDialog(string, scripts);
+	}
+
+
+
+
 
 }

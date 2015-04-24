@@ -3,7 +3,7 @@ package bayesGame.levelcontrollers;
 import bayesGame.world.GameCharacter;
 import bayesGame.world.GameCharacters;
 
-public class WelcomeToSchoolScript implements Script {
+public class WelcomeToSchoolScript extends Script {
 
 	private LevelController controller;
 	
@@ -11,17 +11,7 @@ public class WelcomeToSchoolScript implements Script {
 		this.controller = controller;
 	}
 
-	@Override
-	public void MinigameCompleted(String message) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void QueueEmpty() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void run() {

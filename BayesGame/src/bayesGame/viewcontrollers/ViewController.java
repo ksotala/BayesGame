@@ -3,6 +3,7 @@ package bayesGame.viewcontrollers;
 import bayesGame.levelcontrollers.ChoiceMenu;
 import bayesGame.levelcontrollers.Controller;
 import bayesGame.levelcontrollers.LevelController;
+import bayesGame.levelcontrollers.MiniScript;
 
 public interface ViewController {
 	
@@ -18,5 +19,7 @@ public interface ViewController {
 	
 	abstract void receiveControl(Object control);
 	abstract void processingDone();
+	public abstract void addDialog(String title, String[] options);
+	public abstract void addDialog(String string, MiniScript[] scripts);
 
 }

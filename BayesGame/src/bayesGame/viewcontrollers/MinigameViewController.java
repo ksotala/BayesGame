@@ -26,9 +26,10 @@ import bayesGame.bayesbayes.OptionNodeOption;
 import bayesGame.levelcontrollers.ChoiceMenu;
 import bayesGame.levelcontrollers.Controller;
 import bayesGame.levelcontrollers.LevelController;
+import bayesGame.levelcontrollers.MiniScript;
 import bayesGame.minigame.DiscussionNet;
 import bayesGame.minigame.MinigameController;
-import bayesGame.ui.DialogMenu;
+import bayesGame.ui.MinigameMenu;
 import bayesGame.ui.GameInterface;
 import bayesGame.ui.GraphPanel;
 import bayesGame.ui.verbs.InteractingVerb;
@@ -195,7 +196,7 @@ public class MinigameViewController implements Controller, ViewController {
 
 	public void displayOptions(Object node) {
 		if (gameNet.getOptions(node) != null){
-			DialogMenu menu = new DialogMenu(this, gameInterface.getFrame(), node, gameNet.getOptions(node));
+			MinigameMenu menu = new MinigameMenu(this, gameInterface.getFrame(), node, gameNet.getOptions(node));
 			menu.setVisible(true);
 		} else {
 			owner.observeNode(node, null);
@@ -240,6 +241,21 @@ public class MinigameViewController implements Controller, ViewController {
 		this.helpReference = helpReference;
 		
 	}
+
+
+
+	@Override
+	public void addDialog(String title, String[] options) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addDialog(String string, MiniScript[] scripts) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	

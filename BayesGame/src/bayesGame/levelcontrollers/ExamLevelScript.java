@@ -31,7 +31,7 @@ import bayesGame.minigame.MinigameController;
 import bayesGame.viewcontrollers.DefaultViewController;
 import bayesGame.viewcontrollers.ViewController;
 
-public class ExamLevelScript implements Script {
+public class ExamLevelScript extends Script {
 
 	private LevelController controller;
 	
@@ -243,16 +243,7 @@ public class ExamLevelScript implements Script {
 		controller.run();
 	}
 
-	@Override
-	public void MinigameCompleted(String message) {
 
-	}
-
-	@Override
-	public void QueueEmpty() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void setController(LevelController controller) {

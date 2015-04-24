@@ -14,7 +14,7 @@ import bayesGame.minigame.LearningController;
 import bayesGame.minigame.RandomNet;
 import bayesGame.world.TutorialMessages;
 
-public class LectureScript implements Script {
+public class LectureScript extends Script {
 	
 	private LevelController controller;
 
@@ -102,17 +102,7 @@ public class LectureScript implements Script {
 
 
 
-	@Override
-	public void MinigameCompleted(String message) {
-		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void QueueEmpty() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public void setController(LevelController controller) {

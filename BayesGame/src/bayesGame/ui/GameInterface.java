@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -24,6 +25,7 @@ import javax.swing.text.StyledDocument;
 
 import bayesGame.levelcontrollers.ChoiceMenu;
 import bayesGame.levelcontrollers.LevelController;
+import bayesGame.levelcontrollers.MiniScript;
 import bayesGame.ui.swinglisteners.AnyKeyListener;
 import bayesGame.ui.swinglisteners.KeyController;
 import bayesGame.viewcontrollers.ViewController;
@@ -41,6 +43,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	private boolean waitingForInput;
 	
 	private List<String> events;
+	private List<MiniScript[]> miniScriptQueue;
 	
 	public GameInterface() {
 		frame = new JFrame("Academy Game");
@@ -51,8 +54,9 @@ public class GameInterface implements InterfaceView, KeyController {
 		smallPanel = new JPanel();
 		buttonPanel = new JPanel();
 		textPane = new JTextPane();
-		
+				
 		events = new ArrayList<String>();
+		miniScriptQueue = new ArrayList<MiniScript[]>();
 		
 		waitingForInput = false;
 		textPane.addKeyListener(new AnyKeyListener(this));
@@ -225,6 +229,8 @@ public class GameInterface implements InterfaceView, KeyController {
 		
 		if (text.equals("$$REFRESHDISPLAY")){
 			bigPanel.repaint();
+		} else if (text.equals("$$DIALOGMENU")) {
+			dialogMenu();
 		} else {
 			deletePreviousNextIndicatorFromPane();
 			writeToTextPane(text);			
@@ -232,6 +238,17 @@ public class GameInterface implements InterfaceView, KeyController {
 		refreshScrollbar();
 	}
 	
+	private void dialogMenu() {
+		MiniScript[] scripts = miniScriptQueue.remove(0);
+		String[] titles = new String[scripts.length];
+		for (int i = 0; i < scripts.length; i++){
+			titles[i] = scripts[i].name;
+		}
+		
+		int choice = showMenu("", titles);
+		scripts[choice].run();
+	}
+
 	private void deletePreviousNextIndicatorFromPane(){
 		try {
 			String text = textPane.getText(textPane.getDocument().getLength()-3, 1);
@@ -301,6 +318,29 @@ public class GameInterface implements InterfaceView, KeyController {
 		scroll.revalidate();
 		JScrollBar vertical = scroll.getVerticalScrollBar();
 		vertical.setValue( vertical.getMaximum() );
+	}
+
+	
+	public int showMenu(String title, String[] options) {
+		if (options.length == 2){
+			return JOptionPane.showOptionDialog(frame, null, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		} else {
+			return JOptionPane.showOptionDialog(frame, null, title, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);			
+		}
+	}
+
+	public void addDialog(String title, String[] options) {
+		MiniScript[] scripts = new MiniScript[options.length];
+		for (int i = 0; i < options.length; i++){
+			scripts[i] = new MiniScript(options[i]);
+		}
+		addDialog(title, scripts);
+	}
+
+	public void addDialog(String title, MiniScript[] scripts) {
+		events.add("$$DIALOGMENU");
+		miniScriptQueue.add(scripts);
+		
 	}
 
 	
