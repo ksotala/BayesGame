@@ -131,12 +131,7 @@ public class LevelController {
 
 	public void addDialog(String title, String ... options) {
 		viewController.addDialog(title, options);
-		
-		MiniScript[] scripts = new MiniScript[options.length];
-		for (int i = 0; i < options.length; i++){
-			scripts[i] = new MiniScript(options[i]);
-		}
-		addDialog(title, scripts);
+
 	}
 
 	public void addDialog(String string, MiniScript ... scripts) {
