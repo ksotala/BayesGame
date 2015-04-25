@@ -30,7 +30,7 @@ public class RandomNet {
 	
 	public DiscussionNet generateNet(int components){
 		net = new DiscussionNet();
-		verbalDescription = "'";
+		verbalDescription = "'The topic of today's lecture is " + subjectTerm.getNewRandomTerm() + ".";
 		randomVariable = new RandomSubjectVariable();
 		subjectTerm = new RandomSubjectVariable(RandomSubjectVariable.PSYCHOLOGY_SET_VALUES);
 		subjectTerm.shuffle();
