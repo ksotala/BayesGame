@@ -8,7 +8,7 @@ public class PlayerCharacter extends GameCharacter {
 	private int base_energy;
 	
 	public PlayerCharacter() {
-		super("You");
+		super("You", GameCharacter.GENDER.GIRL);
 		base_energy = STARTING_DEFAULT_ENERGY;
 		resetEnergy();
 	}

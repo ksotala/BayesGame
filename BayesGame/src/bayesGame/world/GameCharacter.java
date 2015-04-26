@@ -8,6 +8,10 @@ public class GameCharacter {
 		FUN_GAMES, SERIOUS_STUDY, TESTED_METTLE
 	};
 	
+	public enum GENDER{
+		BOY, GIRL
+	};
+	
 	private boolean friends;
 	
 	private int fun_games = 0;
@@ -17,10 +21,13 @@ public class GameCharacter {
 	private int overall_relationship = 0;
 	private int bff_relationship = 0;
 	
+	private GENDER gender;
+	
 	private int unpaid_wary = 0;
 	
-	public GameCharacter(String name){
+	public GameCharacter(String name, GENDER gender){
 		this.name = name;
+		this.gender = gender;
 	}
 	
 	public void increaseRelationship(int amount, RELATIONSHIP_TYPE type){

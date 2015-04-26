@@ -16,7 +16,11 @@ public class RandomSubjectVariable {
 		"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"	
 	};
 	
-	public static final String[] PSYCHOLOGY_SET_VALUES = new String[] { "Attachment", 
+	public static final String[] NAMES = new String[] { "Wind", "Storm", "Fate",  
+		"Cane", "Keru", "Sugar", "Spice", "Faith", "Alosa", "Elara", "Melir", "Satin", "Silk", "Gold", "Echo",
+		"Ocean"};
+	
+	public static final String[] PSYCHOLOGY_SET_VALUES = new String[] { "attachment", 
 		"ageism",
 		"the anchoring heuristic",
 		"anxiety",
