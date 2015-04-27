@@ -479,6 +479,25 @@ public class BayesNet implements Iterable<BayesNode> {
 	public Iterator iterator(){
 		return nodes.values().iterator();
 	}
+	
+	public List<Object> getParents(Object object){
+		ArrayList<Object> family = new ArrayList<Object>();
+		
+		BayesNode node = getNodeIffPresent(object);
+		
+		// the node has to already exist for us to do anything
+		if (node == null){
+			return family;
+		}
+		
+		ArrayList<BayesNode> parentNodes = new ArrayList<BayesNode>(graph.getPredecessors(node));
+		
+		for (BayesNode b : parentNodes){
+			family.add(b.type);
+		}
+				
+		return family;
+	}
 		
 
 

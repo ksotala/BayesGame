@@ -98,7 +98,7 @@ public class GraphPanel extends JPanel {
         vv.getRenderContext().setVertexShapeTransformer(vertexShape);
         
         
-        vv.getRenderContext().setVertexIconTransformer(new BayesNodeProbabilityToGridTransformer());
+        vv.getRenderContext().setVertexIconTransformer(new BayesNodeProbabilityToGridTransformer(bayesNet));
         
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller()); 
 

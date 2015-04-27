@@ -19,6 +19,7 @@ package bayesGame.ui.transformers;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -27,8 +28,10 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.math3.fraction.Fraction;
 
 import bayesGame.BayesGame;
+import bayesGame.bayesbayes.BayesNet;
 import bayesGame.bayesbayes.BayesNode;
 import bayesGame.ui.painter.AndNodePainter;
+import bayesGame.ui.painter.BayesPainter;
 import bayesGame.ui.painter.DetNOTAnd;
 import bayesGame.ui.painter.GridPainter;
 import bayesGame.ui.painter.IsNodePainter;
@@ -43,8 +46,10 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 	private final int columns = 10;
 	private final int rows = 2;
 	
-	public BayesNodeProbabilityToGridTransformer() {
-		// TODO Auto-generated constructor stub
+	private BayesNet net;
+	
+	public BayesNodeProbabilityToGridTransformer(BayesNet bayesNet) {
+		net = bayesNet;
 	}
 
 	@Override
@@ -64,6 +69,8 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 			falseColor = Color.BLACK;
 		}
 		
+		
+		
 		// TODO: indicate target nodes somehow
 				
 		if (node.cptName == null){
@@ -82,6 +89,10 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 			grid = AndNodePainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
 		} else if (node.cptName.equals("DetNOTAnd")){
 			grid = DetNOTAnd.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
+		} else if (node.cptName.equals("Bayes")){
+			List<Object> parentTypeList = net.getParents(node.type);
+			Fraction parentNodeProbability = net.getProbability(parentTypeList.get(0));
+			grid = BayesPainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node, parentNodeProbability);
 		}
 		
 		else {
