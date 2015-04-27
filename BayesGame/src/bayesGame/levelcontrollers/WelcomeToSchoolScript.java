@@ -47,8 +47,10 @@ public class WelcomeToSchoolScript extends Script {
 		controller.addText("Jace: 'It's Jace.'");
 		controller.addText("You have made friends with Jace!");
 		
-		controller.setNextScript(new LoopScript(controller));
 		controller.addProcessEventQueue();
+		controller.run();
+		
+		controller.setNextScript(new LoopScript(controller));
 		controller.run();
 
 	}

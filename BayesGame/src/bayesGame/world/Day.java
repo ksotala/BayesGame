@@ -6,7 +6,7 @@ import bayesGame.levelcontrollers.LectureScript;
 
 public class Day {
 	
-	private final int DEFAULT_LENGTH = 6;
+	private final int DEFAULT_LENGTH = 4;
 	private final int DEFAULT_CLASSES = 4;
 	
 	private int length;

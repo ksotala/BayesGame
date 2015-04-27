@@ -24,11 +24,11 @@ public class LoopScript extends Script {
 		PlayerCharacter PC = GameCharacters.PC;
 		Day day = World.getDate();
 		
+		day.advanceTimeOfDay();
+	
 		if (day.justStarted()){
 			PC.resetEnergy();
 		}
-		
-		day.advanceTimeOfDay();
 		
 		controller.addText("It is day " + day.date() + " of your studies.");
 		controller.addText("You have time to do " + day.timeLeft() + " things today, and there are classes on the first " + day.classesLeft() + " of them.");

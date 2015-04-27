@@ -33,7 +33,7 @@ public class RandomNet {
 		randomVariable = new RandomSubjectVariable();
 		subjectTerm = new RandomSubjectVariable(RandomSubjectVariable.PSYCHOLOGY_SET_VALUES);
 		subjectTerm.shuffle();
-		verbalDescription = "'The topic of today's lecture is " + subjectTerm.getNewRandomTerm() + ".";
+		verbalDescription = "'The topic of today's lecture is " + subjectTerm.getNewRandomTerm() + ". ";
 		
 		nextNode = randomVariable.getNewRandomTerm();
 		nodePointer = nextNode;

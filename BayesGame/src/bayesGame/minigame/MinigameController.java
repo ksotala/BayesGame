@@ -389,7 +389,13 @@ public class MinigameController {
 			viewController.showText("All predictions correct! Bonus score: " + scorebonus + ", total score: " + score);
 		}
 		
+		GameCharacters.PC.pointsToSkill("Psychology", score, this);
+		
 		clear(true);
+	}
+
+	public void showText(String string) {
+		viewController.showText(string);
 	}
 	
 	
