@@ -92,6 +92,12 @@ public class DefaultViewController implements ViewController {
 		gameInterface.addDialog(string, scripts);
 	}
 
+	@Override
+	public void showOptionsMenu() {
+		gameInterface.showOptionsMenu();
+		
+	}
+
 
 
 

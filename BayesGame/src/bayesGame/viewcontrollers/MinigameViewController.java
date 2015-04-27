@@ -256,6 +256,12 @@ public class MinigameViewController implements Controller, ViewController {
 		
 	}
 
+	@Override
+	public void showOptionsMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	

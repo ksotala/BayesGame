@@ -47,6 +47,7 @@ public class LevelController {
 		}
 		if (nextScript != null){
 			nextScript.run();
+			nextScript = null;
 		}
 	}
 	
@@ -138,6 +139,11 @@ public class LevelController {
 		viewController.addDialog(string, scripts);
 		
 
+		
+	}
+
+	public void showOptionsMenu() {
+		viewController.showOptionsMenu();
 		
 	}
 	

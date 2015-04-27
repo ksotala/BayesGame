@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -341,6 +342,20 @@ public class GameInterface implements InterfaceView, KeyController {
 		events.add("$$DIALOGMENU");
 		miniScriptQueue.add(scripts);
 		
+	}
+
+	public void showOptionsMenu() {
+		frame.dispose();
+		
+		frame = new JFrame("Select colors");
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        JComponent newContentPane = new ColorSelection();
+        newContentPane.setOpaque(true);
+        frame.setContentPane(newContentPane);
+
+        frame.pack();
+        frame.setVisible(true);
 	}
 
 	

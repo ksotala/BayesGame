@@ -87,10 +87,10 @@ public class BayesGame {
 		ChoiceMenu mainMenu = new ChoiceMenu();
 		ChoiceMenuChoice intro = new ChoiceMenuChoice("Play introduction", new ExamLevelScript(controller));
 		ChoiceMenuChoice game = new ChoiceMenuChoice("Skip intro", new LoopScript(controller));
-		ChoiceMenuChoice loadGame = new ChoiceMenuChoice("Load game");
+		ChoiceMenuChoice options = new ChoiceMenuChoice("Options", new OptionsScript());
 		mainMenu.addChoice(intro);
 		mainMenu.addChoice(game);
-		mainMenu.addChoice(loadGame);
+		mainMenu.addChoice(options);
 		controller.addChoiceMenu(mainMenu);
 		controller.run();
 	}
@@ -113,17 +113,7 @@ public class BayesGame {
 	
 	public static void showColorSelector(){
 		
-		frame.dispose();
-		
-		frame = new JFrame("Select colors");
-        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        JComponent newContentPane = new ColorSelection();
-        newContentPane.setOpaque(true);
-        frame.setContentPane(newContentPane);
-
-        frame.pack();
-        frame.setVisible(true);
 		
 	}
 	
