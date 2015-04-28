@@ -7,12 +7,12 @@ import java.awt.image.BufferedImage;
 
 import org.apache.commons.math3.fraction.Fraction;
 
+import bayesGame.BayesGame;
 import bayesGame.bayesbayes.BayesNode;
 
 public class BayesPainter {
 
-	public static Image paintPercentage(double percentage, Color gridColor,
-			Color falseColor, int rows, int columns, int cell_size, BayesNode node, Fraction parentNodeProbability) {
+	public static Image paintPercentage(double percentage, Color trueColor, Color falseColor, int rows, int columns, int cell_size, BayesNode node, Fraction parentNodeProbability) {
 		
 		percentage = percentage / 100.0;
 		
@@ -61,15 +61,31 @@ public class BayesPainter {
 		paintProbabilityGrid(g, (columns * trueProbability), greyScaleTrueColor, greyScaleFalseColor, 0, 0, rows / 2, columns, (int)(cell_size * 0.5), cell_size);
 		paintProbabilityGrid(g, (columns * falseProbability), greyScaleTrueColor, greyScaleFalseColor, (int)(columns * cell_size * 0.5), 0, rows / 2, columns, (int)(cell_size * 0.5), cell_size);
 		
+		Color grid1Color;
+		Color grid2Color;
+		
+		if (percentage == 1.0){
+			grid1Color = trueColor;
+			grid2Color = Color.WHITE;
+		} else if (percentage == 0.0){
+			grid1Color = Color.WHITE;
+			grid2Color = falseColor;
+		} else {
+			grid1Color = trueColor;
+			grid2Color = falseColor;
+		}
 		
 		for (int i = 0; i < rows1; i++){
-			paintProbabilityGrid(g, (columns * trueProbability), gridColor, falseColor, 0, (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);			
+			paintProbabilityGrid(g, (columns * trueProbability), grid1Color, grid2Color, 0, (cell_size + 1) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);			
 		}
 		
 		for (int i = 0; i < rows2; i++){
-			paintProbabilityGrid(g, (columns * falseProbability), gridColor, falseColor, (int)(columns * cell_size * 0.50), (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);
+			paintProbabilityGrid(g, (columns * falseProbability), grid1Color, grid2Color, (int)(columns * cell_size * 0.50), (cell_size + 1) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);
 		}
 		
+		
+		g.setColor(Color.BLACK);
+		g.drawRect(0, 0, size_x, (int)(1.5*size_y));
 		
 		// NodePainter.paintProbabilityGrid(g, coloredCells, gridColor, falseColor, 0, size_y, rows, columns, cell_size);
 
