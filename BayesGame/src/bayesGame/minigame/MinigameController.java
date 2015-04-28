@@ -290,7 +290,7 @@ public class MinigameController {
 					}
 					if (energycost){
 						PC.useEnergy(1);
-						viewController.showText("Figuring this out costs you some mental energy. You have " + PC.getEnergy() + " points of energy left.");
+						viewController.showText("Looking up the truth of " + type + " costs you some mental energy. You have " + PC.getEnergy() + " points of energy left.");
 					}
 					
 					this.endOfTurn(timeSpent);
@@ -340,12 +340,14 @@ public class MinigameController {
 		Map<BayesNode,Fraction> probabilities = new HashMap<BayesNode,Fraction>();
 		
 		for (BayesNode n : gameNet){
-			Fraction probability = n.getProbability();
-			probabilities.put(n, probability);
-			if (n.cptName.equals("Prior")){
-				priorNodes.add(n);
-			} else {
-				otherNodes.add(n);
+			if (targetNodes.contains(n.type)){
+				Fraction probability = n.getProbability();
+				probabilities.put(n, probability);
+				if (n.cptName.equals("Prior")){
+					priorNodes.add(n);
+				} else {
+					otherNodes.add(n);
+				}
 			}
 		}
 		

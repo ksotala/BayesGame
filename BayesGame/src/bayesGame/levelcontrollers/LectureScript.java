@@ -62,7 +62,7 @@ public class LectureScript extends Script {
 
 		LearningController mediumController = new LearningController(medium);
 		mediumController.setHelpReference("LectureTutorial");
-	
+		
 		ChoiceMenuChoice mediumChoice = new ChoiceMenuChoice();
 		mediumChoice.setDescription("Intermediate psychology");
 		mediumChoice.setGameController(mediumController);

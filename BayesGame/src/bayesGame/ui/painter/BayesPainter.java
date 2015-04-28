@@ -37,6 +37,8 @@ public class BayesPainter {
 		int rows1 = processProbability(parentNodeProbability);
 		int rows2 = processProbability(Fraction.ONE.subtract(parentNodeProbability));
 		
+		
+		
 		String CPTDescription = node.cptDescription;
 		int trueFirstDigit = 0;
 		while (!Character.isDigit(CPTDescription.charAt(trueFirstDigit))) trueFirstDigit++;
@@ -56,16 +58,16 @@ public class BayesPainter {
 		Fraction probabilityIfFalse = new Fraction(Integer.parseInt(CPTDescription.substring(falseFirstDigit, falseFirstDigit+1)), Integer.parseInt(CPTDescription.substring(falseSecondDigit, falseSecondDigit+1)));
 		double falseProbability = probabilityIfFalse.doubleValue();
 		
-		paintProbabilityGrid(g, (columns * trueProbability), greyScaleTrueColor, greyScaleFalseColor, 0, 0, rows / 2, columns, (int)(cell_size * 0.45), cell_size);
-		paintProbabilityGrid(g, (columns * falseProbability), greyScaleTrueColor, greyScaleFalseColor, (int)(columns * cell_size * 0.60), 0, rows / 2, columns, (int)(cell_size * 0.45), cell_size);
+		paintProbabilityGrid(g, (columns * trueProbability), greyScaleTrueColor, greyScaleFalseColor, 0, 0, rows / 2, columns, (int)(cell_size * 0.5), cell_size);
+		paintProbabilityGrid(g, (columns * falseProbability), greyScaleTrueColor, greyScaleFalseColor, (int)(columns * cell_size * 0.5), 0, rows / 2, columns, (int)(cell_size * 0.5), cell_size);
 		
 		
 		for (int i = 0; i < rows1; i++){
-			paintProbabilityGrid(g, (columns * trueProbability), gridColor, falseColor, 0, (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.45), cell_size);			
+			paintProbabilityGrid(g, (columns * trueProbability), gridColor, falseColor, 0, (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);			
 		}
 		
 		for (int i = 0; i < rows2; i++){
-			paintProbabilityGrid(g, (columns * falseProbability), gridColor, falseColor, (int)(columns * cell_size * 0.60), (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.45), cell_size);
+			paintProbabilityGrid(g, (columns * falseProbability), gridColor, falseColor, (int)(columns * cell_size * 0.50), (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);
 		}
 		
 		
@@ -147,6 +149,7 @@ public class BayesPainter {
 		}
 		
 		// draw the borders between individual boxes
+/*
 		g.setColor(Color.GRAY);
         for (int i = 0; i <= size_x; i += cell_size_x) {
             g.drawLine(i + x0, 0 + y0, i + x0, size_y + y0);
@@ -155,6 +158,8 @@ public class BayesPainter {
         for (int i = 0; i <= size_y; i += cell_size_y) {
             g.drawLine(0 + x0, i + y0, size_x + x0, i + y0);
         }
+        
+        */
 			
         g.setColor(Color.BLACK);
         g.drawRect(x0, y0, size_x, size_y);

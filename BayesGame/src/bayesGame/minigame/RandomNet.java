@@ -19,7 +19,6 @@ public class RandomNet {
 	private DiscussionNet net;
 	private RandomSubjectVariable randomVariable;
 	private RandomSubjectVariable subjectTerm;
-	private int maxIsNodes = 1;
 	private Random rn = new Random();
 	private String verbalDescription;
 
@@ -45,7 +44,7 @@ public class RandomNet {
 				randomizePointerLocation();
 			}
 			int structure = rn.nextInt(3);
-			if (components <= 4 && (x < (components-1))){
+			if ((components <= 4 && (x < (components-1))) || x < 2){
 				structure = 2;
 			}
 			switch (structure){

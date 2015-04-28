@@ -31,8 +31,7 @@ public class LoopScript extends Script {
 		}
 		
 		controller.addText("It is day " + day.date() + " of your studies.");
-		controller.addText("You have time to do " + day.timeLeft() + " things today, and there are classes on the first " + day.classesLeft() + " of them.");
-		controller.addText("You have " + PC.getEnergy() + " points of energy to use.");
+		controller.addText("You have " + day.timeLeft() + " hours to spend today, and there are classes on the first " + day.classesLeft() + " of them. You have " + PC.getEnergy() + " points of energy.");
 		controller.addText("You have " + GameCharacters.listFriends());
 		controller.addText("Your available activities are:");
 		controller.addProcessEventQueue();
