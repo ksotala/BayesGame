@@ -84,9 +84,15 @@ public class BayesNodeProbabilityToGridTransformer implements Transformer<BayesN
 		} else if (node.cptName.equals("Prior")){
 			grid = PriorPainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize);
 		} else if (node.cptName.equals("DetOR")){
-			grid = OrNodePainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
+			List<Object> parentTypeList = net.getParents(node.type);
+			Fraction parentNode1Probability = net.getProbability(parentTypeList.get(0));
+			Fraction parentNode2Probability = net.getProbability(parentTypeList.get(1));
+			grid = OrNodePainter.paintPercentage(trueColor, falseColor, (int)(rows * squaresize * 3.5), squaresize, node, parentNode1Probability, parentNode2Probability);
 		} else if (node.cptName.equals("DetAND")){
-			grid = AndNodePainter.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
+			List<Object> parentTypeList = net.getParents(node.type);
+			Fraction parentNode1Probability = net.getProbability(parentTypeList.get(0));
+			Fraction parentNode2Probability = net.getProbability(parentTypeList.get(1));
+			grid = AndNodePainter.paintPercentage(trueColor, falseColor, (int)(rows * squaresize * 3.5), squaresize, node, parentNode1Probability, parentNode2Probability);
 		} else if (node.cptName.equals("DetNOTAnd")){
 			grid = DetNOTAnd.paintPercentage(cells, trueColor, falseColor, rows, columns, squaresize, node);
 		} else if (node.cptName.equals("Bayes")){

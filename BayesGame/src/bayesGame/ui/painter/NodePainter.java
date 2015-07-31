@@ -28,8 +28,8 @@ public class NodePainter {
 	private static final int ARROW_SIZE = 4;
 	private static final Color ARROW_COLOR = Color.BLACK;
 	
-	private static final Color RECTANGLE_BORDER_COLOR = Color.GRAY;
-	private static final Color RECTANGLE_BOX_BACKGROUND_COLOR = Color.WHITE;
+	protected static final Color RECTANGLE_BORDER_COLOR = Color.GRAY;
+	protected static final Color RECTANGLE_BOX_BACKGROUND_COLOR = Color.WHITE;
 	
 	
 	public static void paintProbabilityGrid(Graphics g, double coloredCells, Color gridColor, Color falseColor, int x0, int y0, int rows, int columns, int cell_size){
@@ -77,6 +77,10 @@ public class NodePainter {
 			}
 		}
 		
+		drawCellGrid(g, x0, y0, size_x, size_y, cell_size);
+	}
+	
+	protected static void drawCellGrid(Graphics g, int x0, int y0, int size_x, int size_y, int cell_size){
 		// draw the borders between individual boxes
 		g.setColor(Color.GRAY);
         for (int i = 0; i <= size_x; i += cell_size) {
@@ -95,6 +99,16 @@ public class NodePainter {
 		g.setColor(RECTANGLE_BOX_BACKGROUND_COLOR);
 		g.fillRect(x, y, size_x, size_y);
 	}
+	
+	protected static void squarePainter(Graphics g, int x, int y, int size_x, int size_y, Color color, Color borderColor){
+		g.setColor(color);
+		g.fillRect(x, y, size_x, size_y);
+		g.setColor(borderColor);
+		g.drawRect(x, y, size_x, size_y);
+	}
+	
+	
+	
 	
 	protected static void oneBoxPainter(Graphics g, Color rect1Color, Color rect2Color, int x, int y, int size_x, int size_y, boolean arrow, boolean horizontal_margin, boolean vertical_margin){		
 		int variableBox_x = size_x;

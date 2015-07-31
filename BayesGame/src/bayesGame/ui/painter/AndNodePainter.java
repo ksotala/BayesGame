@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.math3.fraction.Fraction;
+
 import bayesGame.bayesbayes.BayesNode;
 
 public class AndNodePainter {
@@ -33,24 +35,14 @@ public class AndNodePainter {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static Image paintPercentage(double percentage, Color gridColor,
-			Color falseColor, int rows, int columns, int cell_size, BayesNode node) {
+	public static Image paintPercentage(Color gridColor,
+			Color falseColor, int size, int squaresize, BayesNode node, Fraction parentNode1Probability, Fraction parentNode2Probability) {
 		
-		percentage = percentage / 100.0;
-		
-		int size_x = cell_size * columns;
-		int size_y = cell_size * rows * 2;
-		
-		int box_size = (int)(size_x * (2.0/5.0));
-		
-		BufferedImage img = new BufferedImage(size_x, (int)(1.5*size_y)+1, BufferedImage.TYPE_INT_RGB);
+		BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 		Graphics g = img.getGraphics();
 		
-		NodePainter.graphicBackgroundPainter(g, 0, 0, size_x, (int)(1.5*size_y));
+		NodePainter.graphicBackgroundPainter(g, 0, 0, size, size);
 	
-		double cells = rows * columns;
-		double coloredCells = percentage * cells;
-		
 		// get non-zero truth table entries from the node
 		List<Map<Object,Boolean>> nonZeroEntries = node.getNonZeroProbabilities();
 		
@@ -90,33 +82,36 @@ public class AndNodePainter {
 		}
 		
 		Color whiteColor = Color.WHITE;
+		
+		int XSize = parentNode1Probability.multiply(size).intValue();
+		int X_Size = size - XSize;
+		int YSize = parentNode2Probability.multiply(size).intValue();
+		int Y_Size = size - YSize;
 
 		if (p1true_p2false){
-			NodePainter.twoBoxPainter(g, gridColor, falseColor, falseColor, 1, 0, box_size, size_y / 2, false);
+			NodePainter.squarePainter(g, 0, YSize, XSize, Y_Size, falseColor, Color.BLACK);
 		} else {
-			NodePainter.twoBoxPainter(g, whiteColor, whiteColor, whiteColor, 1, 0, box_size, size_y / 2, false);
+			NodePainter.squarePainter(g, 0, YSize, XSize, Y_Size, NodePainter.RECTANGLE_BOX_BACKGROUND_COLOR, Color.BLACK);
 		}
 		
 		if (p1false_p2true){
-			NodePainter.twoBoxPainter(g, falseColor, gridColor, falseColor, (size_x - box_size -2), 0, box_size, size_y / 2, false);
+			NodePainter.squarePainter(g, XSize, 0, X_Size, YSize, falseColor, Color.BLACK);
 		} else {
-			NodePainter.twoBoxPainter(g, whiteColor, whiteColor, whiteColor, (size_x - box_size -2), 0, box_size, size_y / 2, false);			
+			NodePainter.squarePainter(g, XSize, 0, X_Size, YSize, NodePainter.RECTANGLE_BOX_BACKGROUND_COLOR, Color.BLACK);
 		}
 		
 		if (p1true_p2true){
-			NodePainter.twoBoxPainter(g, gridColor, gridColor, gridColor, 1,                      size_y / 2, box_size, size_y / 2, false);
+			NodePainter.squarePainter(g, 0, 0, XSize, YSize, gridColor, Color.BLACK);
 		} else {
-			NodePainter.twoBoxPainter(g, whiteColor, whiteColor, whiteColor, 1,                      size_y / 2, box_size, size_y / 2, false);
+			NodePainter.squarePainter(g, 0, 0, XSize, YSize, NodePainter.RECTANGLE_BOX_BACKGROUND_COLOR, Color.BLACK);
 		}
 		
 		if (p1false_p2false){
-			NodePainter.twoBoxPainter(g, falseColor, falseColor, falseColor, (size_x - box_size -2), size_y / 2, box_size, size_y / 2, false);
+			NodePainter.squarePainter(g, XSize, YSize, X_Size, Y_Size, falseColor, Color.BLACK);
 		} else {
-			NodePainter.twoBoxPainter(g, whiteColor, whiteColor, whiteColor, (size_x - box_size -2), size_y / 2, box_size, size_y / 2, false);
+			NodePainter.squarePainter(g, XSize, YSize, X_Size, Y_Size, NodePainter.RECTANGLE_BOX_BACKGROUND_COLOR, Color.BLACK);
 		}
-
-		NodePainter.paintProbabilityGrid(g, coloredCells, gridColor, falseColor, 0, size_y, rows, columns, cell_size);
-
+		
 		return img;
 	}
 
