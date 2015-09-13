@@ -52,7 +52,7 @@ public class OrNodePainter {
 		nodeParents.remove(node.type);
 		
 		if (nodeParents.size() > 2){
-			throw new IllegalArgumentException("AND node with more than 2 parents not yet implemented");
+			throw new IllegalArgumentException("OR node with more than 2 parents not yet implemented");
 		}
 		
 		Object[] nodeParentsArray = nodeParents.toArray();
@@ -81,30 +81,19 @@ public class OrNodePainter {
 			}
 		}
 		
-		Color whiteColor = Color.WHITE;
-		
 		int XSize = parentNode1Probability.multiply(size).intValue();
 		int X_Size = size - XSize;
 		int YSize = parentNode2Probability.multiply(size).intValue();
-		int Y_Size = size - YSize;
-
-		if (p1true_p2false){
-			NodePainter.squarePainter(g, 0, YSize, XSize, Y_Size, gridColor, Color.BLACK);
-		} else {
-			NodePainter.squarePainter(g, 0, YSize, XSize, Y_Size, NodePainter.RECTANGLE_BOX_BACKGROUND_COLOR, Color.BLACK);
-		}
-		
-		if (p1false_p2true){
-			NodePainter.squarePainter(g, XSize, 0, X_Size, YSize, gridColor, Color.BLACK);
-		} else {
-			NodePainter.squarePainter(g, XSize, 0, X_Size, YSize, NodePainter.RECTANGLE_BOX_BACKGROUND_COLOR, Color.BLACK);
-		}
+		int Y_Size = size - YSize;		
 		
 		if (p1true_p2true){
 			NodePainter.squarePainter(g, 0, 0, XSize, YSize, gridColor, Color.BLACK);
 		} else {
 			NodePainter.squarePainter(g, 0, 0, XSize, YSize, NodePainter.RECTANGLE_BOX_BACKGROUND_COLOR, Color.BLACK);
 		}
+		
+		NodePainter.squarePainter(g, XSize, 0, X_Size, YSize, gridColor, Color.BLACK);
+		NodePainter.squarePainter(g, 0, YSize, XSize, Y_Size, gridColor, Color.BLACK);
 		
 		if (p1false_p2false){
 			NodePainter.squarePainter(g, XSize, YSize, X_Size, Y_Size, falseColor, Color.BLACK);

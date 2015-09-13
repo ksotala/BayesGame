@@ -18,6 +18,8 @@ public class MeetingCherylScript extends Script {
 
 	@Override
 	public void run() {
+		metCheryl = true;
+		
 		if (metCheryl){
 			new LoopScript().run();
 		} else {

@@ -1,14 +1,7 @@
 package bayesGame.levelcontrollers;
 
-import java.util.HashSet;
 import java.util.Random;
 
-import org.apache.commons.math3.fraction.Fraction;
-
-import bayesGame.bayesbayes.nodeCPD.BayesCPD;
-import bayesGame.bayesbayes.nodeCPD.DeterministicAND;
-import bayesGame.bayesbayes.nodeCPD.DeterministicOR;
-import bayesGame.bayesbayes.nodeCPD.RandomCPD;
 import bayesGame.minigame.DiscussionNet;
 import bayesGame.minigame.LearningController;
 import bayesGame.minigame.RandomNet;
@@ -58,7 +51,7 @@ public class LectureScript extends Script {
 		
 		choice.addChoice(easyChoice);
 		
-		DiscussionNet medium = randomNet.generateNet(4);
+		DiscussionNet medium = randomNet.generateNet(3);
 
 		LearningController mediumController = new LearningController(medium);
 		mediumController.setHelpReference("LectureTutorial");
@@ -75,7 +68,7 @@ public class LectureScript extends Script {
 		
 		choice.addChoice(mediumChoice);
 		
-		DiscussionNet hard = randomNet.generateNet(6);
+		DiscussionNet hard = randomNet.generateNet(5);
 
 		LearningController hardController = new LearningController(hard);
 		hardController.setHelpReference("LectureTutorial");

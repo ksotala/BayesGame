@@ -176,13 +176,13 @@ public class RandomNet {
 		Fraction probability;
 		
 		if (prior == 0){
-			probability = Fraction.ONE_THIRD;
+			probability = Fraction.getReducedFraction(4, 10);
 			verbalDescription = verbalDescription + "As you all know, there's a chance that " + nextNode + ". ";
 		} else if (prior == 1){
 			probability = Fraction.ONE_HALF;
 			verbalDescription = verbalDescription + "Now, it could maybe be that " + nextNode + ". ";
 		} else {
-			probability = Fraction.TWO_THIRDS;
+			probability = Fraction.getReducedFraction(6, 10);
 			verbalDescription = verbalDescription + "Obviously, it's likely that " + nextNode + ". ";
 		}
 		
