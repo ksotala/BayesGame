@@ -30,10 +30,7 @@ public class LoopScript extends Script {
 			PC.resetEnergy();
 		}
 		
-		controller.addText("It is day " + day.date() + " of your studies.");
-		controller.addText("You have " + day.timeLeft() + " hours to spend today, and there are classes on the first " + day.classesLeft() + " of them. You have " + PC.getEnergy() + " points of energy.");
-		controller.addText("You have " + GameCharacters.listFriends());
-		controller.addText("Your available activities are:");
+		controller.addText("It is day " + day.date() + " of your studies. You have " + day.timeLeft() + " hours to spend today, and " + PC.getEnergy() + " points of energy.");
 		controller.addProcessEventQueue();
 	
 		ChoiceMenu choices = day.getChoices();
