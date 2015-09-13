@@ -1,4 +1,4 @@
-package bayesGame.ui;
+	package bayesGame.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -27,7 +28,7 @@ public class ColorSelection extends JPanel implements ActionListener {
 	
 	private String option2truecolor = "purple";
 	private String option2falsecolor = "red";
-	private Color option2trueColor = Color.decode("#A52A2A");
+	private Color option2trueColor = Color.decode("#800080");
 	private Color option2falseColor = Color.RED;
 	
 	private String option3truecolor = "blue";
@@ -105,8 +106,9 @@ public class ColorSelection extends JPanel implements ActionListener {
 	}
 
 	private void closeButtonPushed(){
+		JFrame parentFrame = (JFrame) this.getParent().getParent().getParent();
+		parentFrame.dispose();
 		BayesGame.main(null);
-		
 	}
 	
 	@Override
