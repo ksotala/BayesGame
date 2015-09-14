@@ -355,6 +355,7 @@ public class MinigameController {
 		if (probabilities.size() % 2 == 1){
 			scoreThreshold++;
 		}
+		System.out.println(scoreThreshold);
 				
 		priorNodes.addAll(otherNodes);
 		

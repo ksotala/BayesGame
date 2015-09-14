@@ -141,9 +141,13 @@ public class IntroScript extends Script {
 		controller.addMinigame(minigameController, 0, new Object[]{""});
 		
 		controller.addText("Congratulations, you're now familiar with the basic concepts of the game!");
-
+		
+		
 		controller.addProcessEventQueue();
+		controller.setNextScript(new LoopScript(controller));
 		controller.run();
+		
+		
 		
 	}
 

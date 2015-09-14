@@ -18,9 +18,7 @@ public class BayesPainter {
 		
 		int size_x = cell_size * columns;
 		int size_y = cell_size * rows * 2;
-		
-		int box_size = (int)(size_x * (2.0/5.0));
-		
+				
 		BufferedImage img = new BufferedImage(size_x, (int)(1.5*size_y)+1, BufferedImage.TYPE_INT_RGB);
 		Graphics g = img.getGraphics();
 		
@@ -61,13 +59,21 @@ public class BayesPainter {
 		paintProbabilityGrid(g, (columns * trueProbability), greyScaleTrueColor, greyScaleFalseColor, 0, 0, rows / 2, columns, (int)(cell_size * 0.5), cell_size);
 		paintProbabilityGrid(g, (columns * falseProbability), greyScaleTrueColor, greyScaleFalseColor, (int)(columns * cell_size * 0.5), 0, rows / 2, columns, (int)(cell_size * 0.5), cell_size);
 		
+		Color trueBarColor = gridColor;
+		Color falseBarColor = falseColor;
+		
+		if (node.getProbability().compareTo(Fraction.ZERO) == 0){
+			trueBarColor = Color.WHITE;
+		} else if (node.getProbability().compareTo(Fraction.ONE) == 0){
+			falseBarColor = Color.WHITE;
+		}
 		
 		for (int i = 0; i < rows1; i++){
-			paintProbabilityGrid(g, (columns * trueProbability), gridColor, falseColor, 0, (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);			
+			paintProbabilityGrid(g, (columns * trueProbability), trueBarColor, falseBarColor, 0, (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);			
 		}
 		
 		for (int i = 0; i < rows2; i++){
-			paintProbabilityGrid(g, (columns * falseProbability), gridColor, falseColor, (int)(columns * cell_size * 0.50), (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);
+			paintProbabilityGrid(g, (columns * falseProbability), trueBarColor, falseBarColor, (int)(columns * cell_size * 0.50), (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);
 		}
 		
 		

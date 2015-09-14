@@ -45,7 +45,7 @@ public class LevelController {
 			String event = eventQueue.remove(0);
 			executeEvent(event);
 		}
-		if (nextScript != null){
+		else if (nextScript != null){
 			nextScript.run();
 			nextScript = null;
 		}
