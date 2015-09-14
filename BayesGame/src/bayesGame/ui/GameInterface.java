@@ -69,7 +69,7 @@ public class GameInterface implements InterfaceView, KeyController {
 		frame.getContentPane().remove(this.bigPanel);
 		
 	    bigPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		bigPanel.setMinimumSize(new Dimension(750,750));
+		bigPanel.setMinimumSize(new Dimension(600,650));
 		bigPanel.setPreferredSize(new Dimension(750,750));
 		frame.getContentPane().add(bigPanel, getBigPanelConstraints());
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -112,7 +112,7 @@ public class GameInterface implements InterfaceView, KeyController {
 		GridBagConstraints c = getBigPanelConstraints();
 		
 	    bigPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		bigPanel.setMinimumSize(new Dimension(750,750));
+		bigPanel.setMinimumSize(new Dimension(600,650));
 		bigPanel.setPreferredSize(new Dimension(750,750));
 	    
 	    pane.add(bigPanel, c);
