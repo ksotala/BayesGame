@@ -255,6 +255,10 @@ public class MinigameViewController implements Controller, ViewController {
 		
 	}
 
+	public void clearText() {
+		gameInterface.clearText();
+	}
+
 
 
 	

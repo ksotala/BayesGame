@@ -27,7 +27,11 @@ public class RandomNet {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public DiscussionNet generateNet(int components){
+	public DiscussionNet generateNet(int difficulty){
+		return generateNet(difficulty, difficulty);
+	}
+	
+	public DiscussionNet generateNet(int components, int difficulty){
 		net = new DiscussionNet();
 		randomVariable = new RandomSubjectVariable();
 		subjectTerm = new RandomSubjectVariable(RandomSubjectVariable.PSYCHOLOGY_SET_VALUES);
@@ -44,8 +48,11 @@ public class RandomNet {
 				randomizePointerLocation();
 			}
 			int structure = rn.nextInt(3);
-			if ((components <= 4 && (x < (components-1))) || x < 2){
+			if ((difficulty == 0 && (x < (components-1))) || x < 2){
 				structure = 2;
+			}
+			if (difficulty == 1 && x == 0 && structure == 2){
+				structure = rn.nextInt(2);
 			}
 			switch (structure){
 			case 0: 

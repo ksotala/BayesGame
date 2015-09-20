@@ -263,7 +263,6 @@ public class GameInterface implements InterfaceView, KeyController {
 		try { doc.insertString(doc.getLength(), text, style); }
         catch (BadLocationException e){}
 		
-		
 		textPane.revalidate();
 		textPane.setCaretPosition(textPane.getDocument().getLength());
 		scroll.revalidate();
@@ -346,6 +345,10 @@ public class GameInterface implements InterfaceView, KeyController {
 
         frame.pack();
         frame.setVisible(true);
+	}
+
+	public void clearText() {
+		textPane.setText("");
 	}
 
 	

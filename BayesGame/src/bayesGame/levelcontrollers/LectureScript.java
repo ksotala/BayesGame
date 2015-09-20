@@ -28,11 +28,10 @@ public class LectureScript extends Script {
 		String s4 = "The graph your best interpretation of what Professor Alt said. The variables represent claims about psychology that could be true or false. You can look them up by clicking on them, but doing so costs a point of mental energy. Press done when you don't want to look up any more claims. For any that you didn't look up, you'll assume it to be true or false depending on which seems more likely at the moment. You're then shown how things really are: each claim you looked up, or guessed correctly, counts as correct. If more than one half of the claims were judged correctly, you'll get points towards your Psychology skill.";
 		String s5 = "You can review these instructions later on by clicking the 'Help' button in this minigame.";
 
-		
 		choice.setDescription("Choose psychology lecture");
 		
 		RandomNet randomNet = new RandomNet();
-		DiscussionNet easy = randomNet.generateNet(2);
+		DiscussionNet easy = randomNet.generateNet(2, 0);
 
 		Random rn = new Random();
 
@@ -51,8 +50,14 @@ public class LectureScript extends Script {
 		
 		choice.addChoice(easyChoice);
 		
-		DiscussionNet medium = randomNet.generateNet(3);
-
+		DiscussionNet medium;
+		
+		if (rn.nextBoolean()){
+			medium = randomNet.generateNet(3, 0);
+		} else {
+			medium = randomNet.generateNet(3, 1);
+		}
+		
 		LearningController mediumController = new LearningController(medium);
 		mediumController.setHelpReference("LectureTutorial");
 		
@@ -68,7 +73,7 @@ public class LectureScript extends Script {
 		
 		choice.addChoice(mediumChoice);
 		
-		DiscussionNet hard = randomNet.generateNet(5);
+		DiscussionNet hard = randomNet.generateNet(5, 1);
 
 		LearningController hardController = new LearningController(hard);
 		hardController.setHelpReference("LectureTutorial");
@@ -82,7 +87,7 @@ public class LectureScript extends Script {
 			hardChoice.setPreamble(s0, randomNet.getVerbalDescription(), s2, s3, s4, s5);
 		}
 		
-		// choice.addChoice(hardChoice);
+		choice.addChoice(hardChoice);
 		choice.setReturnScript(new MeetingCherylScript());
 		
 		if (!TutorialMessages.contains("LectureTutorial")){

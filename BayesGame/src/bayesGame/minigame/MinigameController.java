@@ -332,6 +332,7 @@ public class MinigameController {
 	}
 	
 	public void finishedThinking(){
+		
 		int correct = 0;
 		int score = 0;
 		
@@ -358,6 +359,8 @@ public class MinigameController {
 		System.out.println(scoreThreshold);
 				
 		priorNodes.addAll(otherNodes);
+		
+		viewController.clearText();
 		
 		for (BayesNode n : priorNodes){
 			n.observe();
