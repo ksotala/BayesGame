@@ -70,8 +70,8 @@ public class MinigameViewController implements Controller, ViewController {
 	
 	private void initializeView(){
 		graphPanel = new GraphPanel(gameNet);
-		Verb interactingVerb = new InteractingVerb(this, Verb.returnCall.MouseMessage, MouseEvent.BUTTON3);
-		Verb textVerb = new InteractingVerb(this, Verb.returnCall.KeyMessage, MouseEvent.BUTTON1);
+		Verb interactingVerb = new InteractingVerb(this, Verb.returnCall.MouseMessage, MouseEvent.BUTTON1);
+		Verb textVerb = new InteractingVerb(this, Verb.returnCall.KeyMessage, MouseEvent.BUTTON3);
 		graphPanel.addVerb(interactingVerb);
 		graphPanel.addVerb(textVerb);
 

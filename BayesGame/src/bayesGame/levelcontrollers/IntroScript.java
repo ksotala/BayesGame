@@ -19,7 +19,7 @@ public class IntroScript extends Script {
 	@Override
 	public void run() {
 		controller.addText("You're about to see a square box. It represents a variable that can be either true or false, and your task is to discover which one it is.");
-		controller.addText("The grid at the bottom of each represents its probability: it has a 50-50 chance of being true. It's also surrounded by a fog of ignorance (the grey border), but you can penetrate that fog by right-clicking on it to see its value. Press space to see the box, and then right-click on the box to observe it.");
+		controller.addText("The grid at the bottom of each represents its probability: it has a 50-50 chance of being true. It's also surrounded by a fog of ignorance (the grey border), but you can penetrate that fog by clicking on it to see its value. Press space to see the box, and then click on the box to observe it.");
 		controller.addProcessEventQueue();
 		
 		DiscussionNet net = new DiscussionNet();
