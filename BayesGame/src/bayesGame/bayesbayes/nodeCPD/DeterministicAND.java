@@ -65,15 +65,15 @@ public class DeterministicAND implements NodeCPD {
             }
         }
         
-        String description = "<html>'" + sourceBayesNode.type + "' is a <b>conditional probability variable</b><br> of type <b>deterministic";
+        String description = "'" + sourceBayesNode.type + "' is a conditional probability variable of type deterministic";
         String description2;
         String typename;
         
         if (parents.length > 1){
-        	description2 = " and</b>.<p>It is true if all of its parent variables are true.";
+        	description2 = " and. It is true if all of its parent variables are true.";
         	typename = "DetAND";
         } else {
-        	description2 = " is</b>.<p><p>It is true if its parent variable is true.";
+        	description2 = " is. It is true if its parent variable is true.";
         	typename = "DetIS";
         }
         description = description + description2;

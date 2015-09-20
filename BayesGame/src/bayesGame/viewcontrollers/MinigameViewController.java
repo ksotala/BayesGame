@@ -141,15 +141,15 @@ public class MinigameViewController implements Controller, ViewController {
 	    String text = gameNet.getCPTDescription(node.type);
 	    
 	    if (node.hasProperty("hidden")){
-	    	text = text + "<p><p>It is a <b>hidden variable</b>, meaning that you cannot observe it directly.<br>You need to discover its value through the other variables it is<br>connected to.";
+	    	text = text + "\n\nIt is a hidden variable, meaning that you cannot observe it directly. You need to discover its value through the other variables it is connected to.";
 	    } else if (node.isObserved()) {
-	    	text = text + "<p><p>It is an <b>observed variable</b>, meaning that you know its value for certain.";
+	    	text = text + "\n\nIt is an observed variable, meaning that you know its value for certain.";
 	    } else {
-	    	text = text + "<p><p>It is an <b>observable variable</b>, meaning that you can try<br>to discover its value by right-clicking on it.";
+	    	text = text + "\n\nIt is an observable variable, meaning that you can discover its value by left-clicking on it.";
 	    }
 	    
 	    int nodeProbability = (int)(100 * node.getProbability().doubleValue());
-	    text = text + "<p><p>It has a " + nodeProbability + "% chance of being true.</html>";
+	    text = text + "\n\nIt has a " + nodeProbability + "% chance of being true.";
 	    
 	    System.out.println(text);
 	    

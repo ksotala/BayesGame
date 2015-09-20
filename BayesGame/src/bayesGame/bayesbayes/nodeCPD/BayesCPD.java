@@ -27,9 +27,9 @@ public class BayesCPD implements NodeCPD {
 		sourceBayesNode.setProbabilityOfUntrueVariables(probabilityIfParentFalse, parents[0]);
 		sourceBayesNode.setProbabilityOfUntrueVariables(Fraction.ONE.subtract(probabilityIfParentFalse), nodeType, parents[0]);
 		
-        String description = "<html><p>This is a <b>conditional probability variable</b> of type <b>Bayes</b>.<br>It has a " + probabilityIfParentTrue.getNumerator() + 
-        		" in " + probabilityIfParentTrue.getDenominator() + " chance of being true if its parent is true,<br>and a " + probabilityIfParentFalse.getNumerator() 
-        		+ " in " + probabilityIfParentFalse.getDenominator() + " chance of being true if its parent is false.</p>";
+        String description = "'" + sourceBayesNode.type + "' is a conditional probability variable of type Bayes.\nIt has a " + probabilityIfParentTrue.getNumerator() + 
+        		" in " + probabilityIfParentTrue.getDenominator() + " chance of being true if its parent is true, and a " + probabilityIfParentFalse.getNumerator() 
+        		+ " in " + probabilityIfParentFalse.getDenominator() + " chance of being true if its parent is false.";
         sourceBayesNode.cptDescription = description;
         sourceBayesNode.cptName = "Bayes";
 		

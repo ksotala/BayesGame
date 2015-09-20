@@ -86,7 +86,8 @@ public class GameInterface implements InterfaceView, KeyController {
 		smallPanel.setFont(smallPanel.getFont().deriveFont(22f));
 		
 	    smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-	    smallPanel.setMinimumSize(new Dimension(250,500));
+	    smallPanel.setMinimumSize(new Dimension(250,400));
+	    smallPanel.setPreferredSize(new Dimension(250,500));
 		frame.getContentPane().add(smallPanel, getSmallPanelConstraints());
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
@@ -98,6 +99,7 @@ public class GameInterface implements InterfaceView, KeyController {
 		
 	    buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 	    buttonPanel.setMinimumSize(new Dimension(250,50));
+	    buttonPanel.setPreferredSize(new Dimension(250,50));
 	    frame.getContentPane().add(buttonPanel, getButtonPanelConstraints());
 
 		this.buttonPanel = buttonPanel;
@@ -121,6 +123,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	    GridBagConstraints c = new GridBagConstraints();
 	    
 	    textPane.setEditable(false);
+	    textPane.setMinimumSize(new Dimension(300,150));
 	    textPane.setPreferredSize(new Dimension(300,150));
 	    textPane.putClientProperty("IgnoreCharsetDirective", Boolean.TRUE);
 	    
