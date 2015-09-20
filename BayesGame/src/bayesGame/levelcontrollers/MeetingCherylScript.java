@@ -11,7 +11,8 @@ public class MeetingCherylScript extends Script {
 	public static boolean metCheryl = false;
 	public static boolean befriendedCheryl = false;
 	
-	private final GameCharacter gossip = GameCharacters.createCharacter(GameCharacter.GENDER.GIRL);
+	// private final GameCharacter gossip = GameCharacters.createCharacter(GameCharacter.GENDER.GIRL);
+	private GameCharacter gossip;
 
 
 
