@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
@@ -35,7 +36,7 @@ public class GameInterface implements InterfaceView, KeyController {
 
 	private JFrame frame;
 	private JPanel bigPanel;
-	private JPanel smallPanel;
+	private JTextArea smallPanel;
 	private JPanel buttonPanel;
 	private JTextPane textPane;
 	private JScrollPane scroll;
@@ -52,7 +53,7 @@ public class GameInterface implements InterfaceView, KeyController {
 		frame.setUndecorated(true);
 		
 		bigPanel = new JPanel();
-		smallPanel = new JPanel();
+		smallPanel = new JTextArea();
 		buttonPanel = new JPanel();
 		textPane = new JTextPane();
 				
@@ -77,11 +78,15 @@ public class GameInterface implements InterfaceView, KeyController {
 		this.bigPanel = bigPanel;
 	}
 
-	public void setSmallPanel(JPanel smallPanel) {
+	public void setSmallPanel(JTextArea smallPanel) {
 		frame.getContentPane().remove(this.smallPanel);
 		
+		smallPanel.setLineWrap(true);
+		smallPanel.setWrapStyleWord(true);
+		smallPanel.setFont(smallPanel.getFont().deriveFont(22f));
+		
 	    smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-	    smallPanel.setMinimumSize(new Dimension(300,500));
+	    smallPanel.setMinimumSize(new Dimension(250,500));
 		frame.getContentPane().add(smallPanel, getSmallPanelConstraints());
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
@@ -109,29 +114,11 @@ public class GameInterface implements InterfaceView, KeyController {
 	private void addComponentsToPane(Container pane){
 		pane.setLayout(new GridBagLayout());
 	    
-		GridBagConstraints c = getBigPanelConstraints();
-		
-	    bigPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		bigPanel.setMinimumSize(new Dimension(600,650));
-		bigPanel.setPreferredSize(new Dimension(750,750));
+	    this.setBigPanel(bigPanel);
+	    this.setSmallPanel(smallPanel);
+	    this.setButtonPanel(buttonPanel);
 	    
-	    pane.add(bigPanel, c);
-	    
-	    c = getSmallPanelConstraints();
-	    
-	    smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-	    smallPanel.setMinimumSize(new Dimension(300,400));
-	    
-	    pane.add(smallPanel, c);
-	    
-	    c = getButtonPanelConstraints();
-	    
-	    buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-	    buttonPanel.setMinimumSize(new Dimension(250,50));
-	    
-	    pane.add(buttonPanel, c);
-	    
-	    c = new GridBagConstraints();
+	    GridBagConstraints c = new GridBagConstraints();
 	    
 	    textPane.setEditable(false);
 	    textPane.setPreferredSize(new Dimension(300,150));

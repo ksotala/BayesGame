@@ -42,8 +42,7 @@ public class MinigameViewController implements Controller, ViewController {
 	private final DiscussionNet gameNet;
 	private GameInterface gameInterface;
 	private GraphPanel graphPanel;
-	private JPanel infoPanel;
-	private JLabel infoPanelText;
+	private JTextArea infoPanel;
 	private JPanel buttonPanel;
 	
 	private boolean lectureMode;
@@ -77,7 +76,7 @@ public class MinigameViewController implements Controller, ViewController {
 
 		gameInterface.setBigPanel(graphPanel);
 		
-	    infoPanel = new JPanel();
+	    infoPanel = new JTextArea();
 	    gameInterface.setSmallPanel(infoPanel);
 	    
 	    buttonPanel = new JPanel();
@@ -154,17 +153,11 @@ public class MinigameViewController implements Controller, ViewController {
 	    
 	    System.out.println(text);
 	    
-	    infoPanel.removeAll();
+	    infoPanel.setText(text);
+	    
 	    infoPanel.revalidate();
 	    infoPanel.repaint();
-	    	    
-	    infoPanelText = new JLabel();
-		infoPanelText.setText(text);
-		infoPanelText.setAlignmentY(Component.LEFT_ALIGNMENT);
-		infoPanelText.setFont(new Font("Serif", Font.PLAIN, 24));
-		
-		infoPanel.add(infoPanelText);
-		
+	    	    		
 		gameInterface.getFrame().revalidate();
 		
 		// gameInterface.getFrame().pack();
