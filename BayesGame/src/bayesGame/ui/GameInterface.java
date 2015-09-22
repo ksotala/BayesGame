@@ -351,6 +351,15 @@ public class GameInterface implements InterfaceView, KeyController {
 		textPane.setText("");
 	}
 
+	public void showEndMessage(String string) {
+		showMessage(string);
+		System.exit(0);
+	}
+
+	public void showMessage(String string) {
+		JOptionPane.showMessageDialog(frame, string);
+	}
+
 	
 	
 	

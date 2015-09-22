@@ -5,8 +5,8 @@ import bayesGame.minigame.MinigameController;
 
 public class PlayerCharacter extends GameCharacter {
 
-	private final int STARTING_DEFAULT_ENERGY = 5;
-	private final int SKILL_COST_PER_LEVEL = 10;
+	private final int STARTING_DEFAULT_ENERGY = 4;
+	private final int SKILL_COST_PER_LEVEL = 15;
 		
 	private int energy;
 	private int base_energy;
@@ -59,6 +59,10 @@ public class PlayerCharacter extends GameCharacter {
 
 	private int getNextSkillLevel(String string) {
 		return ((psychology_level+1) * SKILL_COST_PER_LEVEL);
+	}
+	
+	public int getSkillLevel(){
+		return psychology_level;
 	}
 
 }

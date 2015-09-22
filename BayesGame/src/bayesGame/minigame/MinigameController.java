@@ -220,7 +220,7 @@ public class MinigameController {
 				if (energycost){
 					finishedThinking();
 				}
-				clear(true);
+				// clear(true);
 			}
 		}
 		
@@ -353,15 +353,16 @@ public class MinigameController {
 		}
 		
 		int scoreThreshold = probabilities.size() / 2;
-		if (probabilities.size() % 2 == 1){
+/*		if (probabilities.size() % 2 == 1){
 			scoreThreshold++;
-		}
+		} */
 		System.out.println(scoreThreshold);
 				
 		priorNodes.addAll(otherNodes);
 		
 		viewController.clearText();
 		
+		viewController.showText("With " + probabilities.size() + " variables, you need to get more than " + scoreThreshold + " predictions correct in order to gain points.");
 		int predictions = 0;
 		for (BayesNode n : priorNodes){
 			n.observe();
@@ -387,9 +388,9 @@ public class MinigameController {
 			}
 			
 			if (correct <= scoreThreshold){
-				viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + "/" + predictions + " (need " + (scoreThreshold+1 - correct) + " more), score: " + score);
+				viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + " (need " + (scoreThreshold+1 - correct) + " more), score: " + score);
 			} else {
-				viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + "/" + predictions + " score: " + score);
+				viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + " score: " + score);
 			}
 
 			viewController.updateGraph();

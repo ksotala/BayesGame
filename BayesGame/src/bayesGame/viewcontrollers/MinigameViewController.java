@@ -259,6 +259,18 @@ public class MinigameViewController implements Controller, ViewController {
 		gameInterface.clearText();
 	}
 
+	@Override
+	public void showEndMessage(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showMessage(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	

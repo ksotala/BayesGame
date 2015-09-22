@@ -6,21 +6,22 @@ import bayesGame.levelcontrollers.LectureScript;
 
 public class Day {
 	
-	private final int DEFAULT_LENGTH = 4;
-	private final int DEFAULT_CLASSES = 4;
-	
+	private final int DEFAULT_LENGTH = 3;
+	private final int DEFAULT_CLASSES = 3;
+		
 	private int length;
 	private int classes;
 	
 	private int number;
 	private int timeofday;
 	
-	public Day(int number){
+	public Day(int number, int timeofday){
 		length = DEFAULT_LENGTH;
 		classes = DEFAULT_CLASSES;
 		
-		timeofday = 0;
+		this.timeofday = timeofday;
 		this.number = number;
+		
 	}
 	
 	public void advanceTimeOfDay(){

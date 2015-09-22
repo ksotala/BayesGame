@@ -50,13 +50,7 @@ public class LectureScript extends Script {
 		
 		choice.addChoice(easyChoice);
 		
-		DiscussionNet medium;
-		
-		if (rn.nextBoolean()){
-			medium = randomNet.generateNet(3, 0);
-		} else {
-			medium = randomNet.generateNet(3, 1);
-		}
+		DiscussionNet medium = randomNet.generateNet(3, 1);
 		
 		LearningController mediumController = new LearningController(medium);
 		mediumController.setHelpReference("LectureTutorial");

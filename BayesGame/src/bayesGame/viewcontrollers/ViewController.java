@@ -22,5 +22,7 @@ public interface ViewController {
 	public abstract void addDialog(String title, String[] options);
 	public abstract void addDialog(String string, MiniScript[] scripts);
 	public abstract void showOptionsMenu();
+	public abstract void showEndMessage(String string);
+	public abstract void showMessage(String string);
 
 }

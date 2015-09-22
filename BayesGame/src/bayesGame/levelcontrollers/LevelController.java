@@ -146,5 +146,15 @@ public class LevelController {
 		viewController.showOptionsMenu();
 		
 	}
+
+	public void showEndMessage(String string) {
+		viewController.showEndMessage(string);
+		
+	}
+
+	public void showMessage(String string) {
+		viewController.showMessage(string);
+		
+	}
 	
 }

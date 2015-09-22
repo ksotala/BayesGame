@@ -19,7 +19,7 @@ public class World {
 	private static List<Integer> futureTimes;
 	
 	public World(){
-		day = new Day(1);
+		day = new Day(1, -1);
 		futureEvents = new ArrayList<Script>();
 		futureTimes = new ArrayList<Integer>();
 		

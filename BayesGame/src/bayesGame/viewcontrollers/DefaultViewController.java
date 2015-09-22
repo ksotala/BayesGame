@@ -98,6 +98,18 @@ public class DefaultViewController implements ViewController {
 		
 	}
 
+	@Override
+	public void showEndMessage(String string) {
+		gameInterface.showEndMessage(string);
+		
+	}
+
+	@Override
+	public void showMessage(String string) {
+		gameInterface.showMessage(string);
+		
+	}
+
 
 
 
