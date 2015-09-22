@@ -62,6 +62,10 @@ public class GameInterface implements InterfaceView, KeyController {
 		
 		waitingForInput = false;
 		textPane.addKeyListener(new AnyKeyListener(this));
+		smallPanel.addKeyListener(new AnyKeyListener(this));
+		buttonPanel.addKeyListener(new AnyKeyListener(this));
+		bigPanel.addKeyListener(new AnyKeyListener(this));
+		
 		
 		addComponentsToPane(frame.getContentPane());
 	}
@@ -132,6 +136,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	    c.gridx = 0;
 	    c.gridy = 2;
 	    c.gridwidth = GridBagConstraints.REMAINDER;
+	    c.gridheight = GridBagConstraints.REMAINDER;
 	    c.ipady = 0;
 	    c.weightx = 1;
 	    c.weighty = 1;
