@@ -86,7 +86,7 @@ public class BayesGame {
 		
 		controller = new LevelController();
 		ChoiceMenu mainMenu = new ChoiceMenu();
-		ChoiceMenuChoice intro = new ChoiceMenuChoice("Play introduction", new IntroScript(controller));
+		ChoiceMenuChoice intro = new ChoiceMenuChoice("Play tutorial", new IntroScript(controller));
 		ChoiceMenuChoice game = new ChoiceMenuChoice("Play game", new LoopScript(controller));
 		ChoiceMenuChoice options = new ChoiceMenuChoice("Options", new OptionsScript(controller));
 		mainMenu.addChoice(intro);

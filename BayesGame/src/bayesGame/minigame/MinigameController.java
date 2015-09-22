@@ -219,8 +219,9 @@ public class MinigameController {
 			} else if (allTargetNodesKnown && gameMode == 0){
 				if (energycost){
 					finishedThinking();
+				} else {
+					clear(true);
 				}
-				// clear(true);
 			}
 		}
 		
@@ -290,7 +291,7 @@ public class MinigameController {
 					}
 					if (energycost){
 						PC.useEnergy(1);
-						viewController.showText("Looking up the truth of " + type + " costs you some mental energy. You have " + PC.getEnergy() + " points of energy left.");
+						viewController.showText("You observe the truth of " + type + " by looking it up, which costs you some mental energy. You have " + PC.getEnergy() + " points of energy left.");
 					}
 					
 					this.endOfTurn(timeSpent);
@@ -363,10 +364,8 @@ public class MinigameController {
 		viewController.clearText();
 		
 		viewController.showText("With " + probabilities.size() + " variables, you need to get more than " + scoreThreshold + " predictions correct in order to gain points.");
-		int predictions = 0;
 		for (BayesNode n : priorNodes){
 			n.observe();
-			predictions++;
 			gameNet.updateBeliefs();
 			
 			Fraction oldProbability = probabilities.get(n);
@@ -388,9 +387,9 @@ public class MinigameController {
 			}
 			
 			if (correct <= scoreThreshold){
-				viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + " (need " + (scoreThreshold+1 - correct) + " more), score: " + score);
+				viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, so you guess that it's " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + " (need " + (scoreThreshold+1 - correct) + " more), score: " + score);
 			} else {
-				viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + " score: " + score);
+				viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, so you guess that it's " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + " score: " + score);
 			}
 
 			viewController.updateGraph();

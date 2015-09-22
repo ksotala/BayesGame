@@ -58,15 +58,22 @@ public class LoopScript extends Script {
 			}
 			
 			if (day_number == 8){
-				controller.showEndMessage("Congratulations! You have beat all the five exams, and are admitted into the academy! You have won the game.");
+				controller.showEndMessage("Congratulations! You have beat all the five exams, and are admitted into the Academy! You have won the game."
+						+ "\nIf you haven't already done so, please fill out the game post-test form at http://tinyurl.com/BayesGamePosttest .");
 			}
 
 		}
 		
 	
 
+		String pressSpace = "";
+		if (day_number == 1 && day.justStarted()){
+			pressSpace = pressSpace + " (Press space to proceed, or click on this text area and then press space.)";
+		}
+		controller.addText("It is day " + day_number + " of your studies. You have " + day.timeLeft() + " hours to spend today, and " + PC.getEnergy() + " points of energy." + pressSpace);
 		
-		controller.addText("It is day " + day_number + " of your studies. You have " + day.timeLeft() + " hours to spend today, and " + PC.getEnergy() + " points of energy.");
+		
+		
 		controller.addProcessEventQueue();
 	
 		ChoiceMenu choices = day.getChoices();
