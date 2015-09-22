@@ -362,8 +362,10 @@ public class MinigameController {
 		
 		viewController.clearText();
 		
+		int predictions = 0;
 		for (BayesNode n : priorNodes){
 			n.observe();
+			predictions++;
 			gameNet.updateBeliefs();
 			
 			Fraction oldProbability = probabilities.get(n);
@@ -383,8 +385,13 @@ public class MinigameController {
 			} else {
 				n.addProperty("misguessed");
 			}
+			
+			if (correct <= scoreThreshold){
+				viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + "/" + predictions + " (need " + (scoreThreshold+1 - correct) + " more), score: " + score);
+			} else {
+				viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + "/" + predictions + " score: " + score);
+			}
 
-			viewController.showText("Variable " + n.type + ": had " + (int)(oldProbability.doubleValue()*100) + "% probability, prediction: " + prediction + ". Is " + actualValue + ". " + adjective + "Correct predictions: " + correct + ", score: " + score);
 			viewController.updateGraph();
 			
 		}
