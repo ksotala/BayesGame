@@ -61,16 +61,18 @@ public class BayesPainter {
 		// int rows1 = processProbability(parentNodeProbability);
 		// int rows2 = processProbability(Fraction.ONE.subtract(parentNodeProbability));
 		
-		double rows1 = (parentNodeProbability.doubleValue() / 0.2);
-		double rows2 = ((Fraction.ONE.subtract(parentNodeProbability)).doubleValue() / 0.2);
+		double rows1 = (parentNodeProbability.divide(Fraction.ONE_FIFTH)).doubleValue();
+		double rows2 = ((Fraction.ONE.subtract(parentNodeProbability)).divide(Fraction.ONE_FIFTH)).doubleValue();
 
 		int rows1_asint = (int)rows1;
 		int rows2_asint = (int)rows2;
 		
+		System.out.println(rows1 + ";" + rows1_asint);
+		
 		double rows1_remainder = rows1 - rows1_asint;
 		double rows2_remainder = rows2 - rows2_asint;
 		
-		for (int i = 0; i < (rows1-1); i++){
+		for (int i = 0; i < rows1_asint; i++){
 			paintProbabilityGrid(g, (columns * trueProbability), trueBarColor, falseBarColor, 0, (cell_size + 2) + (i * cell_size), 1, columns, (int)(cell_size * 0.5), cell_size);			
 		}
 		
@@ -97,6 +99,8 @@ public class BayesPainter {
 		
 		double cells = rows * columns;
 		
+		
+		
 		if (cells < coloredCells){
 			throw(new IllegalArgumentException("Requested " + coloredCells + " cells when only " + cells + " cells available"));
 		}
@@ -115,7 +119,9 @@ public class BayesPainter {
 		
 		g.setColor(gridColor);
 		
-		rows = (int)rows;
+		// System.out.println(rows + "," + (int)rows);
+		// rows = (int)rows;
+		rows = 1;
 		
 		for (int i=0; i < coloredCellsFractional; i++){			
 			int cellX = x0 + (x * cell_size_x);
@@ -123,7 +129,7 @@ public class BayesPainter {
             g.fillRect(cellX, cellY, cell_size_x, cell_size_y);
 			
             if (i == coloredCellsFractional-1 && coloredCellsIntegral > 0.0){
-            	if (y == (rows - 1)){
+            	if (y == (int)(rows - 1)){
             		cellX = cellX + cell_size_x;
             	} else {
             		cellY = cellY + cell_size_y;
@@ -132,8 +138,9 @@ public class BayesPainter {
             	int roundedFractionalCellSize = (int)Math.round(fractionalCellSize);
             	g.fillRect(cellX, cellY, roundedFractionalCellSize, cell_size_y);
             }
+            
 
-            if (y == (rows - 1)){
+            if (y == (int)(rows - 1)){
 				y = 0;
 				x++;
 			} else {
@@ -146,8 +153,10 @@ public class BayesPainter {
 		if (rows_original % 1 == 0){
 	        g.drawRect(x0, y0, size_x, size_y);
 		} else {
-			g.drawLine(x0 + size_x, y0, 0, size_y);
-		}
+			g.drawLine(x0, y0, x0 + size_x, y0);
+			g.drawLine(x0 + size_x, y0, x0 + size_x, y0 + size_y);
+			g.drawLine(x0, y0, x0, y0 + size_y);
+		} 
 
 			
 	}
