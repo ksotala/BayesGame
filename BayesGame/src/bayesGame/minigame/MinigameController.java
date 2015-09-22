@@ -293,7 +293,7 @@ public class MinigameController {
 						PC.useEnergy(1);
 						viewController.showText("You observe the truth of " + type + " by looking it up, which costs you some mental energy. You have " + PC.getEnergy() + " points of energy left.");
 					}
-					
+					viewController.updateStatusText();
 					this.endOfTurn(timeSpent);
 				} else if (energycost && PC.getEnergy() <= 0){
 					viewController.showText("You're exhausted and can't think about this kind of thing anymore.");
@@ -357,8 +357,7 @@ public class MinigameController {
 /*		if (probabilities.size() % 2 == 1){
 			scoreThreshold++;
 		} */
-		System.out.println(scoreThreshold);
-				
+		
 		priorNodes.addAll(otherNodes);
 		
 		viewController.clearText();
@@ -403,6 +402,7 @@ public class MinigameController {
 		}
 		
 		GameCharacters.PC.pointsToSkill("Psychology", score, this);
+		viewController.updateStatusText();
 		
 		clear(true);
 	}

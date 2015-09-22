@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -35,6 +37,7 @@ import bayesGame.ui.GraphPanel;
 import bayesGame.ui.verbs.InteractingVerb;
 import bayesGame.ui.verbs.Verb;
 import bayesGame.world.TutorialMessages;
+import bayesGame.world.World;
 
 public class MinigameViewController implements Controller, ViewController {
 	
@@ -44,6 +47,7 @@ public class MinigameViewController implements Controller, ViewController {
 	private GraphPanel graphPanel;
 	private JTextArea infoPanel;
 	private JPanel buttonPanel;
+	private JLabel statusText;
 	
 	private boolean lectureMode;
 	private String helpReference;
@@ -80,8 +84,23 @@ public class MinigameViewController implements Controller, ViewController {
 	    gameInterface.setSmallPanel(infoPanel);
 	    
 	    buttonPanel = new JPanel();
-	    
+	    	    
 	    if (helpReference != null){
+		    buttonPanel.setLayout(new GridBagLayout());
+		    
+		    GridBagConstraints c = new GridBagConstraints();
+		    c.gridx = 0;
+		    c.gridy = 0;
+		    c.gridwidth = GridBagConstraints.REMAINDER;
+		    c.ipady = 0;
+		    c.weightx = 1;
+		    c.weighty = 1;
+		    c.fill = GridBagConstraints.BOTH;
+		    
+		    statusText = new JLabel("<html><center>" + World.getStatusText() + "</center></html>");
+		    // statusText.setFont(statusText.getFont().deriveFont(16f));
+		    buttonPanel.add(statusText, c);
+	    	
 		    JButton helpButton = new JButton("Show help");
 		    helpButton.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
@@ -91,10 +110,23 @@ public class MinigameViewController implements Controller, ViewController {
 	            }
 	        });
 		    
-		    buttonPanel.add(helpButton);
+		    c.gridy = 1;
+		    c.gridwidth = 1;
+		    
+		    
+		    buttonPanel.add(helpButton, c);
 	    }
 	    
 	    if (lectureMode){
+		    GridBagConstraints c = new GridBagConstraints();
+		    c.gridx = 1;
+		    c.gridy = 1;
+		    c.gridwidth = GridBagConstraints.REMAINDER;
+		    c.ipady = 0;
+		    c.weightx = 1;
+		    c.weighty = 1;
+		    c.fill = GridBagConstraints.BOTH;
+
 	    	final JButton doneButton = new JButton("Done");
 	    	
 	        doneButton.addActionListener(new ActionListener() {
@@ -104,10 +136,14 @@ public class MinigameViewController implements Controller, ViewController {
 	            }
 	        });      
 
-	    	buttonPanel.add(doneButton);
+	    	buttonPanel.add(doneButton, c);
 	    }
 	    
 	    gameInterface.setButtonPanel(buttonPanel);
+	    
+
+	    
+	    
 	}
 	
 	public void addText(String text){
@@ -151,8 +187,6 @@ public class MinigameViewController implements Controller, ViewController {
 	    int nodeProbability = (int)(100 * node.getProbability().doubleValue());
 	    text = text + "\n\nIt has a " + nodeProbability + "% chance of being true.";
 	    
-	    System.out.println(text);
-	    
 	    infoPanel.setText(text);
 	    
 	    infoPanel.revalidate();
@@ -169,12 +203,15 @@ public class MinigameViewController implements Controller, ViewController {
 			BayesNode node = (BayesNode)o;
 			Object type = node.type;
 			owner.chooseNode(type);
+			updateStatusText();
+			
 		}
 	}
 
 	@Override
 	public void genericMessage() {
 		owner.genericMessageReceived();
+		updateStatusText();
 		
 	}
 
@@ -269,6 +306,12 @@ public class MinigameViewController implements Controller, ViewController {
 	public void showMessage(String string) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void updateStatusText(){
+		if (statusText != null){
+			statusText.setText("<html><center>" + World.getStatusText() + "</center></html>");
+		}
 	}
 
 

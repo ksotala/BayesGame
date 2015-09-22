@@ -80,8 +80,7 @@ public class DeterministicAND implements NodeCPD {
         
         sourceBayesNode.cptName = typename;
         sourceBayesNode.cptDescription = description;
-        
-        System.out.println(sourceBayesNode.cptDescription);
+
         
 		return sourceBayesNode;
 		

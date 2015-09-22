@@ -54,5 +54,11 @@ public class World {
 		
 	}
 
+	public static String getStatusText() {
+		PlayerCharacter PC = GameCharacters.PC;
+		String statusText = "Day " + getDate().date() + ", " + getDate().classesLeft() + " hours left. " + PC.getEnergy() + " energy remaining. Psychology skill at level " +  PC.getSkillLevel() + " (" + PC.getSkillExperience() + "/" + PC.getNextSkillLevel("") + " XP to next level)";
+		return statusText;
+	}
+
 		
 }

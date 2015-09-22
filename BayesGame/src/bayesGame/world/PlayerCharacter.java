@@ -57,12 +57,16 @@ public class PlayerCharacter extends GameCharacter {
 		}
 	}
 
-	private int getNextSkillLevel(String string) {
+	public int getNextSkillLevel(String string) {
 		return ((psychology_level+1) * SKILL_COST_PER_LEVEL);
 	}
 	
 	public int getSkillLevel(){
 		return psychology_level;
+	}
+	
+	public int getSkillExperience(){
+		return psychology_skill;
 	}
 
 }

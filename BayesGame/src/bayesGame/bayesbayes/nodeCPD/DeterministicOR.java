@@ -83,8 +83,6 @@ public class DeterministicOR implements NodeCPD {
         orBayesNode.cptName = typename;
         orBayesNode.cptDescription = description;
         
-        System.out.println(orBayesNode.cptDescription);
-        
 		return orBayesNode;
 	}
 
