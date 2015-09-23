@@ -24,5 +24,6 @@ public interface ViewController {
 	public abstract void showOptionsMenu();
 	public abstract void showEndMessage(String string);
 	public abstract void showMessage(String string);
+	public abstract void showResolutionMenu();
 
 }

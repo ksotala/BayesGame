@@ -314,6 +314,12 @@ public class MinigameViewController implements Controller, ViewController {
 		}
 	}
 
+	@Override
+	public void showResolutionMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	

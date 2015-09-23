@@ -25,6 +25,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import bayesGame.BayesGame;
 import bayesGame.levelcontrollers.ChoiceMenu;
 import bayesGame.levelcontrollers.LevelController;
 import bayesGame.levelcontrollers.MiniScript;
@@ -62,10 +63,9 @@ public class GameInterface implements InterfaceView, KeyController {
 		
 		waitingForInput = false;
 		textPane.addKeyListener(new AnyKeyListener(this));
-		smallPanel.addKeyListener(new AnyKeyListener(this));
 		buttonPanel.addKeyListener(new AnyKeyListener(this));
 		bigPanel.addKeyListener(new AnyKeyListener(this));
-		
+		smallPanel.addKeyListener(new AnyKeyListener(this));
 		
 		addComponentsToPane(frame.getContentPane());
 	}
@@ -74,8 +74,8 @@ public class GameInterface implements InterfaceView, KeyController {
 		frame.getContentPane().remove(this.bigPanel);
 		
 	    bigPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		bigPanel.setMinimumSize(new Dimension(600,650));
-		bigPanel.setPreferredSize(new Dimension(750,750));
+		bigPanel.setMinimumSize(new Dimension(BayesGame.getNewHeight(600),BayesGame.getNewWidth(650)));
+		bigPanel.setPreferredSize(new Dimension(BayesGame.getNewHeight(750),BayesGame.getNewWidth(750)));
 		frame.getContentPane().add(bigPanel, getBigPanelConstraints());
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
@@ -87,11 +87,12 @@ public class GameInterface implements InterfaceView, KeyController {
 		
 		smallPanel.setLineWrap(true);
 		smallPanel.setWrapStyleWord(true);
-		smallPanel.setFont(smallPanel.getFont().deriveFont(22f));
+		smallPanel.setFont(smallPanel.getFont().deriveFont(BayesGame.getNewFontSize()));
+		smallPanel.setEditable(false);
 		
 	    smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-	    smallPanel.setMinimumSize(new Dimension(250,400));
-	    smallPanel.setPreferredSize(new Dimension(250,500));
+	    smallPanel.setMinimumSize(new Dimension(BayesGame.getNewHeight(250),BayesGame.getNewWidth(400)));
+	    smallPanel.setPreferredSize(new Dimension(BayesGame.getNewHeight(250),BayesGame.getNewWidth(500)));
 		frame.getContentPane().add(smallPanel, getSmallPanelConstraints());
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
@@ -102,8 +103,8 @@ public class GameInterface implements InterfaceView, KeyController {
 		frame.getContentPane().remove(this.buttonPanel);
 		
 	    buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-	    buttonPanel.setMinimumSize(new Dimension(250,50));
-	    buttonPanel.setPreferredSize(new Dimension(250,50));
+	    buttonPanel.setMinimumSize(new Dimension(BayesGame.getNewHeight(250),BayesGame.getNewWidth(50)));
+	    buttonPanel.setPreferredSize(new Dimension(BayesGame.getNewHeight(250),BayesGame.getNewWidth(50)));
 	    frame.getContentPane().add(buttonPanel, getButtonPanelConstraints());
 
 		this.buttonPanel = buttonPanel;
@@ -127,8 +128,8 @@ public class GameInterface implements InterfaceView, KeyController {
 	    GridBagConstraints c = new GridBagConstraints();
 	    
 	    textPane.setEditable(false);
-	    textPane.setMinimumSize(new Dimension(300,150));
-	    textPane.setPreferredSize(new Dimension(300,150));
+	    textPane.setMinimumSize(new Dimension(BayesGame.getNewHeight(350),BayesGame.getNewWidth(150)));
+	    textPane.setPreferredSize(new Dimension(BayesGame.getNewHeight(350),BayesGame.getNewWidth(150)));
 	    textPane.putClientProperty("IgnoreCharsetDirective", Boolean.TRUE);
 	    
 	    scroll = new JScrollPane (textPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -259,7 +260,7 @@ public class GameInterface implements InterfaceView, KeyController {
 	
 	private void writeToTextPane(String text){
 		SimpleAttributeSet style = new SimpleAttributeSet();
-		StyleConstants.setFontSize(style, 26);
+		StyleConstants.setFontSize(style, BayesGame.getNewFontSizeInt());
 		
 		text = text + System.getProperty("line.separator");
 		
@@ -363,6 +364,20 @@ public class GameInterface implements InterfaceView, KeyController {
 
 	public void showMessage(String string) {
 		JOptionPane.showMessageDialog(frame, string);
+	}
+
+	public void showResolutionMenu() {
+		Object[] possibilities = {"1280x720", "1600x900", "1920x1080"};
+		BayesGame.gameResolution = (String)JOptionPane.showInputDialog(
+                frame,
+                null,
+                "Choose a resolution",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                possibilities,
+                "1920x1080");
+		BayesGame.run();
+
 	}
 
 	

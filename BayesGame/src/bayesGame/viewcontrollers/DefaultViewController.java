@@ -110,6 +110,12 @@ public class DefaultViewController implements ViewController {
 		
 	}
 
+	@Override
+	public void showResolutionMenu() {
+		gameInterface.showResolutionMenu();
+		
+	}
+
 
 
 

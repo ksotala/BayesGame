@@ -156,5 +156,10 @@ public class LevelController {
 		viewController.showMessage(string);
 		
 	}
+
+	public void showResolutionMenu() {
+		viewController.showResolutionMenu();
+		
+	}
 	
 }

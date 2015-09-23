@@ -22,7 +22,9 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.visualization.Layer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.PluggableGraphMouse;
+import edu.uci.ics.jung.visualization.control.ScalingControl;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 
 public class GraphPanel extends JPanel {
@@ -57,7 +59,7 @@ public class GraphPanel extends JPanel {
 		DirectedSparseGraph<BayesNode, Pair<Integer,Integer>> graph = bayesNet.getGraph();
 		
 		Layout<BayesNode, Pair<Integer,Integer>> layout = new DAGLayout<BayesNode, Pair<Integer, Integer>>(graph);
-        layout.setSize(new Dimension(500,700));
+		layout.setSize(BayesGame.getVVLayoutSize());
 
         vv = new VisualizationViewer<BayesNode, Pair<Integer,Integer>>(layout);
         
@@ -102,9 +104,9 @@ public class GraphPanel extends JPanel {
         
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller()); 
 
-        vv.setPreferredSize(new Dimension(750,750)); //Sets the viewing area size
+        vv.setPreferredSize(new Dimension(BayesGame.getNewHeight(750),BayesGame.getNewWidth(750))); //Sets the viewing area size
         
-        vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).rotate(-Math.PI, 350, 350);
+        vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).rotate(-Math.PI, BayesGame.getNewHeight(350),BayesGame.getNewWidth(350));
         
         this.add(vv);
         this.setVisible(true);
